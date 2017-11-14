@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterControler : MonoBehaviour {
-    public Camera mainCam;
     public Animator animator;
     public string  playerNumber = " P1";
     public Color playerColor = Color.black;
@@ -49,10 +48,10 @@ public class CharacterControler : MonoBehaviour {
 	void Update () {
         //    Debug.Log(Input.GetAxis("Horizontal"));
         //    Debug.Log((animator.GetCurrentAnimatorStateInfo(0).IsName("NeutralIdle") || animator.GetCurrentAnimatorStateInfo(0).IsName("StanceIdle")));
+        //PlayerPrefs.DeleteAll();
         HandleMovement();
         HandleCombat();
         HandleAnimation();
-        mainCam.transform.position = new Vector3(transform.position.x, transform.position.y + 5, mainCam.transform.position.z);
     }
 
     private void HandleCombat()
