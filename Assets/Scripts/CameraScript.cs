@@ -7,7 +7,7 @@ public class CameraScript : MonoBehaviour {
     public GameObject player2;
 	// Use this for initialization
 	void Start () {
-		
+        //PlayerPrefs.DeleteAll();
 	}
 	
 	// Update is called once per frame
