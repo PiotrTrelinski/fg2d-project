@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterControler : MonoBehaviour {
@@ -24,14 +23,18 @@ public class CharacterControler : MonoBehaviour {
     public LayerMask groundLayer;
     //stance
     private bool isInStance = false;
-    private bool isCrouching = false;
+    public bool isCrouching = false;
     private bool lastFrameCrouching = false;
     private bool lastFrameStance = false;
-    public bool isAttacking = false;
     public float dashVertForce = 5;
     public float dashHorForce = 15;
     public float stanceJumpForce = 10;
-    private float dashCooldown;
+    private bool isDashingForward = false;
+    //combat
+    public bool isAttacking = false;
+    private string firstInput = null;
+    private string secondInput = null;
+    private float lastCombatInputTime;
     //coliders
     public Collider standingCollider;
     public Collider crouchingCollider;
@@ -53,9 +56,32 @@ public class CharacterControler : MonoBehaviour {
         HandleCombat();
         HandleAnimation();
     }
+    private void GatherCombatInputs()
+    {
+        if(firstInput == null)
+        {
+            if (Input.GetButtonDown("Left Punch" + playerNumber))
+            {
+
+            }
+            if (Input.GetButtonDown("Right Punch" + playerNumber))
+            {
+
+            }
+            if (Input.GetButtonDown("Left Kick" + playerNumber))
+            {
+
+            }
+            if (Input.GetButtonDown("Right Kick" + playerNumber))
+            {
+
+            }
+        }
+    }
 
     private void HandleCombat()
     {
+        GatherCombatInputs();
         if (!isAttacking) {
             if (Input.GetButtonDown("Stance Trigger" + playerNumber))
             {
@@ -127,6 +153,29 @@ public class CharacterControler : MonoBehaviour {
                     }
                 }
             }
+            else if (isDashingForward && rb.velocity.y > 0)
+            {
+                if (Input.GetButtonDown("Right Punch" + playerNumber) )
+                {
+                    isAttacking = true;
+                    animator.CrossFade("CombatDashingRightPunch", 0.1f);
+                }
+                if (Input.GetButtonDown("Right Kick" + playerNumber))
+                {
+                    isAttacking = true;
+                    animator.CrossFade("CombatDashingRightKick", 0.1f);
+                }
+                if (Input.GetButtonDown("Left Punch" + playerNumber))
+                {
+                    isAttacking = true;
+                    animator.CrossFade("CombatDashingLeftPunch", 0.1f);
+                }
+                if (Input.GetButtonDown("Left Kick" + playerNumber))
+                {
+                    isAttacking = true;
+                    animator.CrossFade("CombatDashingLeftKick", 0.1f);
+                }
+            }
         }
 
         
@@ -139,48 +188,47 @@ public class CharacterControler : MonoBehaviour {
         animator.SetBool("isRunning", isRunning);
         animator.SetBool("isInStance", isInStance);
         animator.SetBool("isCrouching", isCrouching);
+        animator.SetBool("isAttacking", isAttacking);
         animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumber)));
         //Neutral jump/land/crouch/neutral transfer
-        if (!isInStance)
+        if (!isAttacking)
         {
-            if (grounded && !lastFrameGrounded && !isInStance)
-                animator.CrossFade("NeutralIdle", 0.1f);
-            if (!grounded && lastFrameGrounded && !isInStance)
-                animator.CrossFade("NeutralFloatTree", 0.1f);
-            if(lastFrameStance)
-                if (grounded)
-                    if (isCrouching && lastFrameCrouching)
-                        animator.CrossFade("NeutralCrouchIdle", 0.2f);
-                    else
-                        animator.CrossFade("NeutralIdle", 0.1f);
-            if (isCrouching && !lastFrameCrouching)
-                animator.CrossFade("NeutralCrouchIdle", 0.2f);
+            if (!isInStance)
+            {
+                if (grounded && !lastFrameGrounded && !isInStance)
+                    animator.CrossFade("NeutralIdle", 0.1f);
+                if (!grounded && lastFrameGrounded && !isInStance)
+                    animator.CrossFade("NeutralFloatTree", 0.1f);
+                if (lastFrameStance)
+                    if (grounded)
+                        if (isCrouching && lastFrameCrouching)
+                            animator.CrossFade("NeutralCrouchIdle", 0.2f);
+                        else
+                            animator.CrossFade("NeutralIdle", 0.1f);
+                if (isCrouching && !lastFrameCrouching)
+                    animator.CrossFade("NeutralCrouchIdle", 0.2f);
+            }
+            //Stance jump/land/crouch/stance transfer
+            if (isInStance)
+            {
+                if (!grounded && lastFrameGrounded)
+                    animator.CrossFade("StanceFloatTree", 0.1f);
+                if (grounded && !lastFrameGrounded)
+                    animator.CrossFade("StanceIdle", 0.1f);
+                if (!facingLeft)
+                    animator.SetFloat("horSpeed", rb.velocity.x);
+                else
+                    animator.SetFloat("horSpeed", -rb.velocity.x);
+                if (!lastFrameStance)
+                    if (grounded)
+                        if (isCrouching && lastFrameCrouching)
+                            animator.CrossFade("StanceCrouchIdle", 0.1f);
+                        else
+                            animator.CrossFade("StanceIdle", 0.1f);
+                if (isCrouching && !lastFrameCrouching)
+                    animator.CrossFade("StanceCrouchIdle", 0.1f);
+            }
         }
-        //Stance jump/land/crouch/stance transfer
-        if (isInStance)
-        {
-            if (!grounded && lastFrameGrounded)
-                animator.CrossFade("StanceFloatTree", 0.1f);
-            if (grounded && !lastFrameGrounded)
-                animator.CrossFade("StanceIdle", 0.1f);
-            if (!facingLeft)
-                animator.SetFloat("horSpeed", rb.velocity.x);
-            else
-                animator.SetFloat("horSpeed", -rb.velocity.x);
-            if (!lastFrameStance)
-                if (grounded)
-                    if (isCrouching && lastFrameCrouching)
-                        animator.CrossFade("StanceCrouchIdle", 0.1f);
-                    else
-                        animator.CrossFade("StanceIdle", 0.1f);
-            if (isCrouching && !lastFrameCrouching)
-                animator.CrossFade("StanceCrouchIdle", 0.1f);
-        }
-        if (grounded && !lastFrameGrounded)
-        {
-            dashCooldown = Time.time;
-        }
-            
 
         lastFrameGrounded = grounded;
         lastFrameCrouching = isCrouching;
@@ -224,9 +272,14 @@ public class CharacterControler : MonoBehaviour {
                 isCrouching = true;
             else
                 isCrouching = false;
-
+            if (grounded) isDashingForward = false;
             HandleDoubleTapDash();
         }
+        HandleGeneralCollider();
+    }
+
+    public void HandleGeneralCollider()
+    {
         if (isCrouching)
         {
             crouchingCollider.enabled = true;
@@ -248,6 +301,10 @@ public class CharacterControler : MonoBehaviour {
             if (isInStance && grounded)
             {
                 rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumber) * dashHorForce, dashVertForce, 0));
+                if((facingLeft && Input.GetAxisRaw("Horizontal" + playerNumber) < 0) ||(!facingLeft && Input.GetAxisRaw("Horizontal" + playerNumber) > 0))
+                {
+                    isDashingForward = true;
+                }
             }
         }
 

@@ -8,7 +8,8 @@ public class CameraScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         //PlayerPrefs.DeleteAll();
-	}
+        QualitySettings.vSyncCount = 1;  // VSync must be disabled
+    }
 	
 	// Update is called once per frame
 	void Update () {
