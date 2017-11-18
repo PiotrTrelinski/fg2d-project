@@ -32,6 +32,7 @@ public class AttackStateController : MonoBehaviour {
     private void EndAttackingState()
     {
         controler.isAttacking = false;
+        controler.isCancelable = true;
         airMomentum = false;
         //Debug.Log("called" + Time.time);
         //forwardMomentum = 0;
@@ -49,5 +50,9 @@ public class AttackStateController : MonoBehaviour {
     {
         controler.isCrouching = true;
         controler.HandleGeneralCollider();
+    }
+    private void SetCancelability()
+    {
+        controler.isCancelable = true;
     }
 }

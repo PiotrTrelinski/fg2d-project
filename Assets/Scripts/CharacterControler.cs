@@ -32,6 +32,7 @@ public class CharacterControler : MonoBehaviour {
     private bool isDashingForward = false;
     //combat
     public bool isAttacking = false;
+    public bool isCancelable = true;
     private string firstInput = null;
     private string secondInput = null;
     private float lastCombatInputTime;
@@ -113,7 +114,7 @@ public class CharacterControler : MonoBehaviour {
     private void HandleCombat()
     {
         GatherCombatInputs();
-        if (!isAttacking)
+        if (isCancelable)
         {
             if (Input.GetButtonDown("Stance Trigger" + playerNumber))
             {
@@ -164,24 +165,28 @@ public class CharacterControler : MonoBehaviour {
                             if (firstInput == "Left Punch")
                             {
                                 isAttacking = true;
+                                isCancelable = false;
                                 animator.CrossFade("CombatStandingLeftPunch", 0.1f);
                                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
                             }
                             else if (firstInput == "Right Punch")
                             {
                                 isAttacking = true;
+                                isCancelable = false;
                                 animator.CrossFade("CombatStandingRightPunch", 0.1f);
                                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
                             }
                             else if (firstInput == "Left Kick")
                             {
                                 isAttacking = true;
+                                isCancelable = false;
                                 animator.CrossFade("CombatStandingLeftKick", 0.1f);
                                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
                             }
                             else if (firstInput == "Right Kick")
                             {
                                 isAttacking = true;
+                                isCancelable = false;
                                 animator.CrossFade("CombatStandingRightKick", 0.1f);
                                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
                             }
@@ -192,22 +197,26 @@ public class CharacterControler : MonoBehaviour {
                             {
                                 isAttacking = true;
                                 isCrouching = false;
+                                isCancelable = false;
                                 animator.CrossFade("CombatCrouchingLeftPunch", 0.1f);
                             }
                             else if (firstInput == "Right Punch")
                             {
                                 isAttacking = true;
+                                isCancelable = false;
                                 animator.CrossFade("CombatCrouchingRightPunch", 0.1f);
                             }
                             else if (firstInput == "Left Kick")
                             {
                                 isAttacking = true;
                                 isCrouching = false;
+                                isCancelable = false;
                                 animator.CrossFade("CombatCrouchingLeftKick", 0.1f);
                             }
-                            else if (firstInput == "Right Kick" + playerNumber)
+                            else if (firstInput == "Right Kick")
                             {
                                 isAttacking = true;
+                                isCancelable = false;
                                 animator.CrossFade("CombatCrouchingRightKick", 0.1f);
                             }
                         }
@@ -218,21 +227,25 @@ public class CharacterControler : MonoBehaviour {
                     if (firstInput == "Right Punch")
                     {
                         isAttacking = true;
+                        isCancelable = false;
                         animator.CrossFade("CombatDashingRightPunch", 0.1f);
                     }
                     else if (firstInput == "Right Kick")
                     {
                         isAttacking = true;
+                        isCancelable = false;
                         animator.CrossFade("CombatDashingRightKick", 0.1f);
                     }
                     else if (firstInput == "Left Punch")
                     {
                         isAttacking = true;
+                        isCancelable = false;
                         animator.CrossFade("CombatDashingLeftPunch", 0.1f);
                     }
                     else if (firstInput == "Left Kick")
                     {
                         isAttacking = true;
+                        isCancelable = false;
                         animator.CrossFade("CombatDashingLeftKick", 0.1f);
                     }
                 }
