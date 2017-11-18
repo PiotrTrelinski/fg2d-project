@@ -62,27 +62,59 @@ public class CharacterControler : MonoBehaviour {
         {
             if (Input.GetButtonDown("Left Punch" + playerNumber))
             {
-
+                firstInput = "Left Punch";
+            }
+            else if (Input.GetButtonDown("Right Punch" + playerNumber))
+            {
+                firstInput = "Right Punch";
+            }
+            else if (Input.GetButtonDown("Left Kick" + playerNumber))
+            {
+                firstInput = "Left Kick";
+            }
+            else if (Input.GetButtonDown("Right Kick" + playerNumber))
+            {
+                firstInput = "Right Kick";
+            }
+            if (firstInput != null) lastCombatInputTime = Time.time;
+            //if(firstInput!=null) Debug.Log("firstInput:" + firstInput);
+        }
+        if(firstInput!=null && secondInput == null && Time.time - lastCombatInputTime <= 0.05f)
+        {
+            if (Input.GetButtonDown("Left Punch" + playerNumber))
+            {
+                if(firstInput!= "Left Punch")
+                    secondInput = "Left Punch";
             }
             if (Input.GetButtonDown("Right Punch" + playerNumber))
             {
-
+                if (firstInput != "Right Punch")
+                    secondInput = "Right Punch";
             }
             if (Input.GetButtonDown("Left Kick" + playerNumber))
             {
-
+                if (firstInput != "Left Kick")
+                    secondInput = "Left Kick";
             }
             if (Input.GetButtonDown("Right Kick" + playerNumber))
             {
-
+                if (firstInput != "Right Kick")
+                    secondInput = "Right Kick";
             }
+            //Debug.Log("secondInput:" + secondInput);
+        }
+        if(firstInput != null && Time.time - lastCombatInputTime >= 0.1f)
+        {
+            firstInput = null;
+            secondInput = null;
         }
     }
 
     private void HandleCombat()
     {
         GatherCombatInputs();
-        if (!isAttacking) {
+        if (!isAttacking)
+        {
             if (Input.GetButtonDown("Stance Trigger" + playerNumber))
             {
                 if (isInStance)
@@ -96,85 +128,107 @@ public class CharacterControler : MonoBehaviour {
                     isInStance = true;
                 }
             }
-            if (grounded)
+            if (firstInput!=null && Time.time - lastCombatInputTime >= 0.05f)
             {
-                
+                if (grounded)
+                {
+                    if (secondInput != null)
+                    {
+                        //Debug.Log(firstInput);
+                        //Debug.Log(secondInput);
+                        //Debug.Log((firstInput == "Left Punch" && secondInput == "Right Kick")|| (firstInput == "Right Kick" && secondInput == "Left Punch"));
+                        //Debug.Log((firstInput == "Right Punch" && secondInput == "Left Kick") || (firstInput == "Left Kick" && secondInput == "Right Punch"));
+                        if ((firstInput == "Left Punch" && secondInput == "Right Kick")|| (firstInput == "Right Kick" && secondInput == "Left Punch"))
+                        {
+                            Debug.Log("rzut do przodu");
+                        }
+                        if ((firstInput == "Right Punch" && secondInput == "Left Kick") || (firstInput == "Left Kick" && secondInput == "Right Punch"))
+                        {
+                            Debug.Log("rzut do tyłu");
+                        }
+                    }
+                    else
+                    {
 
-                if (!isCrouching)
-                {
-                    if (Input.GetButtonDown("Left Punch" + playerNumber))
-                    {
-                        isAttacking = true;
-                        animator.CrossFade("CombatStandingLeftPunch", 0.1f);
-                        rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                    }
-                    if (Input.GetButtonDown("Right Punch" + playerNumber))
-                    {
-                        isAttacking = true;
-                        animator.CrossFade("CombatStandingRightPunch", 0.1f);
-                        rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                    }
-                    if (Input.GetButtonDown("Left Kick" + playerNumber))
-                    {
-                        isAttacking = true;
-                        animator.CrossFade("CombatStandingLeftKick", 0.1f);
-                        rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                    }
-                    if (Input.GetButtonDown("Right Kick" + playerNumber))
-                    {
-                        isAttacking = true;
-                        animator.CrossFade("CombatStandingRightKick", 0.1f);
-                        rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                        if (!isCrouching)
+                        {
+                            if (firstInput == "Left Punch")
+                            {
+                                isAttacking = true;
+                                animator.CrossFade("CombatStandingLeftPunch", 0.1f);
+                                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                            }
+                            else if (firstInput == "Right Punch")
+                            {
+                                isAttacking = true;
+                                animator.CrossFade("CombatStandingRightPunch", 0.1f);
+                                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                            }
+                            else if (firstInput == "Left Kick")
+                            {
+                                isAttacking = true;
+                                animator.CrossFade("CombatStandingLeftKick", 0.1f);
+                                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                            }
+                            else if (firstInput == "Right Kick")
+                            {
+                                isAttacking = true;
+                                animator.CrossFade("CombatStandingRightKick", 0.1f);
+                                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                            }
+                        }
+                        else
+                        {
+                            if (firstInput == "Left Punch")
+                            {
+                                isAttacking = true;
+                                isCrouching = false;
+                                animator.CrossFade("CombatCrouchingLeftPunch", 0.1f);
+                            }
+                            else if (firstInput == "Right Punch")
+                            {
+                                isAttacking = true;
+                                animator.CrossFade("CombatCrouchingRightPunch", 0.1f);
+                            }
+                            else if (firstInput == "Left Kick")
+                            {
+                                isAttacking = true;
+                                isCrouching = false;
+                                animator.CrossFade("CombatCrouchingLeftKick", 0.1f);
+                            }
+                            else if (firstInput == "Right Kick" + playerNumber)
+                            {
+                                isAttacking = true;
+                                animator.CrossFade("CombatCrouchingRightKick", 0.1f);
+                            }
+                        }
                     }
                 }
-                else
+                else if (isDashingForward && rb.velocity.y > 0)
                 {
-                    if (Input.GetButtonDown("Left Punch" + playerNumber))
+                    if (firstInput == "Right Punch")
                     {
                         isAttacking = true;
-                        isCrouching = false;
-                        animator.CrossFade("CombatCrouchingLeftPunch", 0.1f);
+                        animator.CrossFade("CombatDashingRightPunch", 0.1f);
                     }
-                    if (Input.GetButtonDown("Right Punch" + playerNumber))
+                    else if (firstInput == "Right Kick")
                     {
                         isAttacking = true;
-                        animator.CrossFade("CombatCrouchingRightPunch", 0.1f);
+                        animator.CrossFade("CombatDashingRightKick", 0.1f);
                     }
-                    if (Input.GetButtonDown("Left Kick" + playerNumber))
+                    else if (firstInput == "Left Punch")
                     {
                         isAttacking = true;
-                        isCrouching = false;
-                        animator.CrossFade("CombatCrouchingLeftKick", 0.1f);
+                        animator.CrossFade("CombatDashingLeftPunch", 0.1f);
                     }
-                    if (Input.GetButtonDown("Right Kick" + playerNumber))
+                    else if (firstInput == "Left Kick")
                     {
                         isAttacking = true;
-                        animator.CrossFade("CombatCrouchingRightKick", 0.1f);
+                        animator.CrossFade("CombatDashingLeftKick", 0.1f);
                     }
                 }
-            }
-            else if (isDashingForward && rb.velocity.y > 0)
-            {
-                if (Input.GetButtonDown("Right Punch" + playerNumber) )
-                {
-                    isAttacking = true;
-                    animator.CrossFade("CombatDashingRightPunch", 0.1f);
-                }
-                if (Input.GetButtonDown("Right Kick" + playerNumber))
-                {
-                    isAttacking = true;
-                    animator.CrossFade("CombatDashingRightKick", 0.1f);
-                }
-                if (Input.GetButtonDown("Left Punch" + playerNumber))
-                {
-                    isAttacking = true;
-                    animator.CrossFade("CombatDashingLeftPunch", 0.1f);
-                }
-                if (Input.GetButtonDown("Left Kick" + playerNumber))
-                {
-                    isAttacking = true;
-                    animator.CrossFade("CombatDashingLeftKick", 0.1f);
-                }
+                firstInput = null;
+                secondInput = null;
             }
         }
 
