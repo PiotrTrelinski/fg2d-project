@@ -132,24 +132,33 @@ public class CharacterControler : MonoBehaviour {
             {
                 if (grounded)
                 {
-                    if (secondInput != null)
+                    //if (secondInput != null)
+                    //{
+                    //    //Debug.Log(firstInput);
+                    //    //Debug.Log(secondInput);
+                    //    //Debug.Log((firstInput == "Left Punch" && secondInput == "Right Kick")|| (firstInput == "Right Kick" && secondInput == "Left Punch"));
+                    //    //Debug.Log((firstInput == "Right Punch" && secondInput == "Left Kick") || (firstInput == "Left Kick" && secondInput == "Right Punch"));
+                    //    if ((firstInput == "Left Punch" && secondInput == "Right Kick")|| (firstInput == "Right Kick" && secondInput == "Left Punch"))
+                    //    {
+                    //        Debug.Log("rzut do przodu");
+                    //    }
+                    //    if ((firstInput == "Right Punch" && secondInput == "Left Kick") || (firstInput == "Left Kick" && secondInput == "Right Punch"))
+                    //    {
+                    //        Debug.Log("rzut do tyłu");
+                    //    }
+                    //}
+                    //else
+
+                    if ((firstInput == "Left Punch" && secondInput == "Right Kick") || (firstInput == "Right Kick" && secondInput == "Left Punch"))
                     {
-                        //Debug.Log(firstInput);
-                        //Debug.Log(secondInput);
-                        //Debug.Log((firstInput == "Left Punch" && secondInput == "Right Kick")|| (firstInput == "Right Kick" && secondInput == "Left Punch"));
-                        //Debug.Log((firstInput == "Right Punch" && secondInput == "Left Kick") || (firstInput == "Left Kick" && secondInput == "Right Punch"));
-                        if ((firstInput == "Left Punch" && secondInput == "Right Kick")|| (firstInput == "Right Kick" && secondInput == "Left Punch"))
-                        {
-                            Debug.Log("rzut do przodu");
-                        }
-                        if ((firstInput == "Right Punch" && secondInput == "Left Kick") || (firstInput == "Left Kick" && secondInput == "Right Punch"))
-                        {
-                            Debug.Log("rzut do tyłu");
-                        }
+                        Debug.Log("rzut do przodu");
+                    }
+                    else if ((firstInput == "Right Punch" && secondInput == "Left Kick") || (firstInput == "Left Kick" && secondInput == "Right Punch"))
+                    {
+                        Debug.Log("rzut do tyłu");
                     }
                     else
                     {
-
                         if (!isCrouching)
                         {
                             if (firstInput == "Left Punch")
