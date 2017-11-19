@@ -43,6 +43,7 @@ public class CharacterControler : MonoBehaviour {
 
 
     public Rigidbody rb;
+    private bool isDashing;
 
     void Start () {
         speed = walkSpeed;
@@ -132,7 +133,7 @@ public class CharacterControler : MonoBehaviour {
             }
             if (firstInput != null && Time.time - lastCombatInputTime >= 0.05f)
             {
-                StartAttack();
+                
                 if (grounded)
                 {
                     //if (secondInput != null)
@@ -164,7 +165,7 @@ public class CharacterControler : MonoBehaviour {
                     {
                         if (!isCrouching)
                         {
-                            
+                            StartAttack();
                             if (firstInput == "Left Punch")
                             {
                                 animator.CrossFade("CombatStandingLeftPunch", 0.1f);
@@ -188,6 +189,7 @@ public class CharacterControler : MonoBehaviour {
                         }
                         else
                         {
+                            StartAttack();
                             if (firstInput == "Left Punch")
                             {
                                 isCrouching = false;
@@ -211,6 +213,7 @@ public class CharacterControler : MonoBehaviour {
                 }
                 else if (isDashingForward && rb.velocity.y > 0)
                 {
+                    StartAttack();
                     if (firstInput == "Right Punch")
                     {
                         animator.CrossFade("CombatDashingRightPunch", 0.1f);
@@ -229,8 +232,9 @@ public class CharacterControler : MonoBehaviour {
                         animator.CrossFade("CombatDashingLeftKick", 0.1f);
                     }
                 }
-                else if(!isDashingForward)
+                else if(!isDashing)
                 {
+                    StartAttack();
                     if (firstInput == "Right Punch")
                     {
                         isAerialAttacking = true;
@@ -364,7 +368,11 @@ public class CharacterControler : MonoBehaviour {
                 isCrouching = true;
             else
                 isCrouching = false;
-            if (grounded) isDashingForward = false;
+            if (grounded)
+            {
+                isDashingForward = false;
+                isDashing = false;
+            }
             HandleDoubleTapDash();
         }
         HandleGeneralCollider();
@@ -392,6 +400,7 @@ public class CharacterControler : MonoBehaviour {
                 isRunning = true;
             if (isInStance && grounded)
             {
+                isDashing = true;
                 rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumber) * dashHorForce, dashVertForce, 0));
                 if((facingLeft && Input.GetAxisRaw("Horizontal" + playerNumber) < 0) ||(!facingLeft && Input.GetAxisRaw("Horizontal" + playerNumber) > 0))
                 {
