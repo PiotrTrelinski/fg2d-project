@@ -7,7 +7,6 @@ public class AttackStateController : MonoBehaviour {
 
     public CharacterControler controler;
     private float forwardMomentum;
-    private bool airMomentum = false;
 	// Use this for initialization
 	void Start ()
     {
@@ -17,7 +16,7 @@ public class AttackStateController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (controler.isAttacking && !airMomentum)
+        if (controler.isAttacking && !controler.isAerialAttacking)
             HandleMomentum();
 	}
 
@@ -33,7 +32,7 @@ public class AttackStateController : MonoBehaviour {
     {
         controler.isAttacking = false;
         controler.isCancelable = true;
-        airMomentum = false;
+        controler.isAerialAttacking = false;
         //Debug.Log("called" + Time.time);
         //forwardMomentum = 0;
     }
@@ -41,10 +40,6 @@ public class AttackStateController : MonoBehaviour {
     private void SetForwardMomentum(float value)
     {
         forwardMomentum = value;
-    }
-    private void SetInertia()
-    {
-        airMomentum = true;
     }
     private void SetCrouch()
     {
