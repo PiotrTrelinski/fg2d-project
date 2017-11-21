@@ -47,7 +47,7 @@ public class CharacterControler : MonoBehaviour {
 
     void Start () {
         speed = walkSpeed;
-        transform.Find("stickman").Find("Cube").GetComponent<Renderer>().material.color = playerColor;
+        transform.Find("stickmanV2").Find("Cube").GetComponent<Renderer>().material.color = playerColor;
     }
 	
 	// Update is called once per frame
