@@ -53,7 +53,6 @@ public class CharacterControler : MonoBehaviour
     //helpers
     private string playerNumberSufix = " P";
     public int times = 0;
-    public Text text;
 
     public Rigidbody rb;
     private bool isDashing;
@@ -74,8 +73,6 @@ public class CharacterControler : MonoBehaviour
         HandleMovement();
         HandleCombat();
         HandleAnimation();
-        if(playerNumber == "2")text.text = "" + times;
-        text.text += " hp = " + currentHealth;
     }
     private void GatherCombatInputs()
     {
