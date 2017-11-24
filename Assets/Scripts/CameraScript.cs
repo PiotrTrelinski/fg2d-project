@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraScript : MonoBehaviour {
-    public GameObject player1;
-    public GameObject player2;
+    private GameObject[] players;
 	// Use this for initialization
 	void Start () {
         //PlayerPrefs.DeleteAll();
-      //  QualitySettings.vSyncCount = 0;  // VSync must be disabled
+        //  QualitySettings.vSyncCount = 0;  // VSync must be disabled
+        players = GameObject.FindGameObjectsWithTag("Player");
     }
 	
 	// Update is called once per frame
 	void Update () {
-        transform.position = new Vector3((player1.transform.position.x + player2.transform.position.x) / 2, (player1.transform.position.y + player2.transform.position.y) /2 + 5, transform.position.z);
+        transform.position = new Vector3((players[0].transform.position.x + players[1].transform.position.x) / 2, (players[0].transform.position.y + players[1].transform.position.y) /2 + 5, transform.position.z);
 	}
 }

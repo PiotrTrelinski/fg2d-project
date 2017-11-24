@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackStateController : MonoBehaviour {
+public class AttackStateController : MonoBehaviour
+{
 
     public CharacterControler controler;
     private float forwardMomentum;
@@ -41,10 +42,14 @@ public class AttackStateController : MonoBehaviour {
     {
         forwardMomentum = value;
     }
-    private void SetCrouch()
+    private void ToggleCrouch()
     {
-        controler.isCrouching = true;
+        controler.isCrouching = ! controler.isCrouching;
         controler.HandleGeneralCollider();
+    }
+    private void ToggleActiveFrames()
+    {
+        controler.activeFrames = !controler.activeFrames;
     }
     private void SetCancelability()
     {
