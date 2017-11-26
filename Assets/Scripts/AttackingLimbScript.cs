@@ -6,20 +6,18 @@ public class AttackingLimbScript : MonoBehaviour
 {
 
     private CharacterControler owner;
-    private CapsuleCollider col;
     public string limbLabel;
 
 	// Use this for initialization
 	void Start ()
     {
         owner = GetComponentInParent<CharacterControler>();
-        col = GetComponent<CapsuleCollider>();
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        Debug.DrawRay(transform.position, -transform.right * 0.6f , Color.green);
+
 	}
 
     private void OnTriggerEnter(Collider other)
@@ -45,7 +43,6 @@ public class AttackingLimbScript : MonoBehaviour
                         Debug.Log(owner.playerNumber + " hit " + otherCharacter.playerNumber);
                         otherCharacter.invulnerable = true;
                         otherCharacter.InvocationOfInvulnerability();
-                        otherCharacter.times += 1;
                         otherCharacter.currentHealth -= owner.outputDamage;
                     }
                 }
