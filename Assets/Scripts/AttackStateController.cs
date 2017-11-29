@@ -17,8 +17,8 @@ public class AttackStateController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (controler.isAttacking && !controler.isAerialAttacking)
-            HandleMomentum();
+        //if (controler.isAttacking && !controler.isAerialAttacking)
+            //HandleMomentum();
 	}
 
     private void HandleMomentum()
@@ -58,5 +58,10 @@ public class AttackStateController : MonoBehaviour
     private void SetCancelability()
     {
         controler.isCancelable = true;
+    }
+    private void OnAnimatorMove()
+    {
+        Animator animator = GetComponent<Animator>();
+        transform.parent.position += animator.deltaPosition.x * Vector3.right;
     }
 }
