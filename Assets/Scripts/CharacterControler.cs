@@ -32,6 +32,7 @@ public class CharacterControler : MonoBehaviour
     public float dashHorForce = 15;
     public float stanceJumpForce = 10;
     private bool isDashingForward = false;
+    private bool isDashing = false;
     //combat
     public bool isAttacking = false;
     public bool isCancelable = true;
@@ -53,9 +54,7 @@ public class CharacterControler : MonoBehaviour
     //helpers
     private string playerNumberSufix = " P";
 
-    public Rigidbody rb;
-    private bool isDashing;
-    
+    public Rigidbody rb; 
 
     void Start () {
         speed = walkSpeed;
@@ -293,13 +292,11 @@ public class CharacterControler : MonoBehaviour
         }
         if (isAerialAttacking && grounded && !isCancelable)
         {
-            animator.CrossFade("CombatBadLanding", 0.1f);
             isAerialAttacking = false;
             isCrouching = true;
             activeFrames = false;
+            animator.CrossFade("CombatBadLanding", 0.1f);
         }
-
-        
     }
 
     private void StartAttack()
@@ -318,9 +315,10 @@ public class CharacterControler : MonoBehaviour
         animator.SetBool("isCrouching", isCrouching);
         animator.SetBool("isAttacking", isAttacking);
         animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix)));
-        //Neutral jump/land/crouch/neutral transfer
+        
         if (!isAttacking)
         {
+            //Neutral jump/land/crouch/neutral transfer
             if (!isInStance)
             {
                 if (grounded && !lastFrameGrounded && !isInStance)
@@ -502,10 +500,29 @@ public class CharacterControler : MonoBehaviour
         isDashing = false;
         isDashingForward = false;
         isRunning = false;
+        activeFrames = false;
         animator.Play("NeutralIdle");
     }
     private void SetOutputDamage(float damage)
     {
         outputDamage = damage;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        StopAerialInterference(collision);
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        StopAerialInterference(collision);
+    }
+    private void StopAerialInterference(Collision collision)
+    {
+        if (!grounded && !isDashing && collision.gameObject.tag == "Player" && collision.gameObject != this.gameObject)
+        {
+            if(collision.gameObject.GetComponent<CharacterControler>().isAttacking)
+            {
+                rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
+            }  
+        }
     }
 }

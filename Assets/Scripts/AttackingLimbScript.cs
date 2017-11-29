@@ -29,10 +29,16 @@ public class AttackingLimbScript : MonoBehaviour
     {
         CheckHit(other);
     }
+    private void OnTriggerExit(Collider other)
+    {
+        CheckHit(other);
+    }
     private void CheckHit(Collider other)
     {
+        
         if (limbLabel == owner.activeLimb)
         {
+            //Debug.Log(owner.name);
             if (owner.activeFrames)
             {
                 if (other.gameObject.tag == "Damagable")
@@ -40,7 +46,7 @@ public class AttackingLimbScript : MonoBehaviour
                     CharacterControler otherCharacter = other.gameObject.GetComponentInParent<CharacterControler>();
                     if (otherCharacter != null && otherCharacter != owner && !otherCharacter.invulnerable)
                     {
-                        Debug.Log(owner.playerNumber + " hit " + otherCharacter.playerNumber);
+                       // Debug.Log(owner.playerNumber + " hit " + otherCharacter.playerNumber);
                         otherCharacter.invulnerable = true;
                         otherCharacter.InvocationOfInvulnerability();
                         otherCharacter.currentHealth -= owner.outputDamage;

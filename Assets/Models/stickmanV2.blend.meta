@@ -200,8 +200,24 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.99538106
-        functionName: EndAttackingState
+      - time: 0
+        functionName: SetForwardMomentum
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.3547825
+        functionName: ToggleActiveFramesOn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.58806944
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -216,24 +232,8 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.372549
-        functionName: ToggleActiveFrames
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.47385624
-        functionName: ToggleActiveFrames
+      - time: 0.99538106
+        functionName: EndAttackingState
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -277,7 +277,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.29443282
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -285,7 +285,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.46231046
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -353,15 +353,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.26536942
-        functionName: ToggleActiveFrames
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.3235294
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -374,6 +366,14 @@ ModelImporter:
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
         floatParameter: -3
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.35652432
+        functionName: ToggleActiveFramesOff
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
+          type: 3}
+        floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.7297921
@@ -461,7 +461,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.26797387
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -469,7 +469,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.36274508
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -553,7 +553,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.5
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -561,7 +561,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.66993463
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -637,7 +637,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.43464053
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -645,7 +645,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.59150326
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -705,7 +705,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.40522876
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -721,7 +721,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.5130719
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -837,7 +837,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.39542484
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -845,7 +845,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.51960784
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -889,7 +889,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.5653595
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -897,7 +897,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.44771242
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -933,7 +933,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.45479703
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -941,7 +941,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.61764705
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -993,7 +993,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.2614379
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -1001,7 +1001,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.372549
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -1045,7 +1045,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.31699347
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -1053,7 +1053,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.43464053
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -1221,7 +1221,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.37182447
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -1229,7 +1229,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.48267898
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -1272,8 +1272,8 @@ ModelImporter:
         floatParameter: 3
         intParameter: 0
         messageOptions: 0
-      - time: 0.29581717
-        functionName: ToggleActiveFrames
+      - time: 0.27043647
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -1281,7 +1281,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.4157044
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -1357,7 +1357,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.28240594
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -1365,7 +1365,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.41339493
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -1457,7 +1457,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.26327944
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -1465,7 +1465,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.40184757
-        functionName: ToggleActiveFrames
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -1754,6 +1754,14 @@ ModelImporter:
       events:
       - time: 1
         functionName: EndAttackingState
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0
+        functionName: SetForwardMomentum
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}

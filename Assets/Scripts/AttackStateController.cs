@@ -47,9 +47,13 @@ public class AttackStateController : MonoBehaviour
         controler.isCrouching = ! controler.isCrouching;
         controler.HandleGeneralCollider();
     }
-    private void ToggleActiveFrames()
+    private void ToggleActiveFramesOn()
     {
-        controler.activeFrames = !controler.activeFrames;
+        controler.activeFrames = true;
+    }
+    private void ToggleActiveFramesOff()
+    {
+        controler.activeFrames = false;
     }
     private void SetCancelability()
     {
