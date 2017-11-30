@@ -5,29 +5,21 @@ using UnityEngine;
 
 public class AttackStateController : MonoBehaviour
 {
-
+    private Animator animator;
     public CharacterControler controler;
     private float forwardMomentum;
 	// Use this for initialization
 	void Start ()
     {
-		
-	}
+        animator = GetComponent<Animator>();
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        //if (controler.isAttacking && !controler.isAerialAttacking)
-            //HandleMomentum();
+
 	}
 
-    private void HandleMomentum()
-    {
-        if(!controler.facingLeft)
-            controler.rb.velocity = new Vector3(forwardMomentum, controler.rb.velocity.y, 0);
-        else
-            controler.rb.velocity = new Vector3(-forwardMomentum, controler.rb.velocity.y, 0);
-    }
 
     private void EndAttackingState()
     {
@@ -38,10 +30,6 @@ public class AttackStateController : MonoBehaviour
         //forwardMomentum = 0;
     }
 
-    private void SetForwardMomentum(float value)
-    {
-        forwardMomentum = value;
-    }
     private void ToggleCrouch()
     {
         controler.isCrouching = ! controler.isCrouching;
@@ -61,7 +49,7 @@ public class AttackStateController : MonoBehaviour
     }
     private void OnAnimatorMove()
     {
-        Animator animator = GetComponent<Animator>();
+        
         transform.parent.position += animator.deltaPosition.x * Vector3.right;
     }
 }

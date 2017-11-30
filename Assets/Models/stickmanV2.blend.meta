@@ -200,14 +200,6 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       - time: 0.3547825
         functionName: ToggleActiveFramesOn
         data: 
@@ -268,14 +260,6 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       - time: 0.29443282
         functionName: ToggleActiveFramesOn
         data: 
@@ -327,7 +311,7 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
@@ -336,22 +320,6 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 5
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.23622818
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       - time: 0.26536942
         functionName: ToggleActiveFramesOn
         data: 
@@ -360,24 +328,8 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.34411085
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: -3
-        intParameter: 0
-        messageOptions: 0
       - time: 0.35652432
         functionName: ToggleActiveFramesOff
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.7297921
-        functionName: SetForwardMomentum
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -419,7 +371,7 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
@@ -442,22 +394,6 @@ ModelImporter:
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
         floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.9122402
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 5
         intParameter: 0
         messageOptions: 0
       - time: 0.26797387
@@ -495,7 +431,7 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
@@ -506,38 +442,6 @@ ModelImporter:
       events:
       - time: 1
         functionName: EndAttackingState
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 10
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.4157044
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.6281755
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 10
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.9191686
-        functionName: SetForwardMomentum
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -587,7 +491,7 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
@@ -596,32 +500,8 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 15
-        intParameter: 0
-        messageOptions: 0
       - time: 1
         functionName: EndAttackingState
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.6166282
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 10
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.9006928
-        functionName: SetForwardMomentum
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -671,7 +551,7 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
@@ -680,40 +560,8 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 10
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.25635105
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.38568127
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 10
-        intParameter: 0
-        messageOptions: 0
       - time: 0.40522876
         functionName: ToggleActiveFramesOn
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.49884525
-        functionName: SetForwardMomentum
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -736,24 +584,8 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.6194156
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 5
-        intParameter: 0
-        messageOptions: 0
       - time: 0.9030023
         functionName: SetCancelability
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.9930716
-        functionName: SetForwardMomentum
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -787,7 +619,7 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
@@ -796,30 +628,6 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 10
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.6120092
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 5
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.85719305
-        functionName: SetForwardMomentum
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       - time: 0.86606234
         functionName: SetCancelability
         data: 
@@ -1645,12 +1453,12 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
@@ -1658,14 +1466,6 @@ ModelImporter:
       events:
       - time: 1
         functionName: EndAttackingState
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0
-        functionName: SetForwardMomentum
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}

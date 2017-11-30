@@ -151,22 +151,6 @@ public class CharacterControler : MonoBehaviour
                 
                 if (grounded)
                 {
-                    //if (secondInput != null)
-                    //{
-                    //    //Debug.Log(firstInput);
-                    //    //Debug.Log(secondInput);
-                    //    //Debug.Log((firstInput == "Left Punch" && secondInput == "Right Kick")|| (firstInput == "Right Kick" && secondInput == "Left Punch"));
-                    //    //Debug.Log((firstInput == "Right Punch" && secondInput == "Left Kick") || (firstInput == "Left Kick" && secondInput == "Right Punch"));
-                    //    if ((firstInput == "Left Punch" && secondInput == "Right Kick")|| (firstInput == "Right Kick" && secondInput == "Left Punch"))
-                    //    {
-                    //        Debug.Log("rzut do przodu");
-                    //    }
-                    //    if ((firstInput == "Right Punch" && secondInput == "Left Kick") || (firstInput == "Left Kick" && secondInput == "Right Punch"))
-                    //    {
-                    //        Debug.Log("rzut do tyłu");
-                    //    }
-                    //}
-                    //else
 
                     if ((firstInput == "Left Punch" && secondInput == "Right Kick") || (firstInput == "Right Kick" && secondInput == "Left Punch"))
                     {
@@ -244,7 +228,7 @@ public class CharacterControler : MonoBehaviour
                     }
                     else if (firstInput == "Right Kick")
                     {
-                        animator.Play("CombatDashingRightKick");
+                        animator.CrossFade("CombatDashingRightKick", 0.3f);
                         SetOutputDamage(20);
                     }
                     else if (firstInput == "Left Punch")
@@ -292,10 +276,15 @@ public class CharacterControler : MonoBehaviour
         }
         if (isAerialAttacking && grounded && !isCancelable)
         {
+            rb.velocity = Vector3.zero;
             isAerialAttacking = false;
             isCrouching = true;
             activeFrames = false;
             animator.CrossFade("CombatBadLanding", 0.1f);
+        }
+        if(grounded && !lastFrameGrounded && isDashingForward && isAttacking)
+        {
+            rb.velocity = Vector3.zero;
         }
     }
 
@@ -506,23 +495,5 @@ public class CharacterControler : MonoBehaviour
     private void SetOutputDamage(float damage)
     {
         outputDamage = damage;
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        StopAerialInterference(collision);
-    }
-    private void OnCollisionStay(Collision collision)
-    {
-        StopAerialInterference(collision);
-    }
-    private void StopAerialInterference(Collision collision)
-    {
-        if (!grounded && !isDashing && collision.gameObject.tag == "Player" && collision.gameObject != this.gameObject)
-        {
-            if(collision.gameObject.GetComponent<CharacterControler>().isAttacking)
-            {
-                rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
-            }  
-        }
     }
 }
