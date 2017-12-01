@@ -1116,7 +1116,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1132000212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -282, y: 263.1883, z: 0}
+  m_LocalPosition: {x: -282, y: 229.22418, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 148686326}
@@ -1222,6 +1222,7 @@ GameObject:
   - component: {fileID: 1394512546}
   - component: {fileID: 1394512545}
   - component: {fileID: 1394512544}
+  - component: {fileID: 1394512549}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Player
@@ -1295,8 +1296,10 @@ MonoBehaviour:
   activeLimb: 
   currentHealth: 0
   outputDamage: 0
+  isKOd: 0
   standingCollider: {fileID: 1394512545}
   crouchingCollider: {fileID: 1394512544}
+  proneCollider: {fileID: 1394512549}
   rb: {fileID: 1394512547}
 --- !u!54 &1394512547
 Rigidbody:
@@ -1330,6 +1333,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
+--- !u!136 &1394512549
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1394512543}
+  m_Material: {fileID: 13400000, guid: fc2846a55ca7b0641af952c5615553d8, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  m_Radius: 0.005
+  m_Height: 3.8473752
+  m_Direction: 2
+  m_Center: {x: -2.8700526e-16, y: 0, z: 0}
 --- !u!95 &1425999498 stripped
 Animator:
   m_PrefabParentObject: {fileID: 9500000, guid: 5ab9263622b86bb40a809a929c0f196d,
@@ -1684,8 +1700,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1590252708}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 427.5, y: 261.5, z: 0}
-  m_LocalScale: {x: 0.83496094, y: 0.83496094, z: 0.83496094}
+  m_LocalPosition: {x: 479.5, y: 261.5, z: 0}
+  m_LocalScale: {x: 0.93652344, y: 0.93652344, z: 0.93652344}
   m_Children:
   - {fileID: 1132000213}
   - {fileID: 1816143707}
@@ -1973,7 +1989,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1816143706}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 282, y: 263.1883, z: 0}
+  m_LocalPosition: {x: 282, y: 229.22418, z: 0}
   m_LocalScale: {x: 0.99999744, y: 0.99999744, z: 0.99999744}
   m_Children:
   - {fileID: 153639155}
@@ -2049,6 +2065,7 @@ GameObject:
   - component: {fileID: 1984607878}
   - component: {fileID: 1984607877}
   - component: {fileID: 1984607876}
+  - component: {fileID: 1984607881}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -2122,8 +2139,10 @@ MonoBehaviour:
   activeLimb: 
   currentHealth: 0
   outputDamage: 0
+  isKOd: 0
   standingCollider: {fileID: 1984607877}
   crouchingCollider: {fileID: 1984607876}
+  proneCollider: {fileID: 1984607881}
   rb: {fileID: 1984607879}
 --- !u!54 &1984607879
 Rigidbody:
@@ -2157,6 +2176,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!136 &1984607881
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1984607875}
+  m_Material: {fileID: 13400000, guid: fc2846a55ca7b0641af952c5615553d8, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  m_Radius: 0.005
+  m_Height: 3.8473752
+  m_Direction: 2
+  m_Center: {x: -2.8700526e-16, y: 0, z: 0}
 --- !u!1 &2035786031 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100022, guid: 5ab9263622b86bb40a809a929c0f196d, type: 3}

@@ -13,6 +13,9 @@ public class MatchManagerScript : MonoBehaviour
     private int roundsP2 = 0;
     private Vector3 p1StartingPosition;
     private Vector3 p2StartingPosition;
+    //private int winnerRounds;
+    //private Text winnerRoundsText;
+    private bool roundFinished = false;
 	// Use this for initialization
 	void Start ()
     {
@@ -27,26 +30,42 @@ public class MatchManagerScript : MonoBehaviour
     {
         if (player1.currentHealth <= 0 && player2.currentHealth > 0)
         {
-            EndRound(ref roundsP2, ref roundsWonP2);
+            if (!roundFinished)
+            {
+                //winnerRoundsText = roundsWonP2;
+                //winnerRounds = roundsP2;
+                roundsP2 += 1;
+                roundsWonP2.text = "Rounds won: " + roundsP2; ;
+                roundFinished = true;
+                Invoke("StartNewRound", 5);
+            }
         }
         if (player2.currentHealth <= 0 && player1.currentHealth > 0)
         {
-            EndRound(ref roundsP1, ref roundsWonP1);
+            if (!roundFinished)
+            {
+                //winnerRoundsText = roundsWonP1;
+                //winnerRounds = roundsP1;
+                roundsP1 += 1;
+                roundsWonP1.text = "Rounds won: " + roundsP2; ;
+                roundFinished = true;
+                Invoke("StartNewRound", 5);
+            }
         }
     }
 
-    private void EndRound(ref int winnerRounds, ref Text winnerRoundsText)
+    private void StartNewRound()
     {
-        winnerRounds += 1;
-        winnerRoundsText.text = "Rounds won: " + winnerRounds;
+        //winnerRounds += 1;
+        //winnerRoundsText.text = "Rounds won: " + winnerRounds;
         player1.RefillHealth();
         player2.RefillHealth();
-        player1.transform.position = p1StartingPosition;
-        player2.transform.position = p2StartingPosition;
         player1.ResetToNeutral();
         player2.ResetToNeutral();
+        player1.transform.position = p1StartingPosition;
+        player2.transform.position = p2StartingPosition;
         player1.facingLeft = false;
         player2.facingLeft = true;
-
+        roundFinished = false;
     }
 }

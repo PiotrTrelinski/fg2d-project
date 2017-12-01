@@ -48,9 +48,11 @@ public class CharacterControler : MonoBehaviour
     private float maxHealth = 100;
     public float currentHealth;
     public float outputDamage;
+    public bool isKOd = false;
     //coliders
     public Collider standingCollider;
     public Collider crouchingCollider;
+    public Collider proneCollider;
     //helpers
     private string playerNumberSufix = " P";
 
@@ -62,15 +64,23 @@ public class CharacterControler : MonoBehaviour
         playerNumberSufix += playerNumber;
         currentHealth = maxHealth;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update() {
         //    Debug.Log(Input.GetAxis("Horizontal"));
         //    Debug.Log((animator.GetCurrentAnimatorStateInfo(0).IsName("NeutralIdle") || animator.GetCurrentAnimatorStateInfo(0).IsName("StanceIdle")));
         //PlayerPrefs.DeleteAll();
-        HandleMovement();
-        HandleCombat();
-        HandleAnimation();
+        if (!isKOd)
+        {
+            HandleMovement();
+            HandleCombat();
+            HandleAnimation();
+        }
+        else
+        {
+            animator.SetBool("isKOd", isKOd);
+            HandleGeneralCollider();
+        }
     }
     private void GatherCombatInputs()
     {
@@ -201,7 +211,7 @@ public class CharacterControler : MonoBehaviour
                             else if (firstInput == "Right Punch")
                             {
                                 isCrouching = false;
-                                animator.Play("CombatCrouchingRightPunch");
+                                animator.CrossFade("CombatCrouchingRightPunch", 0.3f);
                                 SetOutputDamage(12);
                             }
                             else if (firstInput == "Left Kick")
@@ -212,7 +222,7 @@ public class CharacterControler : MonoBehaviour
                             else if (firstInput == "Right Kick")
                             {
                                 isCrouching = false;
-                                animator.Play("CombatCrouchingRightKick");
+                                animator.CrossFade("CombatCrouchingRightKick", 0.3f);
                                 SetOutputDamage(20);
                             }
                         }
@@ -303,7 +313,14 @@ public class CharacterControler : MonoBehaviour
         animator.SetBool("isInStance", isInStance);
         animator.SetBool("isCrouching", isCrouching);
         animator.SetBool("isAttacking", isAttacking);
+        
         animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix)));
+        
+        if(currentHealth <= 0)
+        {
+            isKOd = true;
+            animator.CrossFade("KnockOutFront", 0.3f);
+        }
         
         if (!isAttacking)
         {
@@ -407,15 +424,23 @@ public class CharacterControler : MonoBehaviour
 
     public void HandleGeneralCollider()
     {
-        if (isCrouching)
+        if (isKOd)
+        {
+            standingCollider.enabled = false;
+            crouchingCollider.enabled = false;
+            proneCollider.enabled = true;
+        }
+        else if (isCrouching)
         {
             crouchingCollider.enabled = true;
             standingCollider.enabled = false;
+            proneCollider.enabled = false;
         }
         else
         {
             crouchingCollider.enabled = false;
             standingCollider.enabled = true;
+            proneCollider.enabled = false;
         }
     }
 
@@ -490,6 +515,8 @@ public class CharacterControler : MonoBehaviour
         isDashingForward = false;
         isRunning = false;
         activeFrames = false;
+        isKOd = false;
+        HandleGeneralCollider();
         animator.Play("NeutralIdle");
     }
     private void SetOutputDamage(float damage)
