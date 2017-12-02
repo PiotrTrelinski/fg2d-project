@@ -25,10 +25,15 @@ public class AttackStateController : MonoBehaviour
 
     private void EndAttackingState()
     {
-        controler.isAttacking = false;
-        controler.isCancelable = true;
-        controler.isAerialAttacking = false;
-        controler.isInHitStun = false;
+        if (!controler.crossFadingAttack)
+        {
+            Debug.Log("called");
+            controler.isAttacking = false;
+            controler.isCancelable = true;
+            controler.isAerialAttacking = false;
+            controler.isInHitStun = false;
+            controler.activeFrames = false;
+        }
         //Debug.Log("called" + Time.time);
         //forwardMomentum = 0;
     }
@@ -49,6 +54,14 @@ public class AttackStateController : MonoBehaviour
     private void SetCancelability()
     {
         controler.isCancelable = true;
+    }
+    private void TurnOffCancelability()
+    {
+        controler.isCancelable = false;
+    }
+    private void EndAttackCrossFadeState()
+    {
+        controler.crossFadingAttack = false;
     }
     private void OnAnimatorMove()
     {
