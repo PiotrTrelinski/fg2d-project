@@ -45,10 +45,13 @@ public class CharacterControler : MonoBehaviour
     public bool invulnerable = false;
     public string activeLimb;
     public bool hitFromFront;
+    public bool isInHitStun = false;
+    public int consecutiveHits = 0;
     //player attributes
     private float maxHealth = 100;
     public float currentHealth;
     public float outputDamage;
+    public float outputHitStun;
     public bool isKOd = false;
     //coliders
     public Collider standingCollider;
@@ -73,9 +76,29 @@ public class CharacterControler : MonoBehaviour
         //PlayerPrefs.DeleteAll();
         if (!isKOd)
         {
-            HandleMovement();
-            HandleCombat();
-            HandleAnimation();
+            if (currentHealth <= 0)
+            {
+                isKOd = true;
+                if (hitFromFront)
+                    animator.CrossFade("KnockOutFront", 0.3f);
+                else
+                    animator.CrossFade("KnockOutBack", 0.3f);
+                animator.SetBool("isKOd", isKOd);
+            }
+            else if (!isInHitStun)
+            {
+                consecutiveHits = 0;
+                HandleMovement();
+                HandleCombat();
+                HandleAnimation();
+            }
+            else
+            {
+                grounded = IsGrounded();
+                if (grounded)
+                    rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                animator.SetBool("isInHitStun", isInHitStun);
+            }
         }
         else
         {
@@ -179,25 +202,26 @@ public class CharacterControler : MonoBehaviour
                             {
                                 animator.Play("CombatStandingLeftPunch");
                                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                                SetOutputDamage(10);
+                                SetOutputDamage(10, 2);
                             }
                             else if (firstInput == "Right Punch")
                             {
                                 animator.Play("CombatStandingRightPunch");
                                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                                SetOutputDamage(15);
+                                SetOutputDamage(15, 3);
+                                outputHitStun = 4;
                             }
                             else if (firstInput == "Left Kick")
                             {
                                 animator.Play("CombatStandingLeftKick");
                                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                                SetOutputDamage(14);
+                                SetOutputDamage(14, 2.5f);
                             }
                             else if (firstInput == "Right Kick")
                             {
                                 animator.Play("CombatStandingRightKick");
                                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                                SetOutputDamage(12);
+                                SetOutputDamage(12, 1.5f);
                             }
                         }
                         else
@@ -206,24 +230,24 @@ public class CharacterControler : MonoBehaviour
                             if (firstInput == "Left Punch")
                             {
                                 animator.Play("CombatCrouchingLeftPunch");
-                                SetOutputDamage(6);
+                                SetOutputDamage(6, 5);
                             }
                             else if (firstInput == "Right Punch")
                             {
                                 isCrouching = false;
                                 animator.CrossFade("CombatCrouchingRightPunch", 0.3f);
-                                SetOutputDamage(12);
+                                SetOutputDamage(12, 1.5f);
                             }
                             else if (firstInput == "Left Kick")
                             { 
                                 animator.Play("CombatCrouchingLeftKick");
-                                SetOutputDamage(14);
+                                SetOutputDamage(14, 1);
                             }
                             else if (firstInput == "Right Kick")
                             {
                                 isCrouching = false;
                                 animator.CrossFade("CombatCrouchingRightKick", 0.3f);
-                                SetOutputDamage(20);
+                                SetOutputDamage(20, 3);
                             }
                         }
                     }
@@ -234,22 +258,22 @@ public class CharacterControler : MonoBehaviour
                     if (firstInput == "Right Punch")
                     {
                         animator.Play("CombatDashingRightPunch");
-                        SetOutputDamage(12);
+                        SetOutputDamage(12, 2);
                     }
                     else if (firstInput == "Right Kick")
                     {
                         animator.CrossFade("CombatDashingRightKick", 0.3f);
-                        SetOutputDamage(20);
+                        SetOutputDamage(20, 1.5f);
                     }
                     else if (firstInput == "Left Punch")
                     {
                         animator.Play("CombatDashingLeftPunch");
-                        SetOutputDamage(10);
+                        SetOutputDamage(10, 3);
                     }
                     else if (firstInput == "Left Kick")
                     {
                         animator.Play("CombatDashingLeftKick");
-                        SetOutputDamage(8);
+                        SetOutputDamage(8 , 5);
                     }
                 }
                 else if(!isDashing)
@@ -259,25 +283,25 @@ public class CharacterControler : MonoBehaviour
                     {
                         isAerialAttacking = true;
                         animator.Play("CombatJumpingRightPunch");
-                        SetOutputDamage(12);
+                        SetOutputDamage(12, 4);
                     }
                     else if (firstInput == "Right Kick")
                     {
                         isAerialAttacking = true;
                         animator.Play("CombatJumpingRightKick");
-                        SetOutputDamage(15);
+                        SetOutputDamage(15, 2);
                     }
                     else if (firstInput == "Left Punch")
                     {
                         isAerialAttacking = true;
                         animator.Play("CombatJumpingLeftPunch");
-                        SetOutputDamage(16);
+                        SetOutputDamage(16, 1.5f);
                     }
                     else if (firstInput == "Left Kick")
                     {
                         isAerialAttacking = true;
                         animator.Play("CombatJumpingLeftKick");
-                        SetOutputDamage(25);
+                        SetOutputDamage(25, 1);
                     }
                 }
                 firstInput = null;
@@ -315,16 +339,6 @@ public class CharacterControler : MonoBehaviour
         animator.SetBool("isAttacking", isAttacking);
         
         animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix)));
-        
-        if(currentHealth <= 0)
-        {
-            isKOd = true;
-            if(hitFromFront)
-                animator.CrossFade("KnockOutFront", 0.3f);
-            else
-                animator.CrossFade("KnockOutBack", 0.3f);
-            animator.SetBool("isKOd", isKOd);
-        }
         
         if (!isAttacking)
         {
@@ -509,6 +523,7 @@ public class CharacterControler : MonoBehaviour
     }
     internal void ResetToNeutral()
     {
+        isInHitStun = false;
         isInStance = false;
         isAerialAttacking = false;
         isCancelable = true;
@@ -521,11 +536,13 @@ public class CharacterControler : MonoBehaviour
         activeFrames = false;
         isKOd = false;
         HandleGeneralCollider();
+        animator.SetBool("isKOd", isKOd);
         animator.Play("NeutralIdle");
     }
-    private void SetOutputDamage(float damage)
+    private void SetOutputDamage(float damage, float hitStun)
     {
         outputDamage = damage;
+        outputHitStun = hitStun;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -536,6 +553,34 @@ public class CharacterControler : MonoBehaviour
     {
         StopAerialInterference(collision);
     }
+
+    internal void ApplyHitStun(float inputHitStun, string hitZone)
+    {
+        isInHitStun = true;
+        activeFrames = false;
+        consecutiveHits += 1;
+        animator.SetFloat("hitStun", inputHitStun + consecutiveHits);
+        animator.SetBool("isInHitStun", isInHitStun);
+        string animationToPlay = "";
+        if (hitZone == "Head" || hitZone == "UpperSpine" || hitZone == "Arm_R"|| hitZone == "Arm_L")
+        {
+            animationToPlay = "HitReactionStandingHigh";
+        }
+        else if(hitZone == "LowerSpine" || hitZone == "UpperLeg_L" || hitZone == "UpperLeg_R")
+        {
+            animationToPlay = "HitReactionStandingMid";
+        }
+        else if(hitZone == "LowerLeg_L")
+        {
+            animationToPlay = "HitReactionStandingLowL";
+        }
+        else if (hitZone == "LowerLeg_R")
+        {
+            animationToPlay = "HitReactionStandingLowR";
+        }
+        animator.Play(animationToPlay);
+    }
+
     private void StopAerialInterference(Collision collision)
     {
         if (!grounded && !isDashing && collision.gameObject.tag == "Player" && collision.gameObject != this.gameObject)

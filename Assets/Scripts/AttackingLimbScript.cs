@@ -44,7 +44,7 @@ public class AttackingLimbScript : MonoBehaviour
                 if (other.gameObject.tag == "Damagable")
                 {
                     CharacterControler otherCharacter = other.gameObject.GetComponentInParent<CharacterControler>();
-                    if (otherCharacter != null && otherCharacter != owner && !otherCharacter.invulnerable)
+                    if (otherCharacter != null && otherCharacter != owner && !otherCharacter.invulnerable && !otherCharacter.isKOd)
                     {
                        // Debug.Log(owner.playerNumber + " hit " + otherCharacter.playerNumber);
                         otherCharacter.invulnerable = true;
@@ -59,6 +59,8 @@ public class AttackingLimbScript : MonoBehaviour
                         {
                             otherCharacter.hitFromFront = false;
                         }
+                        otherCharacter.ApplyHitStun(owner.outputHitStun, other.transform.name);
+                       
                     }
                 }
             }

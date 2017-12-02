@@ -28,6 +28,7 @@ public class AttackStateController : MonoBehaviour
         controler.isAttacking = false;
         controler.isCancelable = true;
         controler.isAerialAttacking = false;
+        controler.isInHitStun = false;
         //Debug.Log("called" + Time.time);
         //forwardMomentum = 0;
     }

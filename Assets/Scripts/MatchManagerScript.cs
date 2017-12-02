@@ -51,6 +51,13 @@ public class MatchManagerScript : MonoBehaviour
                 roundFinished = true;
                 Invoke("StartNewRound", 5);
             }
+        }else if(player1.currentHealth <= 0 && player2.currentHealth <= 0)
+        {
+            if (!roundFinished)
+            {
+                roundFinished = true;
+                Invoke("StartNewRound", 5);
+            }
         }
     }
 
