@@ -7,11 +7,13 @@ public class AttackStateController : MonoBehaviour
 {
     private Animator animator;
     public CharacterControler controler;
+    private Rigidbody parentRb;
     private float forwardMomentum;
 	// Use this for initialization
 	void Start ()
     {
         animator = GetComponent<Animator>();
+        parentRb = transform.parent.GetComponent<Rigidbody>();
     }
 	
 	// Update is called once per frame
@@ -49,7 +51,9 @@ public class AttackStateController : MonoBehaviour
     }
     private void OnAnimatorMove()
     {
-        
-        transform.parent.position += animator.deltaPosition.x * Vector3.right;
+        if (controler.isAttacking && !controler.isAerialAttacking)
+            parentRb.velocity = animator.velocity.x * Vector3.right;
+   //     else
+  //          transform.parent.position += animator.deltaPosition;
     }
 }

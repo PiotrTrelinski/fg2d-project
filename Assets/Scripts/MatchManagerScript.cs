@@ -47,7 +47,7 @@ public class MatchManagerScript : MonoBehaviour
                 //winnerRoundsText = roundsWonP1;
                 //winnerRounds = roundsP1;
                 roundsP1 += 1;
-                roundsWonP1.text = "Rounds won: " + roundsP2; ;
+                roundsWonP1.text = "Rounds won: " + roundsP1;
                 roundFinished = true;
                 Invoke("StartNewRound", 5);
             }

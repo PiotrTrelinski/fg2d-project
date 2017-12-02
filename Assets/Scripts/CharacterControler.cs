@@ -44,6 +44,7 @@ public class CharacterControler : MonoBehaviour
     public bool activeFrames = false;
     public bool invulnerable = false;
     public string activeLimb;
+    public bool hitFromFront;
     //player attributes
     private float maxHealth = 100;
     public float currentHealth;
@@ -78,7 +79,6 @@ public class CharacterControler : MonoBehaviour
         }
         else
         {
-            animator.SetBool("isKOd", isKOd);
             HandleGeneralCollider();
         }
     }
@@ -319,7 +319,11 @@ public class CharacterControler : MonoBehaviour
         if(currentHealth <= 0)
         {
             isKOd = true;
-            animator.CrossFade("KnockOutFront", 0.3f);
+            if(hitFromFront)
+                animator.CrossFade("KnockOutFront", 0.3f);
+            else
+                animator.CrossFade("KnockOutBack", 0.3f);
+            animator.SetBool("isKOd", isKOd);
         }
         
         if (!isAttacking)

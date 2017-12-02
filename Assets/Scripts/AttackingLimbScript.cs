@@ -50,6 +50,15 @@ public class AttackingLimbScript : MonoBehaviour
                         otherCharacter.invulnerable = true;
                         otherCharacter.InvocationOfInvulnerability();
                         otherCharacter.currentHealth -= owner.outputDamage;
+                        if((otherCharacter.facingLeft && otherCharacter.transform.position.x > owner.transform.position.x) 
+                            || (!otherCharacter.facingLeft && otherCharacter.transform.position.x < owner.transform.position.x))
+                        {
+                            otherCharacter.hitFromFront = true;
+                        }
+                        else
+                        {
+                            otherCharacter.hitFromFront = false;
+                        }
                     }
                 }
             }
