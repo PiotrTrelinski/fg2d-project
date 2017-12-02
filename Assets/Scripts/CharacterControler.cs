@@ -527,4 +527,24 @@ public class CharacterControler : MonoBehaviour
     {
         outputDamage = damage;
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        StopAerialInterference(collision);
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        StopAerialInterference(collision);
+    }
+    private void StopAerialInterference(Collision collision)
+    {
+        if (!grounded && !isDashing && collision.gameObject.tag == "Player" && collision.gameObject != this.gameObject)
+        {
+            CharacterControler otherChar = collision.gameObject.GetComponent<CharacterControler>();
+            if (otherChar.isAttacking && ((otherChar.facingLeft && rb.velocity.x < 0) || (!otherChar.facingLeft && rb.velocity.x > 0)))
+            {
+                rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
+            }
+        }
+    }
 }
