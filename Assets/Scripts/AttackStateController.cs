@@ -27,7 +27,6 @@ public class AttackStateController : MonoBehaviour
     {
         if (!controler.crossFadingAttack)
         {
-            Debug.Log("called");
             controler.isAttacking = false;
             controler.isCancelable = true;
             controler.isAerialAttacking = false;

@@ -243,7 +243,7 @@ public class CharacterControler : MonoBehaviour
                                 crossFadingAttack = true;
                                 isCrouching = false;
                                 animator.CrossFade("CombatCrouchingRightPunch", 0.3f);
-                                SetOutputDamage(12, 40);
+                                SetOutputDamage(18, 40);
                             }
                             else if (firstInput == "Left Kick")
                             {
@@ -255,7 +255,7 @@ public class CharacterControler : MonoBehaviour
                                 crossFadingAttack = true;
                                 isCrouching = false;
                                 animator.CrossFade("CombatCrouchingRightKick", 0.3f);
-                                SetOutputDamage(20, 20);
+                                SetOutputDamage(13, 20);
                             }
                         }
                     }
@@ -569,7 +569,7 @@ public class CharacterControler : MonoBehaviour
 
         Debug.Log("hit:"+consecutiveHits);
         animator.SetFloat("hitStun", (60/inputHitStun)+(0.75f*consecutiveHits));
-        Debug.Log("hitstun:" + ((60 / inputHitStun) + (0.75f * consecutiveHits)));
+        Debug.Log("hitstun:" + ((60 / inputHitStun) + (0.75f * consecutiveHits)) + " inframes:" + (60/((60 / inputHitStun) + (0.75f * consecutiveHits))));
         consecutiveHits += 1;
         animator.SetBool("isInHitStun", isInHitStun);
         string animationToPlay = "";
