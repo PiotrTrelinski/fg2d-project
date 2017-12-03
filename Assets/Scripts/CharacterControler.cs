@@ -63,6 +63,17 @@ public class CharacterControler : MonoBehaviour
 
     public Rigidbody rb; 
 
+    //attack properties stucture
+    public struct AttackProperties
+    {
+        public float damage;
+        public float hitStun;
+        public float blockStun;
+        public float pushBack;
+    }
+    
+
+
     void Start () {
         speed = walkSpeed;
         transform.Find("stickmanV2").Find("Cube").GetComponent<Renderer>().material.color = playerColor;
@@ -76,12 +87,7 @@ public class CharacterControler : MonoBehaviour
         {
             if (currentHealth <= 0)
             {
-                isKOd = true;
-                if (hitFromFront)
-                    animator.CrossFade("KnockOutFront", 0.3f);
-                else
-                    animator.CrossFade("KnockOutBack", 0.3f);
-                animator.SetBool("isKOd", isKOd);
+                HandleKO();
             }
             else
             {
@@ -95,12 +101,7 @@ public class CharacterControler : MonoBehaviour
                 }
                 else
                 {
-                    grounded = IsGrounded();
-                    if (grounded)
-                    {
-                        rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                    }
-                    animator.SetBool("isInHitStun", isInHitStun);
+                    HandleHitStun();
                 }
             }
         }
@@ -108,6 +109,24 @@ public class CharacterControler : MonoBehaviour
         {
             HandleGeneralCollider();
         }
+    }
+    private void HandleKO()
+    {
+        isKOd = true;
+        if (hitFromFront)
+            animator.CrossFade("KnockOutFront", 0.3f);
+        else
+            animator.CrossFade("KnockOutBack", 0.3f);
+        animator.SetBool("isKOd", isKOd);
+    }
+    private void HandleHitStun()
+    {
+        grounded = IsGrounded();
+        if (grounded && currentHealth > 0)
+        {
+            rb.velocity = new Vector3(0, rb.velocity.y, 0);
+        }
+        animator.SetBool("isInHitStun", isInHitStun);
     }
     private void GetStanceButton()
     {
@@ -431,6 +450,8 @@ public class CharacterControler : MonoBehaviour
             if (grounded && Input.GetAxis("Vertical" + playerNumberSufix) > 0)
             {
                 grounded = false;
+                isDashing = false;
+                isDashingForward = false;
                 if (!isInStance) rb.velocity = (new Vector3(rb.velocity.x, jumpForce, 0));
                 else rb.velocity = (new Vector3(rb.velocity.x, stanceJumpForce, 0));
             }
@@ -472,7 +493,9 @@ public class CharacterControler : MonoBehaviour
 
     private void HandleDoubleTapDash()
     {
-        if (((Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0 && facingLeftDash) ^ (Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0 && !facingLeftDash)) && Time.time - lastTime < 0.15f)
+        if (((Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0 && facingLeftDash) 
+            ^ (Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0 && !facingLeftDash)) 
+            && Time.time - lastTime < 0.15f)
         {
             if(!isInStance)
                 isRunning = true;
@@ -541,6 +564,7 @@ public class CharacterControler : MonoBehaviour
         isDashing = false;
         isDashingForward = false;
         isRunning = false;
+        crossFadingAttack = false;
         activeFrames = false;
         isKOd = false;
         HandleGeneralCollider();
@@ -566,26 +590,47 @@ public class CharacterControler : MonoBehaviour
     {
         isInHitStun = true;
         activeFrames = false;
+        crossFadingAttack = false;
 
         Debug.Log("hit:"+consecutiveHits);
-        animator.SetFloat("hitStun", (60/inputHitStun)+(0.75f*consecutiveHits));
-        Debug.Log("hitstun:" + ((60 / inputHitStun) + (0.75f * consecutiveHits)) + " inframes:" + (60/((60 / inputHitStun) + (0.75f * consecutiveHits))));
+        animator.SetFloat("hitStun", (60/inputHitStun)+(0.7f*consecutiveHits));
+        Debug.Log("hitstun:" + ((60 / inputHitStun) + (0.7f * consecutiveHits)) + " inframes:" + (60/((60 / inputHitStun) + (0.7f * consecutiveHits))));
         consecutiveHits += 1;
         animator.SetBool("isInHitStun", isInHitStun);
         string animationToPlay = "";
         if (hitZone == "Head" || hitZone == "UpperSpine" || hitZone == "Arm_R"|| hitZone == "Arm_L")
         {
             if (hitFromFront)
-                animationToPlay = "HitReactionStandingHighFront";
+            {
+                if (!isCrouching)
+                    animationToPlay = "HitReactionStandingHighFront";
+                else
+                    animationToPlay = "HitReactionCrouchingHighFront";
+            }
             else
-                animationToPlay = "HitReactionStandingHighBack";
+            {
+                if (!isCrouching)
+                    animationToPlay = "HitReactionStandingHighBack";
+                else
+                    animationToPlay = "HitReactionCrouchingHighBack";
+            }
         }
         else if(hitZone == "LowerSpine" || hitZone == "UpperLeg_L" || hitZone == "UpperLeg_R")
         {
             if (hitFromFront)
-                animationToPlay = "HitReactionStandingMidFront";
+            {
+                if (!isCrouching)
+                    animationToPlay = "HitReactionStandingMidFront";
+                else
+                    animationToPlay = "HitReactionCrouchingMidFront";
+            }
             else
-                animationToPlay = "HitReactionStandingMidBack";
+            {
+                if (!isCrouching)
+                    animationToPlay = "HitReactionStandingMidBack";
+                else
+                    animationToPlay = "HitReactionCrouchingMidBack";
+            }
         }
         else if(hitZone == "LowerLeg_L")
         {
@@ -597,6 +642,7 @@ public class CharacterControler : MonoBehaviour
         }
         animator.Play(animationToPlay);
     }
+
 
     private void StopAerialInterference(Collision collision)
     {
