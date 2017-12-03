@@ -48,8 +48,7 @@ public class AttackingLimbScript : MonoBehaviour
                     {
                        // Debug.Log(owner.playerNumber + " hit " + otherCharacter.playerNumber);
                         otherCharacter.invulnerable = true;
-                        otherCharacter.InvocationOfInvulnerability();
-                        otherCharacter.currentHealth -= owner.outputDamage;
+                        otherCharacter.InvocationOfVulnerability();
                         if((otherCharacter.facingLeft && otherCharacter.transform.position.x > owner.transform.position.x) 
                             || (!otherCharacter.facingLeft && otherCharacter.transform.position.x < owner.transform.position.x))
                         {
@@ -59,7 +58,8 @@ public class AttackingLimbScript : MonoBehaviour
                         {
                             otherCharacter.hitFromFront = false;
                         }
-                        otherCharacter.ApplyHitStun(owner.outputHitStun, other.transform.name);
+                        otherCharacter.currentHealth -= owner.outputDamage;
+                        otherCharacter.ApplyHitStun(owner.outputHitStun, other.transform.name, owner.outputPushBack);
                        
                     }
                 }

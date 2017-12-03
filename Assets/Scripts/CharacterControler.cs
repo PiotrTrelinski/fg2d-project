@@ -55,6 +55,7 @@ public class CharacterControler : MonoBehaviour
     public float outputHitStun;
     public float outputBlockStun;
     public float outputPushBack;
+    private float inputPushBack;
     public bool isKOd = false;
     private Dictionary<string, AttackPropertiesStructure> attackProperties;
     //coliders
@@ -94,22 +95,22 @@ public class CharacterControler : MonoBehaviour
     void SetUpAttackProperties()
     {
         attackProperties = new Dictionary<string, AttackPropertiesStructure>();
-        attackProperties.Add("StandingLeftPunch", new AttackPropertiesStructure(10, 30, 25, 0));
-        attackProperties.Add("StandingRightPunch", new AttackPropertiesStructure(15, 20, 15, 0));
-        attackProperties.Add("StandingLeftKick", new AttackPropertiesStructure(14, 24, 15, 0));
-        attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(12, 40, 20, 0));
-        attackProperties.Add("CrouchingLeftPunch", new AttackPropertiesStructure(6, 12, 5, 0));
-        attackProperties.Add("CrouchingRightPunch", new AttackPropertiesStructure(18, 40, 25, 0));
-        attackProperties.Add("CrouchingLeftKick", new AttackPropertiesStructure(14, 60, 25, 0));
-        attackProperties.Add("CrouchingRightKick", new AttackPropertiesStructure(13, 20, 20, 0));
-        attackProperties.Add("DashingLeftPunch", new AttackPropertiesStructure(10, 20, 15, 0));
-        attackProperties.Add("DashingRightPunch", new AttackPropertiesStructure(12, 30, 25, 0));
+        attackProperties.Add("StandingLeftPunch", new AttackPropertiesStructure(10, 30, 25, 3));
+        attackProperties.Add("StandingRightPunch", new AttackPropertiesStructure(15, 27, 24, 2));
+        attackProperties.Add("StandingLeftKick", new AttackPropertiesStructure(14, 24, 15, 1));
+        attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(12, 40, 23, 3));
+        attackProperties.Add("CrouchingLeftPunch", new AttackPropertiesStructure(6, 12, 17, 1));
+        attackProperties.Add("CrouchingRightPunch", new AttackPropertiesStructure(18, 40, 23, 2));
+        attackProperties.Add("CrouchingLeftKick", new AttackPropertiesStructure(14, 55, 17, 0));
+        attackProperties.Add("CrouchingRightKick", new AttackPropertiesStructure(13, 28, 28, 3));
+        attackProperties.Add("DashingLeftPunch", new AttackPropertiesStructure(10, 18, 22, 1));
+        attackProperties.Add("DashingRightPunch", new AttackPropertiesStructure(12, 22, 17, 3));
         attackProperties.Add("DashingLeftKick", new AttackPropertiesStructure(8, 12, 12, 0));
-        attackProperties.Add("DashingRightKick", new AttackPropertiesStructure(20, 40, 20, 0));
-        attackProperties.Add("JumpingLeftPunch", new AttackPropertiesStructure(16, 40, 25, 0));
-        attackProperties.Add("JumpingRightPunch", new AttackPropertiesStructure(12, 15, 10, 0));
-        attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 60, 25, 0));
-        attackProperties.Add("JumpingRightKick", new AttackPropertiesStructure(15, 30, 25, 0));
+        attackProperties.Add("DashingRightKick", new AttackPropertiesStructure(20, 40, 50, 1));
+        attackProperties.Add("JumpingLeftPunch", new AttackPropertiesStructure(16, 40, 10, 3));
+        attackProperties.Add("JumpingRightPunch", new AttackPropertiesStructure(12, 22, 23, 5));
+        attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 60, 10, 3));
+        attackProperties.Add("JumpingRightKick", new AttackPropertiesStructure(15, 40, 19, 3));
     }
 
     // Update is called once per frame
@@ -155,7 +156,24 @@ public class CharacterControler : MonoBehaviour
         grounded = IsGrounded();
         if (grounded && currentHealth > 0)
         {
-            rb.velocity = new Vector3(0, rb.velocity.y, 0);
+            var normTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            if (normTime < 1)
+            {
+                if (facingLeft)
+                {
+                    if (hitFromFront)
+                        rb.velocity = new Vector3(inputPushBack, rb.velocity.y, 0);
+                    else
+                        rb.velocity = new Vector3(-inputPushBack, rb.velocity.y, 0);
+                }
+                else
+                {
+                    if (hitFromFront)
+                        rb.velocity = new Vector3(-inputPushBack, rb.velocity.y, 0);
+                    else
+                        rb.velocity = new Vector3(inputPushBack, rb.velocity.y, 0);
+                }
+            }
         }
         animator.SetBool("isInHitStun", isInHitStun);
     }
@@ -572,7 +590,7 @@ public class CharacterControler : MonoBehaviour
         return false;
     }
 
-    public void InvocationOfInvulnerability()
+    public void InvocationOfVulnerability()
     {
         Invoke("SwitchOffVulnerability", 0.2f);
     }
@@ -620,11 +638,12 @@ public class CharacterControler : MonoBehaviour
         StopAerialInterference(collision);
     }
 
-    internal void ApplyHitStun(float inputHitStun, string hitZone)
+    internal void ApplyHitStun(float inputHitStun, string hitZone, float pushBack)
     {
         isInHitStun = true;
         activeFrames = false;
         crossFadingAttack = false;
+        inputPushBack = pushBack;
 
         Debug.Log("hit:"+consecutiveHits);
         animator.SetFloat("hitStun", (60/inputHitStun)+(0.7f*consecutiveHits));
