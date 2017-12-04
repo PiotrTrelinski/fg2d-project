@@ -57,6 +57,9 @@ public class AttackingLimbScript : MonoBehaviour
                             otherCharacter.hitFromFront = false;
                         }
                         if (otherCharacter.grounded && otherCharacter.hitFromFront && otherCharacter.isInStance && !otherCharacter.isInHitStun && !otherCharacter.isAttacking
+                            && ((owner.outputBlockType == BlockType.Standing && !otherCharacter.isCrouching) 
+                            ^ (owner.outputBlockType == BlockType.Crouching && otherCharacter.isCrouching)
+                            || owner.outputBlockType == BlockType.Either)
                             && ((otherCharacter.facingLeft && otherCharacter.rb.velocity.x >= 0) ^ (!otherCharacter.facingLeft && otherCharacter.rb.velocity.x <= 0)))
                         {
                             otherCharacter.ApplyBlockStun(owner.outputBlockStun, other.transform.name, owner.outputPushBack);
