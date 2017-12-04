@@ -101,6 +101,10 @@ ModelImporter:
     7400104: HitReactionCrouchingHighFront
     7400106: HitReactionCrouchingMidBack
     7400108: HitReactionCrouchingMidFront
+    7400110: BlockStandingHigh
+    7400112: BlockStandingMid
+    7400114: BlockCrouchingHigh
+    7400116: BlockCrouchingMid
     9500000: //RootNode
     13700000: Cube
   externalObjects:
@@ -719,15 +723,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 1
-        functionName: EndAttackingState
+      - time: 0.44771242
+        functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5653595
+      - time: 0.63930315
         functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
@@ -735,8 +739,8 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.44771242
-        functionName: ToggleActiveFramesOn
+      - time: 1
+        functionName: EndAttackingState
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -823,7 +827,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.28608578
+      - time: 0.27904353
         functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
@@ -1929,6 +1933,150 @@ ModelImporter:
       events:
       - time: 1
         functionName: EndAttackingState
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: BlockStandingHigh
+      takeName: BlockStandingHigh
+      firstFrame: 0
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 1
+        functionName: EndBlockingState
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: BlockStandingMid
+      takeName: BlockStandingMid
+      firstFrame: 0
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 1
+        functionName: EndBlockingState
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: BlockCrouchingHigh
+      takeName: BlockCrouchingHigh
+      firstFrame: 0
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 1
+        functionName: EndBlockingState
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: BlockCrouchingMid
+      takeName: BlockCrouchingMid
+      firstFrame: 0
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 1
+        functionName: EndBlockingState
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}

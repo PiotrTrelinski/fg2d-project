@@ -6,7 +6,7 @@ using UnityEngine;
 public class AttackStateController : MonoBehaviour
 {
     private Animator animator;
-    public CharacterControler controler;
+    private CharacterControler controler;
     private Rigidbody parentRb;
     private float forwardMomentum;
 	// Use this for initialization
@@ -14,6 +14,7 @@ public class AttackStateController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         parentRb = transform.parent.GetComponent<Rigidbody>();
+        controler = transform.parent.GetComponent<CharacterControler>();
     }
 	
 	// Update is called once per frame
@@ -32,9 +33,16 @@ public class AttackStateController : MonoBehaviour
             controler.isAerialAttacking = false;
             controler.isInHitStun = false;
             controler.activeFrames = false;
+            controler.outgoingAttackLanded = false;
         }
         //Debug.Log("called" + Time.time);
         //forwardMomentum = 0;
+    }
+
+    private void EndBlockingState()
+    {
+        controler.isInBlockStun = false;
+        EndAttackingState();
     }
 
     private void ToggleCrouch()
@@ -52,7 +60,8 @@ public class AttackStateController : MonoBehaviour
     }
     private void SetCancelability()
     {
-        controler.isCancelable = true;
+        if(controler.outgoingAttackLanded)
+            controler.isCancelable = true;
     }
     private void TurnOffCancelability()
     {

@@ -47,8 +47,6 @@ public class AttackingLimbScript : MonoBehaviour
                     if (otherCharacter != null && otherCharacter != owner && !otherCharacter.invulnerable && !otherCharacter.isKOd)
                     {
                        // Debug.Log(owner.playerNumber + " hit " + otherCharacter.playerNumber);
-                        otherCharacter.invulnerable = true;
-                        otherCharacter.InvocationOfVulnerability();
                         if((otherCharacter.facingLeft && otherCharacter.transform.position.x > owner.transform.position.x) 
                             || (!otherCharacter.facingLeft && otherCharacter.transform.position.x < owner.transform.position.x))
                         {
@@ -58,8 +56,16 @@ public class AttackingLimbScript : MonoBehaviour
                         {
                             otherCharacter.hitFromFront = false;
                         }
-                        otherCharacter.currentHealth -= owner.outputDamage;
-                        otherCharacter.ApplyHitStun(owner.outputHitStun, other.transform.name, owner.outputPushBack);
+                        if (otherCharacter.grounded && otherCharacter.hitFromFront && otherCharacter.isInStance && !otherCharacter.isInHitStun && !otherCharacter.isAttacking
+                            && ((otherCharacter.facingLeft && otherCharacter.rb.velocity.x >= 0) ^ (!otherCharacter.facingLeft && otherCharacter.rb.velocity.x <= 0)))
+                        {
+                            otherCharacter.ApplyBlockStun(owner.outputBlockStun, other.transform.name, owner.outputPushBack);
+                        }
+                        else
+                        {
+                            owner.outgoingAttackLanded = true;
+                            otherCharacter.ApplyHitStun(owner.outputHitStun, other.transform.name, owner.outputPushBack, owner.outputDamage);
+                        }
                        
                     }
                 }

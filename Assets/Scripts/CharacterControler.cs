@@ -25,7 +25,7 @@ public class CharacterControler : MonoBehaviour
     private Collider[] collisionsWithGround;
     public LayerMask groundLayer;
     //stance
-    private bool isInStance = false;
+    public bool isInStance = false;
     public bool isCrouching = false;
     private bool lastFrameCrouching = false;
     private bool lastFrameStance = false;
@@ -47,6 +47,8 @@ public class CharacterControler : MonoBehaviour
     public string activeLimb;
     public bool hitFromFront;
     public bool isInHitStun = false;
+    public bool isInBlockStun = false;
+    public bool outgoingAttackLanded = false;
     public int consecutiveHits = 0;
     //player attributes
     private float maxHealth = 100;
@@ -127,13 +129,18 @@ public class CharacterControler : MonoBehaviour
                 if (!isInHitStun)
                 {
                     consecutiveHits = 0;
-                    HandleMovement();
-                    HandleCombat();
+                    GatherCombatInputs();
+                    if (!isInBlockStun) {
+                        HandleMovement();
+                        HandleCombat();
+                    }
+                    else
+                        HandlePushBack(); 
                     HandleAnimation();
                 }
                 else
                 {
-                    HandleHitStun();
+                    HandlePushBack();
                 }
             }
         }
@@ -151,14 +158,11 @@ public class CharacterControler : MonoBehaviour
             animator.CrossFade("KnockOutBack", 0.3f);
         animator.SetBool("isKOd", isKOd);
     }
-    private void HandleHitStun()
+    private void HandlePushBack()
     {
         grounded = IsGrounded();
-        if (grounded && currentHealth > 0)
+        if (/*grounded && */currentHealth > 0)
         {
-            var normTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-            if (normTime < 1)
-            {
                 if (facingLeft)
                 {
                     if (hitFromFront)
@@ -173,13 +177,13 @@ public class CharacterControler : MonoBehaviour
                     else
                         rb.velocity = new Vector3(inputPushBack, rb.velocity.y, 0);
                 }
-            }
+            
         }
-        animator.SetBool("isInHitStun", isInHitStun);
+        
     }
     private void GetStanceButton()
     {
-        if (Input.GetButtonDown("Stance Trigger" + playerNumberSufix))
+        if (Input.GetButtonDown("Stance Trigger" + playerNumberSufix) && !isInBlockStun)
         {
             if (isInStance)
             {
@@ -250,7 +254,7 @@ public class CharacterControler : MonoBehaviour
 
     private void HandleCombat()
     {
-        GatherCombatInputs();
+        //GatherCombatInputs();
         if (isCancelable)
         {
             if (firstInput != null && Time.time - lastCombatInputTime >= 0.05f)
@@ -295,7 +299,7 @@ public class CharacterControler : MonoBehaviour
                             {
                                 animator.Play("CombatStandingRightKick");
                                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                                SetOutputDamage(attackProperties["StandingRightPunch"]);
+                                SetOutputDamage(attackProperties["StandingRightKick"]);
                             }
                         }
                         else
@@ -414,7 +418,9 @@ public class CharacterControler : MonoBehaviour
         animator.SetBool("isInStance", isInStance);
         animator.SetBool("isCrouching", isCrouching);
         animator.SetBool("isAttacking", isAttacking);
-        
+        animator.SetBool("isInHitStun", isInHitStun);
+        animator.SetBool("isInBlockStun", isInBlockStun);
+
         animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix)));
         
         if (!isAttacking)
@@ -605,6 +611,7 @@ public class CharacterControler : MonoBehaviour
     internal void ResetToNeutral()
     {
         isInHitStun = false;
+        isInBlockStun = false;
         isInStance = false;
         isAerialAttacking = false;
         isCancelable = true;
@@ -617,6 +624,8 @@ public class CharacterControler : MonoBehaviour
         crossFadingAttack = false;
         activeFrames = false;
         isKOd = false;
+        outgoingAttackLanded = false;
+
         HandleGeneralCollider();
         animator.SetBool("isKOd", isKOd);
         animator.Play("NeutralIdle");
@@ -638,12 +647,44 @@ public class CharacterControler : MonoBehaviour
         StopAerialInterference(collision);
     }
 
-    internal void ApplyHitStun(float inputHitStun, string hitZone, float pushBack)
+    internal void ApplyBlockStun(float inputBlockStun, string hitZone, float pushBack)
     {
+        invulnerable = true;
+        InvocationOfVulnerability();
+        isInBlockStun = true;
+        inputPushBack = pushBack;
+
+        animator.SetFloat("blockStun", (60 / inputBlockStun));
+        Debug.Log("blockstun:" + ((60 / inputBlockStun) + " inframes:" + (60 / ((60 / inputBlockStun)))));
+        animator.SetBool("isInBlockStun", isInBlockStun);
+        string animationToPlay = "";
+        if (hitZone == "Head" || hitZone == "UpperSpine" || hitZone == "Arm_R" || hitZone == "Arm_L")
+        {
+            if (!isCrouching)
+                animationToPlay = "BlockStandingHigh";
+            else
+                animationToPlay = "BlockCrouchingHigh";
+        }
+        else
+        {
+            if (!isCrouching)
+                animationToPlay = "BlockStandingMid";
+            else
+                animationToPlay = "BlockCrouchingMid";
+        }
+        animator.Play(animationToPlay);
+    }
+
+    internal void ApplyHitStun(float inputHitStun, string hitZone, float pushBack, float damage)
+    {
+        invulnerable = true;
+        InvocationOfVulnerability();
         isInHitStun = true;
         activeFrames = false;
         crossFadingAttack = false;
         inputPushBack = pushBack;
+
+        currentHealth -= damage;
 
         Debug.Log("hit:"+consecutiveHits);
         animator.SetFloat("hitStun", (60/inputHitStun)+(0.7f*consecutiveHits));

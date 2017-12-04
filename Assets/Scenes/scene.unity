@@ -1120,7 +1120,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1132000212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -282, y: 255.34006, z: 0}
+  m_LocalPosition: {x: -282, y: 929.26215, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 148686326}
@@ -1245,9 +1245,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 0
   m_Radius: 1.0450528
-  m_Height: 4.9482675
+  m_Height: 3.1586125
   m_Direction: 1
-  m_Center: {x: -4.7557046e-16, y: 2.4744394, z: 0.46653458}
+  m_Center: {x: -4.7557004e-16, y: 1.5796119, z: 0.4665346}
 --- !u!136 &1394512545
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1259,9 +1259,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1.0567527
-  m_Height: 6.7808185
+  m_Height: 5.0917053
   m_Direction: 1
-  m_Center: {x: -0.0052170753, y: 3.3197458, z: 0.20671213}
+  m_Center: {x: -0.0052170753, y: 2.4751892, z: 0.20671213}
 --- !u!114 &1394512546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1299,12 +1299,18 @@ MonoBehaviour:
   invulnerable: 0
   activeLimb: 
   hitFromFront: 0
+  isInHitStun: 0
+  consecutiveHits: 0
   currentHealth: 0
   outputDamage: 0
+  outputHitStun: 0
+  outputBlockStun: 0
+  outputPushBack: 0
   isKOd: 0
   standingCollider: {fileID: 1394512545}
   crouchingCollider: {fileID: 1394512544}
   proneCollider: {fileID: 1394512549}
+  crossFadingAttack: 0
   rb: {fileID: 1394512547}
 --- !u!54 &1394512547
 Rigidbody:
@@ -1733,8 +1739,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1590252708}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 495.5, y: 295.5, z: 0}
-  m_LocalScale: {x: 0.96777344, y: 0.96777344, z: 0.96777344}
+  m_LocalPosition: {x: 154.5, y: 295.5, z: 0}
+  m_LocalScale: {x: 0.3017578, y: 0.3017578, z: 0.3017578}
   m_Children:
   - {fileID: 1132000213}
   - {fileID: 1816143707}
@@ -2022,7 +2028,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1816143706}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 282, y: 255.34006, z: 0}
+  m_LocalPosition: {x: 282, y: 929.26215, z: 0}
   m_LocalScale: {x: 0.99999744, y: 0.99999744, z: 0.99999744}
   m_Children:
   - {fileID: 153639155}
@@ -2117,9 +2123,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 0
   m_Radius: 1.0450528
-  m_Height: 4.9482675
+  m_Height: 3.1586125
   m_Direction: 1
-  m_Center: {x: -4.7557046e-16, y: 2.4744394, z: 0.46653458}
+  m_Center: {x: -4.7557004e-16, y: 1.5796119, z: 0.4665346}
 --- !u!136 &1984607877
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2131,9 +2137,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1.0567527
-  m_Height: 6.7808185
+  m_Height: 5.0917053
   m_Direction: 1
-  m_Center: {x: -0.0052170753, y: 3.3197458, z: 0.20671213}
+  m_Center: {x: -0.0052170753, y: 2.4751892, z: 0.20671213}
 --- !u!114 &1984607878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2153,7 +2159,7 @@ MonoBehaviour:
   runSpeed: 15
   speed: 0
   facingLeft: 0
-  jumpForce: 22
+  jumpForce: 20
   grounded: 0
   groundedChecks:
   - {fileID: 1200197689}
@@ -2171,12 +2177,18 @@ MonoBehaviour:
   invulnerable: 0
   activeLimb: 
   hitFromFront: 0
+  isInHitStun: 0
+  consecutiveHits: 0
   currentHealth: 0
   outputDamage: 0
+  outputHitStun: 0
+  outputBlockStun: 0
+  outputPushBack: 0
   isKOd: 0
   standingCollider: {fileID: 1984607877}
   crouchingCollider: {fileID: 1984607876}
   proneCollider: {fileID: 1984607881}
+  crossFadingAttack: 0
   rb: {fileID: 1984607879}
 --- !u!54 &1984607879
 Rigidbody:
