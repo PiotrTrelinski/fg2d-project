@@ -109,7 +109,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("StandingLeftPunch", new AttackPropertiesStructure(10, 30, 25, 3, BlockType.Standing));
         attackProperties.Add("StandingRightPunch", new AttackPropertiesStructure(15, 27, 24, 2, BlockType.Standing));
         attackProperties.Add("StandingLeftKick", new AttackPropertiesStructure(14, 24, 15, 1, BlockType.Crouching));
-        attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(12, 40, 23, 3, BlockType.Standing));
+        attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(12, 37, 20, 1, BlockType.Standing));
         attackProperties.Add("CrouchingLeftPunch", new AttackPropertiesStructure(6, 12, 17, 1, BlockType.Either));
         attackProperties.Add("CrouchingRightPunch", new AttackPropertiesStructure(18, 40, 23, 2, BlockType.Standing));
         attackProperties.Add("CrouchingLeftKick", new AttackPropertiesStructure(14, 55, 17, 0, BlockType.Crouching));
@@ -169,6 +169,7 @@ public class CharacterControler : MonoBehaviour
     }
     private void HandlePushBack()
     {
+        if (isInHitStun) activeFrames = false;
         grounded = IsGrounded();
         if (/*grounded && */currentHealth > 0)
         {
@@ -663,6 +664,7 @@ public class CharacterControler : MonoBehaviour
         InvocationOfVulnerability();
         isInBlockStun = true;
         inputPushBack = pushBack;
+        activeFrames = false;
 
         animator.SetFloat("blockStun", (60 / inputBlockStun));
         Debug.Log("blockstun:" + ((60 / inputBlockStun) + " inframes:" + (60 / ((60 / inputBlockStun)))));
@@ -690,7 +692,6 @@ public class CharacterControler : MonoBehaviour
         invulnerable = true;
         InvocationOfVulnerability();
         isInHitStun = true;
-        activeFrames = false;
         crossFadingAttack = false;
         inputPushBack = pushBack;
 
