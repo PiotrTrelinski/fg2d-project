@@ -70,7 +70,6 @@ public class CharacterControler : MonoBehaviour
     //coliders
     public Collider standingCollider;
     public Collider crouchingCollider;
-    public Collider proneCollider;
     //helpers
     private string playerNumberSufix = " P";
     public bool crossFadingAttack = false;
@@ -102,7 +101,6 @@ public class CharacterControler : MonoBehaviour
         currentHealth = maxHealth;
         SetUpAttackProperties();
     }
-
     void SetUpAttackProperties()
     {
         attackProperties = new Dictionary<string, AttackPropertiesStructure>();
@@ -541,19 +539,16 @@ public class CharacterControler : MonoBehaviour
         {
             standingCollider.enabled = false;
             crouchingCollider.enabled = false;
-            proneCollider.enabled = true;
         }
         else if (isCrouching)
         {
             crouchingCollider.enabled = true;
             standingCollider.enabled = false;
-            proneCollider.enabled = false;
         }
         else
         {
             crouchingCollider.enabled = false;
             standingCollider.enabled = true;
-            proneCollider.enabled = false;
         }
     }
 
