@@ -658,6 +658,16 @@ public class CharacterControler : MonoBehaviour
         StopAerialInterference(collision);
     }
 
+    public bool CheckBlockCondition(BlockType block)
+    {
+        return grounded && hitFromFront && isInStance && !isInHitStun && !isAttacking
+               && ((block == BlockType.Standing && !isCrouching)
+               ^ (block == BlockType.Crouching && isCrouching)
+               || block == BlockType.Either)
+               && ((facingLeft && Input.GetAxis("Horizontal" + playerNumberSufix) >= 0)
+               ^ (!facingLeft && Input.GetAxis("Horizontal" + playerNumberSufix) <= 0));
+    }
+
     internal void ApplyBlockStun(float inputBlockStun, string hitZone, float pushBack)
     {
         invulnerable = true;
