@@ -1048,7 +1048,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.9191176, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1601,7 +1601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 1394512546}
   parentBar: {fileID: 153639155}
-  secondaryHealthBar: {fileID: 1975835212}
+  redHealthBar: {fileID: 1975835212}
 --- !u!1 &1505683642 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100038, guid: 5ab9263622b86bb40a809a929c0f196d, type: 3}
@@ -1992,7 +1992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 1984607878}
   parentBar: {fileID: 148686326}
-  secondaryHealthBar: {fileID: 789675893}
+  redHealthBar: {fileID: 789675893}
 --- !u!1 &1601278058 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100032, guid: 5ab9263622b86bb40a809a929c0f196d, type: 3}
@@ -2296,7 +2296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.9191176, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
