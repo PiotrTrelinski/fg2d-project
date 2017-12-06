@@ -432,6 +432,11 @@ public class CharacterControler : MonoBehaviour
         animator.SetBool("isInHitStun", isInHitStun);
         animator.SetBool("isInBlockStun", isInBlockStun);
 
+        if (!facingLeft)
+            animator.SetFloat("horSpeed", rb.velocity.x);
+        else
+            animator.SetFloat("horSpeed", -rb.velocity.x);
+
         animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix)));
         
         if (!isAttacking)
@@ -459,10 +464,10 @@ public class CharacterControler : MonoBehaviour
                     animator.CrossFade("StanceFloatTree", 0.1f);
                 if (grounded && !lastFrameGrounded)
                     animator.CrossFade("StanceIdle", 0.1f);
-                if (!facingLeft)
-                    animator.SetFloat("horSpeed", rb.velocity.x);
-                else
-                    animator.SetFloat("horSpeed", -rb.velocity.x);
+                //if (!facingLeft)
+                //    animator.SetFloat("horSpeed", rb.velocity.x);
+                //else
+                //    animator.SetFloat("horSpeed", -rb.velocity.x);
                 if (!lastFrameStance)
                     if (grounded)
                         if (isCrouching && lastFrameCrouching)
@@ -519,7 +524,7 @@ public class CharacterControler : MonoBehaviour
                 grounded = false;
                 isDashing = false;
                 isDashingForward = false;
-                if (!isInStance) rb.velocity = (new Vector3(rb.velocity.x, jumpForce, 0));
+                if (!isInStance) rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * speed, jumpForce, 0));
                 else rb.velocity = (new Vector3(rb.velocity.x, stanceJumpForce, 0));
             }
             if (grounded && Input.GetAxisRaw("Vertical" + playerNumberSufix) < 0)
