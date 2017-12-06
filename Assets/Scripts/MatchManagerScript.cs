@@ -49,14 +49,14 @@ public class MatchManagerScript : MonoBehaviour
                 roundsP1 += 1;
                 roundsWonP1.text = "Rounds won: " + roundsP1;
                 roundFinished = true;
-                Invoke("StartNewRound", 5);
+                Invoke("StartNewRound", 3);
             }
         }else if(player1.currentHealth <= 0 && player2.currentHealth <= 0)
         {
             if (!roundFinished)
             {
                 roundFinished = true;
-                Invoke("StartNewRound", 5);
+                Invoke("StartNewRound", 3);
             }
         }
     }

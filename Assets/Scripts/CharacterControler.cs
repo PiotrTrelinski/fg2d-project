@@ -30,6 +30,7 @@ public class CharacterControler : MonoBehaviour
     public Transform[] groundedChecks;
     private Collider[] collisionsWithGround;
     public LayerMask groundLayer;
+    private bool airDashExpanded = false;
     //stance
     public bool isInStance = false;
     public bool isCrouching = false;
@@ -529,6 +530,7 @@ public class CharacterControler : MonoBehaviour
             {
                 isDashingForward = false;
                 isDashing = false;
+                airDashExpanded = false;
             }
             HandleDoubleTapDash();
         }
@@ -588,6 +590,11 @@ public class CharacterControler : MonoBehaviour
                     isDashingForward = true;
                 }
             }
+            if(!grounded && !isDashing && !airDashExpanded)
+            {
+                rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * dashHorForce, dashVertForce, 0));
+                airDashExpanded = true;
+            }
         }
 
         if (isRunning && Input.GetAxis("Horizontal" + playerNumberSufix) != 0)
@@ -644,6 +651,7 @@ public class CharacterControler : MonoBehaviour
         isCrouching = false;
         isDashing = false;
         isDashingForward = false;
+        airDashExpanded = false;
         isRunning = false;
         crossFadingAttack = false;
         activeFrames = false;
