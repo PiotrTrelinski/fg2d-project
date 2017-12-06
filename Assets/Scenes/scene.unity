@@ -1249,8 +1249,8 @@ GameObject:
 Transform:
   m_PrefabParentObject: {fileID: 400016, guid: 5ab9263622b86bb40a809a929c0f196d, type: 3}
   m_PrefabInternal: {fileID: 2120050590}
---- !u!135 &969726606
-SphereCollider:
+--- !u!136 &969726606
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -1258,9 +1258,10 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.22707428
-  m_Center: {x: -0.20261724, y: 0.00000001835406, z: 0.000000031212224}
+  m_Radius: 0.17
+  m_Height: 0.42
+  m_Direction: 0
+  m_Center: {x: -0.21, y: 0, z: 0}
 --- !u!1 &998432339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1403,7 +1404,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1132000212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -282, y: 307.25146, z: 0}
+  m_LocalPosition: {x: -282, y: 205.3519, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 148686326}
@@ -1595,8 +1596,8 @@ MonoBehaviour:
   isKOd: 0
   standingCollider: {fileID: 1394512545}
   crouchingCollider: {fileID: 1394512544}
-  proneCollider: {fileID: 594410097}
   crossFadingAttack: 0
+  aerialVelX: 0
   rb: {fileID: 1394512547}
 --- !u!54 &1394512547
 Rigidbody:
@@ -1622,7 +1623,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1394512543}
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 11.08, y: 0.6000061, z: 20}
+  m_LocalPosition: {x: 16.49, y: 0.6000061, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 546959698}
@@ -2014,8 +2015,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1590252708}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 423.5, y: 295.5, z: 0}
-  m_LocalScale: {x: 0.82714844, y: 0.82714844, z: 0.82714844}
+  m_LocalPosition: {x: 592.5, y: 295.5, z: 0}
+  m_LocalScale: {x: 1.1572266, y: 1.1572266, z: 1.1572266}
   m_Children:
   - {fileID: 1132000213}
   - {fileID: 1816143707}
@@ -2205,8 +2206,8 @@ GameObject:
 Transform:
   m_PrefabParentObject: {fileID: 400016, guid: 5ab9263622b86bb40a809a929c0f196d, type: 3}
   m_PrefabInternal: {fileID: 776125032}
---- !u!135 &1699876853
-SphereCollider:
+--- !u!136 &1699876853
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -2214,9 +2215,10 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.22707428
-  m_Center: {x: -0.20261724, y: 0.00000001835406, z: 0.000000031212224}
+  m_Radius: 0.17
+  m_Height: 0.42
+  m_Direction: 0
+  m_Center: {x: -0.21, y: 0, z: 0}
 --- !u!1 &1722868922 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 5ab9263622b86bb40a809a929c0f196d, type: 3}
@@ -2349,7 +2351,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1816143706}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 282, y: 307.25146, z: 0}
+  m_LocalPosition: {x: 282, y: 205.3519, z: 0}
   m_LocalScale: {x: 0.99999744, y: 0.99999744, z: 0.99999744}
   m_Children:
   - {fileID: 153639155}
@@ -2579,8 +2581,8 @@ MonoBehaviour:
   isKOd: 0
   standingCollider: {fileID: 1984607877}
   crouchingCollider: {fileID: 1984607876}
-  proneCollider: {fileID: 344059284}
   crossFadingAttack: 0
+  aerialVelX: 0
   rb: {fileID: 1984607879}
 --- !u!54 &1984607879
 Rigidbody:
@@ -2606,7 +2608,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1984607875}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -9.16, y: 0.6000061, z: 20}
+  m_LocalPosition: {x: -3.75, y: 0.6000061, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 776125033}

@@ -73,6 +73,7 @@ public class CharacterControler : MonoBehaviour
     //helpers
     private string playerNumberSufix = " P";
     public bool crossFadingAttack = false;
+    public float aerialVelX = 0;
 
     public Rigidbody rb; 
 
@@ -368,6 +369,7 @@ public class CharacterControler : MonoBehaviour
                 else if(!isDashing)
                 {
                     StartAttack();
+                    aerialVelX = rb.velocity.x;
                     if (firstInput == "Left Punch")
                     {
                         isAerialAttacking = true;
@@ -530,7 +532,24 @@ public class CharacterControler : MonoBehaviour
             }
             HandleDoubleTapDash();
         }
+        LimitVelocity();
         HandleGeneralCollider();
+    }
+
+    private void LimitVelocity()
+    {
+        if (rb.velocity.y > 20)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, 20, 0);
+        }
+        if (rb.velocity.x > 15)
+        {
+            rb.velocity = new Vector3(15, rb.velocity.y, 0);
+        }
+        if (rb.velocity.x < -15)
+        {
+            rb.velocity = new Vector3(-15, rb.velocity.y, 0);
+        }
     }
 
     public void HandleGeneralCollider()
@@ -756,12 +775,22 @@ public class CharacterControler : MonoBehaviour
 
     private void StopAerialInterference(Collision collision)
     {
-        if (!grounded && !isDashing && collision.gameObject.tag == "Player" && collision.gameObject != this.gameObject)
+        if(collision.gameObject.tag == "Player" && collision.gameObject != this.gameObject)
         {
             CharacterControler otherChar = collision.gameObject.GetComponent<CharacterControler>();
-            if (otherChar.isAttacking && ((otherChar.facingLeft && rb.velocity.x < 0) || (!otherChar.facingLeft && rb.velocity.x > 0)))
+            if (!grounded && !isDashing)
             {
-                rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
+                if (otherChar.isAttacking && ((otherChar.facingLeft && rb.velocity.x < 0) || (!otherChar.facingLeft && rb.velocity.x > 0)))
+                {
+                    rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
+                }
+            }
+            if (isAttacking && isAerialAttacking)
+            {
+                if (aerialVelX > 0 && otherChar.rb.velocity.x < 0 || aerialVelX < 0 && otherChar.rb.velocity.x > 0)
+                {
+                    aerialVelX = 0;
+                }
             }
         }
     }
