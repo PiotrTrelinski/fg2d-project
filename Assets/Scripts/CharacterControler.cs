@@ -55,6 +55,8 @@ public class CharacterControler : MonoBehaviour
     public bool hitFromFront;
     public bool isInHitStun = false;
     public bool isInBlockStun = false;
+    public bool isInThrow = false;
+    public bool throwBreakable = false;
     public bool outgoingAttackLanded = false;
     public int consecutiveHits = 0;
     //player attributes
@@ -75,6 +77,7 @@ public class CharacterControler : MonoBehaviour
     private string playerNumberSufix = " P";
     public bool crossFadingAttack = false;
     public float aerialVelX = 0;
+    private CharacterControler throwingChar;
 
     public Rigidbody rb; 
 
@@ -135,21 +138,27 @@ public class CharacterControler : MonoBehaviour
             else
             {
                 GetStanceButton();
-                if (!isInHitStun)
+                if (throwBreakable)
+                    ListenForThrowBreak();
+                if (!isInThrow)
                 {
-                    consecutiveHits = 0;
-                    GatherCombatInputs();
-                    if (!isInBlockStun) {
-                        HandleMovement();
-                        HandleCombat();
+                    if (!isInHitStun)
+                    {
+                        consecutiveHits = 0;
+                        GatherCombatInputs();
+                        if (!isInBlockStun)
+                        {
+                            HandleMovement();
+                            HandleCombat();
+                        }
+                        else
+                            HandlePushBack();
+                        HandleAnimation();
                     }
                     else
-                        HandlePushBack(); 
-                    HandleAnimation();
-                }
-                else
-                {
-                    HandlePushBack();
+                    {
+                        HandlePushBack();
+                    }
                 }
             }
         }
@@ -158,14 +167,18 @@ public class CharacterControler : MonoBehaviour
             HandleGeneralCollider();
         }
     }
+
     private void HandleKO()
     {
-        isKOd = true;
-        if (hitFromFront)
-            animator.CrossFade("KnockOutFront", 0.3f);
-        else
-            animator.CrossFade("KnockOutBack", 0.3f);
-        animator.SetBool("isKOd", isKOd);
+        if (!isInThrow)
+        {
+            isKOd = true;
+            if (hitFromFront)
+                animator.CrossFade("KnockOutFront", 0.3f);
+            else
+                animator.CrossFade("KnockOutBack", 0.3f);
+            animator.SetBool("isKOd", isKOd);
+        }
     }
     private void HandlePushBack()
     {
@@ -270,17 +283,18 @@ public class CharacterControler : MonoBehaviour
             if (firstInput != null && Time.time - lastCombatInputTime >= 0.05f)
             {
                 activeLimb = firstInput;
-                
+
                 if (grounded)
                 {
 
-                    if ((firstInput == "Left Punch" && secondInput == "Right Kick") || (firstInput == "Right Kick" && secondInput == "Left Punch"))
+                    if ((firstInput == "Left Punch" && secondInput == "Left Kick") || (firstInput == "Left Kick" && secondInput == "Left Punch")
+                        || (firstInput == "Right Punch" && secondInput == "Right Kick") || (firstInput == "Right Kick" && secondInput == "Right Punch"))
                     {
-                        Debug.Log("rzut do przodu");
-                    }
-                    else if ((firstInput == "Right Punch" && secondInput == "Left Kick") || (firstInput == "Left Kick" && secondInput == "Right Punch"))
-                    {
-                        Debug.Log("rzut do tyłu");
+                        StartAttack();
+                        activeLimb = "Throw";
+                        isCrouching = false;
+                        rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                        animator.CrossFade("CombatThrowStart", 0.1f);
                     }
                     else
                     {
@@ -431,6 +445,7 @@ public class CharacterControler : MonoBehaviour
         animator.SetBool("isAttacking", isAttacking);
         animator.SetBool("isInHitStun", isInHitStun);
         animator.SetBool("isInBlockStun", isInBlockStun);
+        animator.SetBool("isInThrow", isInThrow);
 
         if (!facingLeft)
             animator.SetFloat("horSpeed", rb.velocity.x);
@@ -646,6 +661,7 @@ public class CharacterControler : MonoBehaviour
     }
     internal void ResetToNeutral()
     {
+        isInThrow = false;
         isInHitStun = false;
         isInBlockStun = false;
         isInStance = false;
@@ -662,6 +678,7 @@ public class CharacterControler : MonoBehaviour
         activeFrames = false;
         isKOd = false;
         outgoingAttackLanded = false;
+        throwBreakable = false;
 
         HandleGeneralCollider();
         animator.SetBool("isKOd", isKOd);
@@ -697,11 +714,9 @@ public class CharacterControler : MonoBehaviour
 
     internal void ApplyBlockStun(float inputBlockStun, string hitZone, float pushBack)
     {
-        invulnerable = true;
-        InvocationOfVulnerability();
+        StandardIssueCombatActionConnectSwitches();
         isInBlockStun = true;
         inputPushBack = pushBack;
-        activeFrames = false;
 
         animator.SetFloat("blockStun", (60 / inputBlockStun));
         Debug.Log("blockstun:" + ((60 / inputBlockStun) + " inframes:" + (60 / ((60 / inputBlockStun)))));
@@ -726,10 +741,8 @@ public class CharacterControler : MonoBehaviour
 
     internal void ApplyHitStun(float inputHitStun, string hitZone, float pushBack, float damage)
     {
-        invulnerable = true;
-        InvocationOfVulnerability();
+        StandardIssueCombatActionConnectSwitches();
         isInHitStun = true;
-        crossFadingAttack = false;
         inputPushBack = pushBack;
 
         currentHealth -= damage;
@@ -785,7 +798,59 @@ public class CharacterControler : MonoBehaviour
         animator.Play(animationToPlay);
     }
 
+    public void StartTheThrow(CharacterControler thrower)
+    {
+        
+        throwingChar = thrower;
+        animator.SetBool("isInThrow", true);
+        throwingChar.animator.SetBool("isInThrow", true);
+        StandardIssueCombatActionConnectSwitches();
+        throwingChar.StandardIssueCombatActionConnectSwitches();
+        isInThrow = true;
+        isCrouching = false;
+        HandleGeneralCollider();
+        throwingChar.isInThrow = true;
+        throwBreakable = true;
+        //float positionOffset;
+        if (thrower.facingLeft)
+        {
+            facingLeft = false;
+          //  positionOffset = 3.15f;
+        }
+        else
+        {
+            facingLeft = true;
+            //positionOffset = -3.15f;
+        }
+        if (facingLeft)
+        {
+            transform.eulerAngles = new Vector3(0, 270, 0);
+        }
+        else
+        {
+            transform.eulerAngles = new Vector3(0, 90, 0);
+        }
+       // transform.position = new Vector3(thrower.transform.position.x + positionOffset, thrower.transform.position.y, 0);
+        animator.Play("ThrowReactionForward");
+        thrower.animator.Play("CombatThrowForward");
+    }
 
+    private void ListenForThrowBreak()
+    {
+        if(Input.GetButtonDown("Left Punch" + playerNumberSufix) || Input.GetButtonDown("Right Punch" + playerNumberSufix))
+        {
+            throwBreakable = false;
+            throwingChar.animator.Play("CombatThrowBroken");
+            animator.Play("ThrowReactionBreak");
+        }
+    }
+    internal void StandardIssueCombatActionConnectSwitches()
+    {
+        activeFrames = false;
+        invulnerable = true;
+        InvocationOfVulnerability();
+        crossFadingAttack = false;
+    }
     private void StopAerialInterference(Collision collision)
     {
         if(collision.gameObject.tag == "Player" && collision.gameObject != this.gameObject)

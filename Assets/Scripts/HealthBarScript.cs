@@ -22,7 +22,7 @@ public class HealthBarScript : MonoBehaviour {
             redHealthBar.sizeDelta = new Vector2(healthBar.sizeDelta.x, healthBar.sizeDelta.y);
         }
         healthBar.sizeDelta = new Vector2((character.currentHealth*parentBar.sizeDelta.x)/100, healthBar.sizeDelta.y);
-        if((!character.isInHitStun||character.isKOd) && redHealthBar.sizeDelta.x > healthBar.sizeDelta.x)
+        if(((!character.isInHitStun && !character.isInThrow) ||character.isKOd) && redHealthBar.sizeDelta.x > healthBar.sizeDelta.x)
         {
             redHealthBar.sizeDelta = new Vector2(redHealthBar.sizeDelta.x - parentBar.sizeDelta.x/100, healthBar.sizeDelta.y);
         }

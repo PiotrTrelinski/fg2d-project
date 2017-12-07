@@ -36,7 +36,9 @@ public class AttackingLimbScript : MonoBehaviour
     private void CheckHit(Collider other)
     {
         
-        if (limbLabel == owner.activeLimb)
+        if ((limbLabel == owner.activeLimb) 
+            || ((limbLabel == "Left Punch" || limbLabel == "Right Punch")
+            && owner.activeLimb == "Throw"))
         {
             //Debug.Log(owner.name);
             if (owner.activeFrames)
@@ -56,12 +58,21 @@ public class AttackingLimbScript : MonoBehaviour
                         {
                             otherCharacter.hitFromFront = false;
                         }
-                        if(otherCharacter.CheckBlockCondition(owner.outputBlockType))
+                        if(owner.activeLimb == "Throw" )
+                        {
+                            if (!otherCharacter.isCrouching)
+                            {
+                                owner.activeFrames = false;
+                                otherCharacter.StartTheThrow(owner);
+                            }
+                        }
+                        else if(otherCharacter.CheckBlockCondition(owner.outputBlockType))
                         {
                             otherCharacter.ApplyBlockStun(owner.outputBlockStun, other.transform.name, owner.outputPushBack);
                         }
                         else
                         {
+                            owner.activeFrames = false;
                             owner.outgoingAttackLanded = true;
                             otherCharacter.ApplyHitStun(owner.outputHitStun, other.transform.name, owner.outputPushBack, owner.outputDamage);
                         }

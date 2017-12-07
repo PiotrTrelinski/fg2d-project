@@ -34,6 +34,8 @@ public class AttackStateController : MonoBehaviour
             controler.isInHitStun = false;
             controler.activeFrames = false;
             controler.outgoingAttackLanded = false;
+            controler.isInThrow = false;
+            controler.throwBreakable = false;
         }
         //Debug.Log("called" + Time.time);
         //forwardMomentum = 0;
@@ -58,10 +60,18 @@ public class AttackStateController : MonoBehaviour
     {
         controler.activeFrames = false;
     }
+    private void ToggleThrowUnbreakable()
+    {
+        controler.throwBreakable = false;
+    }
     private void SetCancelability()
     {
         if(controler.outgoingAttackLanded)
             controler.isCancelable = true;
+    }
+    private void ApplyDamage(float damage)
+    {
+        controler.currentHealth -= damage;
     }
     private void TurnOffCancelability()
     {
@@ -73,7 +83,7 @@ public class AttackStateController : MonoBehaviour
     }
     private void OnAnimatorMove()
     {
-        if ((controler.isAttacking && !controler.isAerialAttacking) || controler.isKOd)
+        if ((controler.isAttacking && !controler.isAerialAttacking) || controler.isKOd || controler.isInThrow)
             parentRb.velocity = new Vector3(animator.velocity.x, parentRb.velocity.y, 0);
         else if((controler.isAttacking && controler.isAerialAttacking) || controler.isKOd)
             parentRb.velocity = new Vector3(controler.aerialVelX, parentRb.velocity.y, 0);
