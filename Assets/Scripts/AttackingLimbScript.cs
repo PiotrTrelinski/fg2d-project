@@ -58,13 +58,14 @@ public class AttackingLimbScript : MonoBehaviour
                         {
                             otherCharacter.hitFromFront = false;
                         }
-                        if(owner.activeLimb == "Throw" )
+                        if(owner.activeLimb == "Throw")
                         {
-                            if (!otherCharacter.isCrouching)
-                            {
-                                owner.activeFrames = false;
-                                otherCharacter.StartTheThrow(owner);
-                            }
+                            if(other.gameObject.name == "Head" || other.gameObject.name == "UpperSpine" || other.gameObject.name == "LowerSpine")
+                                if (!otherCharacter.isCrouching)
+                                {
+                                    owner.activeFrames = false;
+                                    otherCharacter.StartTheThrow(owner);
+                                }
                         }
                         else if(otherCharacter.CheckBlockCondition(owner.outputBlockType))
                         {
