@@ -31,6 +31,7 @@ public class CharacterControler : MonoBehaviour
     private Collider[] collisionsWithGround;
     public LayerMask groundLayer;
     private bool airDashExpanded = false;
+    public bool isAirDashing = false;
     //stance
     public bool isInStance = false;
     public bool isCrouching = false;
@@ -446,6 +447,7 @@ public class CharacterControler : MonoBehaviour
         animator.SetBool("isInHitStun", isInHitStun);
         animator.SetBool("isInBlockStun", isInBlockStun);
         animator.SetBool("isInThrow", isInThrow);
+        animator.SetBool("isAirDashing", isAirDashing);
 
         if (!facingLeft)
             animator.SetFloat("horSpeed", rb.velocity.x);
@@ -551,6 +553,7 @@ public class CharacterControler : MonoBehaviour
                 isDashingForward = false;
                 isDashing = false;
                 airDashExpanded = false;
+                isAirDashing = false;
             }
             HandleDoubleTapDash();
         }
@@ -614,6 +617,11 @@ public class CharacterControler : MonoBehaviour
             {
                 rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * dashHorForce, dashVertForce, 0));
                 airDashExpanded = true;
+                isAirDashing = true;
+                if((facingLeft && rb.velocity.x < 0) || (!facingLeft && rb.velocity.x > 0))
+                    animator.CrossFade("CombatStanceAirDashForward", 0.05f);
+                else
+                    animator.CrossFade("CombatStanceAirDashBackward", 0.05f);
             }
         }
 
@@ -679,6 +687,7 @@ public class CharacterControler : MonoBehaviour
         isKOd = false;
         outgoingAttackLanded = false;
         throwBreakable = false;
+        isAirDashing = false;
 
         HandleGeneralCollider();
         animator.SetBool("isKOd", isKOd);

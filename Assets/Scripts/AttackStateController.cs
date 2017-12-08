@@ -36,6 +36,7 @@ public class AttackStateController : MonoBehaviour
             controler.outgoingAttackLanded = false;
             controler.isInThrow = false;
             controler.throwBreakable = false;
+            controler.isAirDashing = false;
         }
         //Debug.Log("called" + Time.time);
         //forwardMomentum = 0;
