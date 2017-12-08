@@ -812,27 +812,17 @@ public class CharacterControler : MonoBehaviour
         throwingChar.isInThrow = true;
         throwBreakable = true;
         //float positionOffset;
-        if (thrower.facingLeft)
+        if (hitFromFront)
         {
-            facingLeft = false;
-          //  positionOffset = 3.15f;
+            animator.Play("ThrowReactionForward");
+            thrower.animator.Play("CombatThrowForward");
         }
         else
         {
-            facingLeft = true;
-            //positionOffset = -3.15f;
+            throwBreakable = false;
+            animator.Play("ThrowReactionBack");
+            thrower.animator.Play("CombatThrowBack");
         }
-        if (facingLeft)
-        {
-            transform.eulerAngles = new Vector3(0, 270, 0);
-        }
-        else
-        {
-            transform.eulerAngles = new Vector3(0, 90, 0);
-        }
-       // transform.position = new Vector3(thrower.transform.position.x + positionOffset, thrower.transform.position.y, 0);
-        animator.Play("ThrowReactionForward");
-        thrower.animator.Play("CombatThrowForward");
     }
 
     private void ListenForThrowBreak()
