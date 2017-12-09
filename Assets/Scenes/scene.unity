@@ -628,11 +628,11 @@ CapsuleCollider:
   m_GameObject: {fileID: 344059283}
   m_Material: {fileID: 13400000, guid: fc2846a55ca7b0641af952c5615553d8, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.33
-  m_Height: 7.4
+  m_Height: 0.66
   m_Direction: 2
-  m_Center: {x: -4.9815622e-17, y: 0.33, z: 0.0066440105}
+  m_Center: {x: 1.245978e-16, y: 0.32999998, z: 0.040017784}
 --- !u!4 &344059285
 Transform:
   m_ObjectHideFlags: 0
@@ -881,11 +881,11 @@ CapsuleCollider:
   m_GameObject: {fileID: 594410096}
   m_Material: {fileID: 13400000, guid: fc2846a55ca7b0641af952c5615553d8, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.33
-  m_Height: 7.4
+  m_Height: 0.66
   m_Direction: 2
-  m_Center: {x: -4.9815622e-17, y: 0.33, z: 0.0066440105}
+  m_Center: {x: 1.245978e-16, y: 0.32999998, z: 0.040017784}
 --- !u!4 &594410098
 Transform:
   m_ObjectHideFlags: 0
@@ -1404,7 +1404,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1132000212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -282, y: 205.3519, z: 0}
+  m_LocalPosition: {x: -282, y: 200.9646, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 148686326}
@@ -1571,6 +1571,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
+  isAirDashing: 0
   isInStance: 0
   isCrouching: 0
   dashVertForce: 5
@@ -1585,6 +1586,8 @@ MonoBehaviour:
   hitFromFront: 0
   isInHitStun: 0
   isInBlockStun: 0
+  isInThrow: 0
+  throwBreakable: 0
   outgoingAttackLanded: 0
   consecutiveHits: 0
   currentHealth: 0
@@ -2015,8 +2018,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1590252708}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 592.5, y: 295.5, z: 0}
-  m_LocalScale: {x: 1.1572266, y: 1.1572266, z: 1.1572266}
+  m_LocalPosition: {x: 635.5, y: 311.5, z: 0}
+  m_LocalScale: {x: 1.2412109, y: 1.2412109, z: 1.2412109}
   m_Children:
   - {fileID: 1132000213}
   - {fileID: 1816143707}
@@ -2351,7 +2354,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1816143706}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 282, y: 205.3519, z: 0}
+  m_LocalPosition: {x: 282, y: 200.9646, z: 0}
   m_LocalScale: {x: 0.99999744, y: 0.99999744, z: 0.99999744}
   m_Children:
   - {fileID: 153639155}
@@ -2556,6 +2559,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
+  isAirDashing: 0
   isInStance: 0
   isCrouching: 0
   dashVertForce: 5
@@ -2570,6 +2574,8 @@ MonoBehaviour:
   hitFromFront: 0
   isInHitStun: 0
   isInBlockStun: 0
+  isInThrow: 0
+  throwBreakable: 0
   outgoingAttackLanded: 0
   consecutiveHits: 0
   currentHealth: 0

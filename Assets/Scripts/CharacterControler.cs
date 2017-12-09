@@ -130,6 +130,7 @@ public class CharacterControler : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        HandleRigidBodyMass();
         if (!isKOd)
         {
             if (currentHealth <= 0)
@@ -167,6 +168,14 @@ public class CharacterControler : MonoBehaviour
         {
             HandleGeneralCollider();
         }
+    }
+
+    private void HandleRigidBodyMass()
+    {
+        if (!grounded)
+            rb.mass = 100;
+        else
+            rb.mass = 1;
     }
 
     private void HandleKO()
@@ -702,15 +711,6 @@ public class CharacterControler : MonoBehaviour
         outputBlockType = attackProperty.blockType;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        StopAerialInterference(collision);
-    }
-    private void OnCollisionStay(Collision collision)
-    {
-        StopAerialInterference(collision);
-    }
-
     public bool CheckBlockCondition(BlockType block)
     {
         return grounded && hitFromFront && isInStance && !isInHitStun && !isAttacking
@@ -850,25 +850,33 @@ public class CharacterControler : MonoBehaviour
         InvocationOfVulnerability();
         crossFadingAttack = false;
     }
-    private void StopAerialInterference(Collision collision)
-    {
-        if(collision.gameObject.tag == "Player" && collision.gameObject != this.gameObject)
-        {
-            CharacterControler otherChar = collision.gameObject.GetComponent<CharacterControler>();
-            if (!grounded && !isDashing)
-            {
-                if (otherChar.isAttacking && ((otherChar.facingLeft && rb.velocity.x < 0) || (!otherChar.facingLeft && rb.velocity.x > 0)))
-                {
-                    rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
-                }
-            }
-            if (isAttacking && isAerialAttacking)
-            {
-                if (aerialVelX > 0 && otherChar.rb.velocity.x < 0 || aerialVelX < 0 && otherChar.rb.velocity.x > 0)
-                {
-                    aerialVelX = 0;
-                }
-            }
-        }
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    StopAerialInterference(collision);
+    //}
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    StopAerialInterference(collision);
+    //}
+    //private void StopAerialInterference(Collision collision)
+    //{
+    //    if(collision.gameObject.tag == "Player" && collision.gameObject != this.gameObject)
+    //    {
+    //        CharacterControler otherChar = collision.gameObject.GetComponent<CharacterControler>();
+    //        if (!grounded && !isdashing)
+    //        {
+    //            if (otherchar.isattacking && ((!facingleft && otherchar.facingleft && rb.velocity.x < 0) || (facingleft && !otherchar.facingleft && rb.velocity.x > 0)))
+    //            {
+    //                rb.velocity = new vector3(0, rb.velocity.y, rb.velocity.z);
+    //            }
+    //        }
+    //        if (isattacking && isaerialattacking)
+    //        {
+    //            if (aerialvelx > 0 && otherchar.rb.velocity.x < 0 || aerialvelx < 0 && otherchar.rb.velocity.x > 0)
+    //            {
+    //                aerialvelx = 0;
+    //            }
+    //        }
+    //    }
+    //}
 }
