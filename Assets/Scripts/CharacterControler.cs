@@ -172,7 +172,7 @@ public class CharacterControler : MonoBehaviour
 
     private void HandleRigidBodyMass()
     {
-        if (!grounded)
+        if (!grounded && !isDashing && !isAirDashing)
             rb.mass = 100;
         else
             rb.mass = 1;
