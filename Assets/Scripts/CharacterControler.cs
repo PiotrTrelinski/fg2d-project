@@ -78,6 +78,7 @@ public class CharacterControler : MonoBehaviour
     private string playerNumberSufix = " P";
     public bool crossFadingAttack = false;
     public float aerialVelX = 0;
+    public GameObject miscColliders;
     private CharacterControler throwingChar;
 
     public Rigidbody rb; 
@@ -588,6 +589,20 @@ public class CharacterControler : MonoBehaviour
 
     public void HandleGeneralCollider()
     {
+        if (!grounded)
+        {
+            foreach (var collider in miscColliders.GetComponents<Collider>())
+            {
+                collider.enabled = false;
+            }
+        }
+        else
+        {
+            foreach (var collider in gameObject.GetComponentsInChildren<SphereCollider>())
+            {
+                collider.enabled = true;
+            }
+        }
         if (isKOd)
         {
             standingCollider.enabled = false;

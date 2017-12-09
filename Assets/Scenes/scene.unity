@@ -568,6 +568,7 @@ GameObject:
   - component: {fileID: 293149954}
   - component: {fileID: 293149956}
   - component: {fileID: 293149955}
+  - component: {fileID: 293149957}
   m_Layer: 9
   m_Name: MiscColliders
   m_TagString: Untagged
@@ -611,7 +612,19 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Center: {x: 0, y: 3.1, z: -0.86}
+  m_Center: {x: 0, y: 3.1, z: -0.7}
+--- !u!135 &293149957
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 293149953}
+  m_Material: {fileID: 13400000, guid: 28a26d52dab1684479a3d8afb25bbbac, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.7
+  m_Center: {x: 0, y: 4.5, z: 1.2}
 --- !u!1 &314631453 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100024, guid: 5ab9263622b86bb40a809a929c0f196d, type: 3}
@@ -879,6 +892,7 @@ GameObject:
   - component: {fileID: 594410098}
   - component: {fileID: 594410099}
   - component: {fileID: 594410097}
+  - component: {fileID: 594410100}
   m_Layer: 9
   m_Name: MiscColliders
   m_TagString: Untagged
@@ -922,7 +936,19 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Center: {x: 0, y: 3.1, z: -0.86}
+  m_Center: {x: 0, y: 3.1, z: -0.7}
+--- !u!135 &594410100
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 594410096}
+  m_Material: {fileID: 13400000, guid: 28a26d52dab1684479a3d8afb25bbbac, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.7
+  m_Center: {x: 0, y: 4.5, z: 1.2}
 --- !u!1 &684544118 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100026, guid: 5ab9263622b86bb40a809a929c0f196d, type: 3}
