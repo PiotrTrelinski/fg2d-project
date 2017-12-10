@@ -1651,6 +1651,7 @@ MonoBehaviour:
   crouchingCollider: {fileID: 1394512544}
   crossFadingAttack: 0
   aerialVelX: 0
+  miscColliders: {fileID: 594410096}
   rb: {fileID: 1394512547}
 --- !u!54 &1394512547
 Rigidbody:
@@ -2639,6 +2640,7 @@ MonoBehaviour:
   crouchingCollider: {fileID: 1984607876}
   crossFadingAttack: 0
   aerialVelX: 0
+  miscColliders: {fileID: 293149953}
   rb: {fileID: 1984607879}
 --- !u!54 &1984607879
 Rigidbody:
