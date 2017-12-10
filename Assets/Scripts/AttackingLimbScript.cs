@@ -61,7 +61,7 @@ public class AttackingLimbScript : MonoBehaviour
                         if(owner.activeLimb == "Throw")
                         {
                             if(other.gameObject.name == "Head" || other.gameObject.name == "UpperSpine" || other.gameObject.name == "LowerSpine")
-                                if (!otherCharacter.isCrouching)
+                                if (!otherCharacter.isCrouching && otherCharacter.grounded)
                                 {
                                     owner.activeFrames = false;
                                     otherCharacter.StartTheThrow(owner);
