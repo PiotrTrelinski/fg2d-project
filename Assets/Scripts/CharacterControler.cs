@@ -156,13 +156,14 @@ public class CharacterControler : MonoBehaviour
                         }
                         else
                             HandlePushBack();
-                        HandleAnimation();
+                        
                     }
                     else
                     {
                         HandlePushBack();
                     }
                 }
+                HandleAnimation();
             }
         }
         else
@@ -188,7 +189,7 @@ public class CharacterControler : MonoBehaviour
                 animator.CrossFade("KnockOutFront", 0.3f);
             else
                 animator.CrossFade("KnockOutBack", 0.3f);
-            animator.SetBool("isKOd", isKOd);
+            animator.SetBool("canFloat", false);
         }
     }
     private void HandlePushBack()
@@ -453,11 +454,10 @@ public class CharacterControler : MonoBehaviour
         animator.SetBool("isRunning", isRunning);
         animator.SetBool("isInStance", isInStance);
         animator.SetBool("isCrouching", isCrouching);
-        animator.SetBool("isAttacking", isAttacking);
-        animator.SetBool("isInHitStun", isInHitStun);
-        animator.SetBool("isInBlockStun", isInBlockStun);
-        animator.SetBool("isInThrow", isInThrow);
-        animator.SetBool("isAirDashing", isAirDashing);
+        if (isInHitStun || isInBlockStun || isInThrow || isAttacking || isAirDashing)
+            animator.SetBool("canFloat", false);
+        else
+            animator.SetBool("canFloat", true);
 
         if (!facingLeft)
             animator.SetFloat("horSpeed", rb.velocity.x);
@@ -471,9 +471,9 @@ public class CharacterControler : MonoBehaviour
             //Neutral jump/land/crouch/neutral transfer
             if (!isInStance)
             {
-                if (grounded && !lastFrameGrounded && !isInStance)
+                if (grounded && !lastFrameGrounded && animator.GetBool("canFloat"))
                     animator.CrossFade("NeutralIdle", 0.1f);
-                if (!grounded && lastFrameGrounded && !isInStance)
+                if (!grounded && lastFrameGrounded && animator.GetBool("canFloat"))
                     animator.CrossFade("NeutralFloatTree", 0.1f);
                 if (lastFrameStance)
                     if (grounded)
@@ -487,9 +487,9 @@ public class CharacterControler : MonoBehaviour
             //Stance jump/land/crouch/stance transfer
             if (isInStance)
             {
-                if (!grounded && lastFrameGrounded)
+                if (!grounded && lastFrameGrounded && animator.GetBool("canFloat"))
                     animator.CrossFade("StanceFloatTree", 0.1f);
-                if (grounded && !lastFrameGrounded)
+                if (grounded && !lastFrameGrounded && animator.GetBool("canFloat"))
                     animator.CrossFade("StanceIdle", 0.1f);
                 //if (!facingLeft)
                 //    animator.SetFloat("horSpeed", rb.velocity.x);
@@ -713,7 +713,7 @@ public class CharacterControler : MonoBehaviour
         isAirDashing = false;
 
         HandleGeneralCollider();
-        animator.SetBool("isKOd", isKOd);
+        animator.SetBool("canFloat", true);
         animator.Play("NeutralIdle");
     }
     private void SetOutputAttackProperties(AttackPropertiesStructure attackProperty)
@@ -743,7 +743,7 @@ public class CharacterControler : MonoBehaviour
 
         animator.SetFloat("blockStun", (60 / inputBlockStun));
         Debug.Log("blockstun:" + ((60 / inputBlockStun) + " inframes:" + (60 / ((60 / inputBlockStun)))));
-        animator.SetBool("isInBlockStun", isInBlockStun);
+        animator.SetBool("canFloat", false);
         string animationToPlay = "";
         if (hitZone == "Head" || hitZone == "UpperSpine" || hitZone == "Arm_R" || hitZone == "Arm_L")
         {
@@ -774,7 +774,7 @@ public class CharacterControler : MonoBehaviour
         animator.SetFloat("hitStun", (60/inputHitStun)+(0.7f*consecutiveHits));
         Debug.Log("hitstun:" + ((60 / inputHitStun) + (0.7f * consecutiveHits)) + " inframes:" + (60/((60 / inputHitStun) + (0.7f * consecutiveHits))));
         consecutiveHits += 1;
-        animator.SetBool("isInHitStun", isInHitStun);
+        animator.SetBool("canFloat", false);
         string animationToPlay = "";
         if (hitZone == "Head" || hitZone == "UpperSpine" || hitZone == "Arm_R"|| hitZone == "Arm_L")
         {
@@ -825,8 +825,8 @@ public class CharacterControler : MonoBehaviour
     {
         
         throwingChar = thrower;
-        animator.SetBool("isInThrow", true);
-        throwingChar.animator.SetBool("isInThrow", true);
+        animator.SetBool("canFloat", false);
+        throwingChar.animator.SetBool("canFloat", false);
         StandardIssueCombatActionConnectSwitches();
         throwingChar.StandardIssueCombatActionConnectSwitches();
         isInThrow = true;
