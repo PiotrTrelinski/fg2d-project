@@ -516,7 +516,13 @@ public class CharacterControler : MonoBehaviour
         grounded = IsGrounded();
         if (!isAttacking)
         {
-            
+            if (grounded)
+            {
+                isDashingForward = false;
+                isDashing = false;
+                airDashExpanded = false;
+                isAirDashing = false;
+            }
             if (!isInStance)
             {
 
@@ -558,13 +564,6 @@ public class CharacterControler : MonoBehaviour
                 isCrouching = true;
             else
                 isCrouching = false;
-            if (grounded)
-            {
-                isDashingForward = false;
-                isDashing = false;
-                airDashExpanded = false;
-                isAirDashing = false;
-            }
             HandleDoubleTapDash();
         }
         LimitVelocity();
