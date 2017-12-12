@@ -351,23 +351,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: isInStance
     m_EventTreshold: 0
-  - m_ConditionMode: 2
+  - m_ConditionMode: 1
     m_ConditionEvent: canFloat
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isKOd
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInHitStun
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInBlockStun
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInThrow
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isAirDashing
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102438883176916618}
@@ -849,23 +834,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: isInStance
     m_EventTreshold: 0
-  - m_ConditionMode: 2
+  - m_ConditionMode: 1
     m_ConditionEvent: canFloat
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isKOd
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInHitStun
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInBlockStun
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInThrow
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isAirDashing
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102438883176916618}
@@ -1140,23 +1110,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: isInStance
     m_EventTreshold: 0
-  - m_ConditionMode: 2
+  - m_ConditionMode: 1
     m_ConditionEvent: canFloat
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isKOd
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInHitStun
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInBlockStun
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInThrow
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isAirDashing
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102176472662524638}
@@ -1845,26 +1800,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: isInStance
     m_EventTreshold: 0
-  - m_ConditionMode: 2
+  - m_ConditionMode: 1
     m_ConditionEvent: canFloat
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isKOd
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInHitStun
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInBlockStun
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInThrow
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isInThrow
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isAirDashing
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102176472662524638}

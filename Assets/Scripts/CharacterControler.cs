@@ -113,16 +113,16 @@ public class CharacterControler : MonoBehaviour
         attackProperties = new Dictionary<string, AttackPropertiesStructure>();
         attackProperties.Add("StandingLeftPunch", new AttackPropertiesStructure(10, 30, 25, 3, BlockType.Standing));
         attackProperties.Add("StandingRightPunch", new AttackPropertiesStructure(15, 27, 24, 2, BlockType.Standing));
-        attackProperties.Add("StandingLeftKick", new AttackPropertiesStructure(14, 24, 15, 1, BlockType.Crouching));
-        attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(12, 37, 20, 1, BlockType.Standing));
-        attackProperties.Add("CrouchingLeftPunch", new AttackPropertiesStructure(6, 12, 17, 1, BlockType.Either));
+        attackProperties.Add("StandingLeftKick", new AttackPropertiesStructure(14, 26, 16, 1, BlockType.Crouching));
+        attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(12, 33, 20, 1, BlockType.Standing));
+        attackProperties.Add("CrouchingLeftPunch", new AttackPropertiesStructure(6, 18, 17, 1, BlockType.Either));
         attackProperties.Add("CrouchingRightPunch", new AttackPropertiesStructure(18, 40, 23, 2, BlockType.Standing));
         attackProperties.Add("CrouchingLeftKick", new AttackPropertiesStructure(14, 55, 17, 0, BlockType.Crouching));
         attackProperties.Add("CrouchingRightKick", new AttackPropertiesStructure(13, 28, 28, 3, BlockType.Standing));
         attackProperties.Add("DashingLeftPunch", new AttackPropertiesStructure(10, 18, 22, 1, BlockType.Standing));
         attackProperties.Add("DashingRightPunch", new AttackPropertiesStructure(12, 22, 17, 3, BlockType.Standing));
         attackProperties.Add("DashingLeftKick", new AttackPropertiesStructure(8, 12, 12, 0, BlockType.Crouching));
-        attackProperties.Add("DashingRightKick", new AttackPropertiesStructure(20, 40, 50, 1, BlockType.Standing));
+        attackProperties.Add("DashingRightKick", new AttackPropertiesStructure(20, 50, 14, 1, BlockType.Standing));
         attackProperties.Add("JumpingLeftPunch", new AttackPropertiesStructure(16, 40, 10, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightPunch", new AttackPropertiesStructure(12, 22, 23, 5, BlockType.Standing));
         attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 60, 10, 3, BlockType.Standing));
@@ -174,7 +174,7 @@ public class CharacterControler : MonoBehaviour
 
     private void HandleRigidBodyMass()
     {
-        if (!grounded && !isDashing && !isAirDashing)
+        if (!grounded)
             rb.mass = 100;
         else
             rb.mass = 1;
