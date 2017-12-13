@@ -37,6 +37,8 @@ public class AttackStateController : MonoBehaviour
             controler.isInThrow = false;
             controler.throwBreakable = false;
             controler.isAirDashing = false;
+            controler.isDashingForward = false;
+            controler.isDashing = false;
         }
         //Debug.Log("called" + Time.time);
         //forwardMomentum = 0;
@@ -84,7 +86,7 @@ public class AttackStateController : MonoBehaviour
     }
     private void OnAnimatorMove()
     {
-        if ((controler.isAttacking && !controler.isAerialAttacking) || controler.isKOd || controler.isInThrow)
+        if ((controler.isAttacking && !controler.isAerialAttacking) || controler.isKOd || controler.isInThrow || controler.isDashing)
             parentRb.velocity = new Vector3(animator.velocity.x, parentRb.velocity.y, 0);
         //else if((controler.isAttacking && controler.isAerialAttacking) || controler.isKOd)
           //  parentRb.velocity = new Vector3(controler.aerialVelX, parentRb.velocity.y, 0);

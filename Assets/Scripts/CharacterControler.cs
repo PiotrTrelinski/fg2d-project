@@ -40,8 +40,8 @@ public class CharacterControler : MonoBehaviour
     public float dashVertForce = 5;
     public float dashHorForce = 15;
     public float stanceJumpForce = 10;
-    private bool isDashingForward = false;
-    private bool isDashing = false;
+    public bool isDashingForward = false;
+    public bool isDashing = false;
     //combat
     public bool isAttacking = false;
     public bool isCancelable = true;
@@ -313,7 +313,31 @@ public class CharacterControler : MonoBehaviour
                         if (!isCrouching)
                         {
                             StartAttack();
-                            if (firstInput == "Left Punch")
+                            if (isDashingForward)
+                            {
+                                StartAttack();
+                                if (firstInput == "Left Punch")
+                                {
+                                    animator.Play("CombatDashingLeftPunch");
+                                    SetOutputAttackProperties(attackProperties["DashingLeftPunch"]);
+                                }
+                                else if (firstInput == "Right Punch")
+                                {
+                                    animator.Play("CombatDashingRightPunch");
+                                    SetOutputAttackProperties(attackProperties["DashingRightPunch"]);
+                                }
+                                else if (firstInput == "Left Kick")
+                                {
+                                    animator.Play("CombatDashingLeftKick");
+                                    SetOutputAttackProperties(attackProperties["DashingLeftKick"]);
+                                }
+                                else if (firstInput == "Right Kick")
+                                {
+                                    animator.CrossFade("CombatDashingRightKick", 0.3f);
+                                    SetOutputAttackProperties(attackProperties["DashingRightKick"]);
+                                }
+                            }
+                            else if (firstInput == "Left Punch")
                             {
                                 animator.Play("CombatStandingLeftPunch");
                                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
@@ -366,31 +390,6 @@ public class CharacterControler : MonoBehaviour
                                 SetOutputAttackProperties(attackProperties["CrouchingRightKick"]);
                             }
                         }
-                    }
-                }
-                
-                else if (isDashingForward && rb.velocity.y > 0)
-                {
-                    StartAttack();
-                    if (firstInput == "Left Punch")
-                    {
-                        animator.Play("CombatDashingLeftPunch");
-                        SetOutputAttackProperties(attackProperties["DashingLeftPunch"]);
-                    }
-                    else if (firstInput == "Right Punch")
-                    {
-                        animator.Play("CombatDashingRightPunch");
-                        SetOutputAttackProperties(attackProperties["DashingRightPunch"]);
-                    }
-                    else if (firstInput == "Left Kick")
-                    {
-                        animator.Play("CombatDashingLeftKick");
-                        SetOutputAttackProperties(attackProperties["DashingLeftKick"]);
-                    }
-                    else if (firstInput == "Right Kick")
-                    {
-                        animator.CrossFade("CombatDashingRightKick", 0.3f);
-                        SetOutputAttackProperties(attackProperties["DashingRightKick"]);
                     }
                 }
                 else if(!isDashing)
@@ -454,7 +453,7 @@ public class CharacterControler : MonoBehaviour
         animator.SetBool("isRunning", isRunning);
         animator.SetBool("isInStance", isInStance);
         animator.SetBool("isCrouching", isCrouching);
-        if (isInHitStun || isInBlockStun || isInThrow || isAttacking || isAirDashing)
+        if (isInHitStun || isInBlockStun || isInThrow || isAttacking || isAirDashing || isDashing)
             animator.SetBool("canFloat", false);
         else
             animator.SetBool("canFloat", true);
@@ -506,6 +505,12 @@ public class CharacterControler : MonoBehaviour
             }
         }
 
+        if(isDashing && isCrouching && !isAttacking)
+        {
+            isDashing = false;
+            animator.CrossFade("StanceCrouchIdle", 0.1f);
+        }
+
         lastFrameGrounded = grounded;
         lastFrameCrouching = isCrouching;
         lastFrameStance = isInStance;
@@ -518,8 +523,6 @@ public class CharacterControler : MonoBehaviour
         {
             if (grounded)
             {
-                isDashingForward = false;
-                isDashing = false;
                 airDashExpanded = false;
                 isAirDashing = false;
             }
@@ -545,8 +548,8 @@ public class CharacterControler : MonoBehaviour
                 }
 
             }
-            if (grounded && !isCrouching && !isInStance) rb.velocity = new Vector3(Input.GetAxis("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
-            else if (grounded && !isCrouching && isInStance) rb.velocity = new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
+            if (grounded && !isCrouching && !isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxis("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
+            else if (grounded && !isCrouching && isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
             else if (grounded && isCrouching)
             {
                 isRunning = false;
@@ -560,11 +563,14 @@ public class CharacterControler : MonoBehaviour
                 if (!isInStance) rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * speed, jumpForce, 0));
                 else rb.velocity = (new Vector3(rb.velocity.x, stanceJumpForce, 0));
             }
+            HandleDoubleTapDash();
             if (grounded && Input.GetAxisRaw("Vertical" + playerNumberSufix) < 0)
+            {
                 isCrouching = true;
+            }
             else
                 isCrouching = false;
-            HandleDoubleTapDash();
+            
         }
         LimitVelocity();
         HandleGeneralCollider();
@@ -627,13 +633,17 @@ public class CharacterControler : MonoBehaviour
         {
             if(!isInStance)
                 isRunning = true;
-            if (isInStance && grounded)
+            if (isInStance && grounded && !isDashing)
             {
                 isDashing = true;
-                rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * dashHorForce, dashVertForce, 0));
                 if((facingLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0) ||(!facingLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0))
                 {
                     isDashingForward = true;
+                    animator.CrossFade("CombatStanceDashForward", 0.1f);
+                }
+                else
+                {
+                    animator.CrossFade("CombatStanceDashBackward", 0.1f);
                 }
             }
             if(!grounded && !isDashing && !airDashExpanded)
@@ -727,7 +737,7 @@ public class CharacterControler : MonoBehaviour
 
     public bool CheckBlockCondition(BlockType block)
     {
-        return grounded && hitFromFront && isInStance && !isInHitStun && !isAttacking
+        return grounded && hitFromFront && isInStance && !isInHitStun && !isAttacking && !isDashingForward
                && ((block == BlockType.Standing && !isCrouching)
                ^ (block == BlockType.Crouching && isCrouching)
                || block == BlockType.Either)
