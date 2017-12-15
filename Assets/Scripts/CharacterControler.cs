@@ -79,6 +79,7 @@ public class CharacterControler : MonoBehaviour
     public bool crossFadingAttack = false;
     public float aerialVelX = 0;
     public GameObject miscColliders;
+    public GameObject wallChecks;
     private CharacterControler throwingChar;
 
     public Rigidbody rb; 
@@ -130,7 +131,8 @@ public class CharacterControler : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         HandleRigidBodyMass();
         if (!isKOd)
         {
@@ -318,17 +320,17 @@ public class CharacterControler : MonoBehaviour
                                 StartAttack();
                                 if (firstInput == "Left Punch")
                                 {
-                                    animator.Play("CombatDashingLeftPunch");
+                                    animator.CrossFade("CombatDashingLeftPunch", 0.01f);
                                     SetOutputAttackProperties(attackProperties["DashingLeftPunch"]);
                                 }
                                 else if (firstInput == "Right Punch")
                                 {
-                                    animator.Play("CombatDashingRightPunch");
+                                    animator.CrossFade("CombatDashingRightPunch", 0.01f);
                                     SetOutputAttackProperties(attackProperties["DashingRightPunch"]);
                                 }
                                 else if (firstInput == "Left Kick")
                                 {
-                                    animator.Play("CombatDashingLeftKick");
+                                    animator.CrossFade("CombatDashingLeftKick", 0.01f);
                                     SetOutputAttackProperties(attackProperties["DashingLeftKick"]);
                                 }
                                 else if (firstInput == "Right Kick")
@@ -429,6 +431,7 @@ public class CharacterControler : MonoBehaviour
         {  
             rb.velocity = Vector3.zero;
             isAerialAttacking = false;
+            lastTime -= 1;
             isCrouching = true;
             animator.Play("CombatBadLanding");
             activeFrames = false;
@@ -474,7 +477,7 @@ public class CharacterControler : MonoBehaviour
                     animator.CrossFade("NeutralIdle", 0.1f);
                 if (!grounded && lastFrameGrounded && animator.GetBool("canFloat"))
                     animator.CrossFade("NeutralFloatTree", 0.1f);
-                if (lastFrameStance)
+                if (lastFrameStance && !isDashing)
                     if (grounded)
                         if (isCrouching && lastFrameCrouching)
                             animator.CrossFade("NeutralCrouchIdle", 0.2f);
@@ -494,7 +497,7 @@ public class CharacterControler : MonoBehaviour
                 //    animator.SetFloat("horSpeed", rb.velocity.x);
                 //else
                 //    animator.SetFloat("horSpeed", -rb.velocity.x);
-                if (!lastFrameStance)
+                if (!lastFrameStance && !isDashing)
                     if (grounded)
                         if (isCrouching && lastFrameCrouching)
                             animator.CrossFade("StanceCrouchIdle", 0.1f);
@@ -507,6 +510,8 @@ public class CharacterControler : MonoBehaviour
 
         if(isDashing && isCrouching && !isAttacking)
         {
+            isCancelable = true;
+            isDashingForward = false;
             isDashing = false;
             animator.CrossFade("StanceCrouchIdle", 0.1f);
         }
@@ -555,10 +560,9 @@ public class CharacterControler : MonoBehaviour
                 isRunning = false;
                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
             }
-            if (grounded && Input.GetAxis("Vertical" + playerNumberSufix) > 0)
+            if (grounded && Input.GetAxis("Vertical" + playerNumberSufix) > 0 && !isDashing)
             {
                 grounded = false;
-                isDashing = false;
                 isDashingForward = false;
                 if (!isInStance) rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * speed, jumpForce, 0));
                 else rb.velocity = (new Vector3(rb.velocity.x, stanceJumpForce, 0));
@@ -709,7 +713,6 @@ public class CharacterControler : MonoBehaviour
         isAerialAttacking = false;
         isCancelable = true;
         isAttacking = false;
-        isDashing = false;
         isCrouching = false;
         isDashing = false;
         isDashingForward = false;

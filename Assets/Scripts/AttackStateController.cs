@@ -62,6 +62,9 @@ public class AttackStateController : MonoBehaviour
     private void ToggleActiveFramesOff()
     {
         controler.activeFrames = false;
+        controler.isDashing = false;
+        controler.isDashingForward = false;
+        controler.crossFadingAttack = false;
     }
     private void ToggleThrowUnbreakable()
     {
@@ -79,10 +82,6 @@ public class AttackStateController : MonoBehaviour
     private void TurnOffCancelability()
     {
         controler.isCancelable = false;
-    }
-    private void EndAttackCrossFadeState()
-    {
-        controler.crossFadingAttack = false;
     }
     private void OnAnimatorMove()
     {
