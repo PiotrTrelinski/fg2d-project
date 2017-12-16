@@ -32,6 +32,7 @@ public class CharacterControler : MonoBehaviour
     public LayerMask groundLayer;
     private bool airDashExpanded = false;
     public bool isAirDashing = false;
+    public bool isStuckToWall = false;
     //stance
     public bool isInStance = false;
     public bool isCrouching = false;
@@ -77,12 +78,13 @@ public class CharacterControler : MonoBehaviour
     //helpers
     private string playerNumberSufix = " P";
     public bool crossFadingAttack = false;
+    public bool wallOnLeft = false;
     public float aerialVelX = 0;
-    public GameObject miscColliders;
-    public GameObject wallChecks;
+    public GameObject miscCollidersObject;
+    private Collider[] miscColliders;
     private CharacterControler throwingChar;
 
-    public Rigidbody rb; 
+    public Rigidbody rb;
 
     //attack properties stucture
     public struct AttackPropertiesStructure
@@ -100,14 +102,6 @@ public class CharacterControler : MonoBehaviour
             this.pushBack = pushBack;
             this.blockType = blockType;
         }
-    }
-
-    void Start () {
-        speed = walkSpeed;
-        transform.Find("stickmanV2").Find("Cube").GetComponent<Renderer>().material.color = playerColor;
-        playerNumberSufix += playerNumber;
-        currentHealth = maxHealth;
-        SetUpAttackProperties();
     }
     void SetUpAttackProperties()
     {
@@ -129,6 +123,22 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 60, 10, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightKick", new AttackPropertiesStructure(15, 40, 19, 3, BlockType.Standing));
     }
+
+    void Start() {
+        speed = walkSpeed;
+        transform.Find("stickmanV2").Find("Cube").GetComponent<Renderer>().material.color = playerColor;
+        playerNumberSufix += playerNumber;
+        currentHealth = maxHealth;
+        SetUpAttackProperties();
+        miscColliders = new Collider[miscCollidersObject.GetComponents<Collider>().Length];
+        int i = 0;
+        foreach (var collider in miscCollidersObject.GetComponents<Collider>())
+        {
+            miscColliders[i] = collider;
+            i++;
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -153,12 +163,15 @@ public class CharacterControler : MonoBehaviour
                         GatherCombatInputs();
                         if (!isInBlockStun)
                         {
-                            HandleMovement();
+                            if (isStuckToWall)
+                                HandleWallInteraction();
+                            else
+                                HandleMovement();
                             HandleCombat();
                         }
                         else
                             HandlePushBack();
-                        
+
                     }
                     else
                     {
@@ -200,23 +213,23 @@ public class CharacterControler : MonoBehaviour
         grounded = IsGrounded();
         if (/*grounded && */currentHealth > 0)
         {
-                if (facingLeft)
-                {
-                    if (hitFromFront)
-                        rb.velocity = new Vector3(inputPushBack, rb.velocity.y, 0);
-                    else
-                        rb.velocity = new Vector3(-inputPushBack, rb.velocity.y, 0);
-                }
+            if (facingLeft)
+            {
+                if (hitFromFront)
+                    rb.velocity = new Vector3(inputPushBack, rb.velocity.y, 0);
                 else
-                {
-                    if (hitFromFront)
-                        rb.velocity = new Vector3(-inputPushBack, rb.velocity.y, 0);
-                    else
-                        rb.velocity = new Vector3(inputPushBack, rb.velocity.y, 0);
-                }
-            
+                    rb.velocity = new Vector3(-inputPushBack, rb.velocity.y, 0);
+            }
+            else
+            {
+                if (hitFromFront)
+                    rb.velocity = new Vector3(-inputPushBack, rb.velocity.y, 0);
+                else
+                    rb.velocity = new Vector3(inputPushBack, rb.velocity.y, 0);
+            }
+
         }
-        
+
     }
     private void GetStanceButton()
     {
@@ -236,7 +249,7 @@ public class CharacterControler : MonoBehaviour
     }
     private void GatherCombatInputs()
     {
-        if(firstInput == null)
+        if (firstInput == null)
         {
             if (Input.GetButtonDown("Left Punch" + playerNumberSufix))
             {
@@ -258,11 +271,11 @@ public class CharacterControler : MonoBehaviour
                 lastCombatInputTime = Time.time;
             //if(firstInput!=null) Debug.Log("firstInput:" + firstInput);
         }
-        if(firstInput!=null && secondInput == null && Time.time - lastCombatInputTime <= 0.05f)
+        if (firstInput != null && secondInput == null && Time.time - lastCombatInputTime <= 0.05f)
         {
             if (Input.GetButtonDown("Left Punch" + playerNumberSufix))
             {
-                if(firstInput!= "Left Punch")
+                if (firstInput != "Left Punch")
                     secondInput = "Left Punch";
             }
             if (Input.GetButtonDown("Right Punch" + playerNumberSufix))
@@ -282,7 +295,7 @@ public class CharacterControler : MonoBehaviour
             }
             //Debug.Log("secondInput:" + secondInput);
         }
-        if(firstInput != null && Time.time - lastCombatInputTime >= inputLeniency)
+        if (firstInput != null && Time.time - lastCombatInputTime >= inputLeniency)
         {
             firstInput = null;
             secondInput = null;
@@ -394,7 +407,7 @@ public class CharacterControler : MonoBehaviour
                         }
                     }
                 }
-                else if(!isDashing)
+                else if (!isDashing)
                 {
                     StartAttack();
                     aerialVelX = rb.velocity.x;
@@ -421,14 +434,14 @@ public class CharacterControler : MonoBehaviour
                         isAerialAttacking = true;
                         animator.Play("CombatJumpingRightKick");
                         SetOutputAttackProperties(attackProperties["JumpingRightKick"]);
-                    }                    
+                    }
                 }
                 firstInput = null;
                 secondInput = null;
             }
         }
         if (isAerialAttacking && grounded && !isCancelable)
-        {  
+        {
             rb.velocity = Vector3.zero;
             isAerialAttacking = false;
             lastTime -= 1;
@@ -436,7 +449,7 @@ public class CharacterControler : MonoBehaviour
             animator.Play("CombatBadLanding");
             activeFrames = false;
         }
-        if(grounded && !lastFrameGrounded && isDashingForward && isAttacking)
+        if (grounded && !lastFrameGrounded && isDashingForward && isAttacking)
         {
             rb.velocity = Vector3.zero;
         }
@@ -467,7 +480,7 @@ public class CharacterControler : MonoBehaviour
             animator.SetFloat("horSpeed", -rb.velocity.x);
 
         animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix)));
-        
+
         if (!isAttacking)
         {
             //Neutral jump/land/crouch/neutral transfer
@@ -508,7 +521,7 @@ public class CharacterControler : MonoBehaviour
             }
         }
 
-        if(isDashing && isCrouching && !isAttacking)
+        if (isDashing && isCrouching && !isAttacking)
         {
             isCancelable = true;
             isDashingForward = false;
@@ -519,6 +532,58 @@ public class CharacterControler : MonoBehaviour
         lastFrameGrounded = grounded;
         lastFrameCrouching = isCrouching;
         lastFrameStance = isInStance;
+    }
+
+    public bool WallInteractionCondition(Collider other)
+    {
+        return !grounded && !isAttacking && !isInBlockStun && !isInHitStun && !isInThrow && !isStuckToWall
+            && (transform.position.x > other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) < 0)
+            || (transform.position.x < other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) > 0);
+    }
+
+    public void StartWallInteraction(Collider wall)
+    {
+        airDashExpanded = false;
+        isStuckToWall = true;
+        rb.useGravity = false;
+        if (wall.transform.position.x < transform.position.x) wallOnLeft = true;
+        else wallOnLeft = false;
+    }
+    private void StopWallInteraction()
+    {
+        rb.useGravity = true;
+        isStuckToWall = false;
+    }
+
+    private void HandleWallInteraction()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, 0 , 0);
+        if ((wallOnLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0)
+            || (!wallOnLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0))
+        {         
+            rb.velocity = new Vector3(wallOnLeft?dashHorForce:-dashHorForce, dashVertForce, 0);
+            isAirDashing = true;
+            if((facingLeft && !wallOnLeft) || (!facingLeft && wallOnLeft)) animator.CrossFade("CombatStanceAirDashForward", 0.05f);
+            else animator.CrossFade("CombatStanceAirDashBackward", 0.05f);
+            StopWallInteraction();
+        }
+        if(Input.GetAxisRaw("Vertical" + playerNumberSufix) > 0)
+        {
+            rb.velocity = new Vector3(wallOnLeft ? dashVertForce : -dashVertForce, dashHorForce, 0);
+            isAirDashing = true;
+            if ((facingLeft && !wallOnLeft) || (!facingLeft && wallOnLeft)) animator.CrossFade("CombatStanceAirDashForward", 0.05f);
+            else animator.CrossFade("CombatStanceAirDashBackward", 0.05f);
+            StopWallInteraction();
+        }
+        if (Input.GetAxisRaw("Vertical" + playerNumberSufix) < 0)
+        {
+            rb.velocity = new Vector3(wallOnLeft ? dashVertForce : -dashVertForce, -5, 0);
+            StopWallInteraction();
+        }
+        if (isAttacking)
+        {
+            StopWallInteraction();
+        }
     }
 
     private void HandleMovement()
@@ -534,12 +599,12 @@ public class CharacterControler : MonoBehaviour
             if (!isInStance)
             {
 
-                if (grounded && Input.GetAxis("Horizontal" + playerNumberSufix) < 0)
+                if ((grounded || (!isInStance && !isAirDashing)) && Input.GetAxis("Horizontal" + playerNumberSufix) < 0)
                 {
                     facingLeft = true;
                     
                 }
-                else if (grounded && Input.GetAxis("Horizontal" + playerNumberSufix) > 0)
+                else if ((grounded || (!isInStance && !isAirDashing)) && Input.GetAxis("Horizontal" + playerNumberSufix) > 0)
                 {
                     facingLeft = false;                
                 }
@@ -600,7 +665,7 @@ public class CharacterControler : MonoBehaviour
     {
         if (!grounded)
         {
-            foreach (var collider in miscColliders.GetComponents<Collider>())
+            foreach (var collider in miscColliders)
             {
                 collider.enabled = false;
             }
@@ -650,7 +715,7 @@ public class CharacterControler : MonoBehaviour
                     animator.CrossFade("CombatStanceDashBackward", 0.1f);
                 }
             }
-            if(!grounded && !isDashing && !airDashExpanded)
+            if(!grounded && !airDashExpanded)
             {
                 rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * dashHorForce, dashVertForce, 0));
                 airDashExpanded = true;
@@ -724,6 +789,7 @@ public class CharacterControler : MonoBehaviour
         outgoingAttackLanded = false;
         throwBreakable = false;
         isAirDashing = false;
+        StopWallInteraction();
 
         HandleGeneralCollider();
         animator.SetBool("canFloat", true);
@@ -876,7 +942,9 @@ public class CharacterControler : MonoBehaviour
         invulnerable = true;
         InvocationOfVulnerability();
         crossFadingAttack = false;
+        StopWallInteraction();
     }
+
     //private void OnCollisionEnter(Collision collision)
     //{
     //    StopAerialInterference(collision);
