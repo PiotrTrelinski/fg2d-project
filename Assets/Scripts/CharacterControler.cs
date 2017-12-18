@@ -534,20 +534,27 @@ public class CharacterControler : MonoBehaviour
         lastFrameStance = isInStance;
     }
 
-    public bool WallInteractionCondition(Collider other)
+    public bool WallInteractionCondition(Collider other, Collider[] checks)
     {
         return !grounded && !isAttacking && !isInBlockStun && !isInHitStun && !isInThrow && !isStuckToWall
-            && (transform.position.x > other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) < 0)
-            || (transform.position.x < other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) > 0);
+            && (transform.position.x > other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) < 0
+            && ((facingLeft && checks[1].bounds.center.y < other.bounds.max.y) || (!facingLeft && checks[0].bounds.center.y < other.bounds.max.y)))
+            || (transform.position.x < other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) > 0
+            && ((!facingLeft && checks[1].bounds.center.y > other.bounds.min.y) || (facingLeft && checks[0].bounds.center.y > other.bounds.min.y)));
     }
-
+    //|| (!facingLeft && checks[0].bounds.center.y <= other.bounds.max.y))
+    //    || (facingLeft && checks[0].bounds.center.y <= other.bounds.max.y))
     public void StartWallInteraction(Collider wall)
     {
+        
+        animator.SetBool("canFloat", false);
         airDashExpanded = false;
         isStuckToWall = true;
         rb.useGravity = false;
         if (wall.transform.position.x < transform.position.x) wallOnLeft = true;
         else wallOnLeft = false;
+        if ((wallOnLeft && !facingLeft) || (!wallOnLeft && facingLeft)) animator.CrossFade("WallInteractionBehind", 0.1f);
+        else animator.CrossFade("WallInteractionFront", 0.1f); ;
     }
     private void StopWallInteraction()
     {
@@ -557,7 +564,7 @@ public class CharacterControler : MonoBehaviour
 
     private void HandleWallInteraction()
     {
-        rb.velocity = new Vector3(rb.velocity.x, 0 , 0);
+        rb.velocity = new Vector3(0, 0 , 0);
         if ((wallOnLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0)
             || (!wallOnLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0))
         {         
@@ -569,7 +576,7 @@ public class CharacterControler : MonoBehaviour
         }
         if(Input.GetAxisRaw("Vertical" + playerNumberSufix) > 0)
         {
-            rb.velocity = new Vector3(wallOnLeft ? dashVertForce : -dashVertForce, dashHorForce, 0);
+            rb.velocity = new Vector3(wallOnLeft ? dashVertForce : -dashVertForce, jumpForce, 0);
             isAirDashing = true;
             if ((facingLeft && !wallOnLeft) || (!facingLeft && wallOnLeft)) animator.CrossFade("CombatStanceAirDashForward", 0.05f);
             else animator.CrossFade("CombatStanceAirDashBackward", 0.05f);
@@ -577,6 +584,8 @@ public class CharacterControler : MonoBehaviour
         }
         if (Input.GetAxisRaw("Vertical" + playerNumberSufix) < 0)
         {
+            animator.SetBool("canFloat", true);
+            animator.CrossFade("StanceFloatTree", 0.1f);
             rb.velocity = new Vector3(wallOnLeft ? dashVertForce : -dashVertForce, -5, 0);
             StopWallInteraction();
         }

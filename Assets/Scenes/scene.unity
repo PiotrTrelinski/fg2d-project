@@ -1026,32 +1026,30 @@ Transform:
   m_Father: {fileID: 1984607880}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &763898596
-CapsuleCollider:
+--- !u!135 &763898596
+SphereCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 763898594}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.079457
-  m_Height: 4.7
-  m_Direction: 1
-  m_Center: {x: -3.0296216e-10, y: 0.5999999, z: 2.5794575}
---- !u!136 &763898597
-CapsuleCollider:
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Center: {x: 0, y: 2.85, z: 3.4}
+--- !u!135 &763898597
+SphereCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 763898594}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.7
-  m_Height: 3.5
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0.19488926}
+  serializedVersion: 2
+  m_Radius: 0.25
+  m_Center: {x: 0, y: 2.2, z: -0.25}
 --- !u!114 &763898598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1522,7 +1520,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1132000212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -282, y: 807.46234, z: 0}
+  m_LocalPosition: {x: -282, y: 262.62793, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 148686326}
@@ -1629,32 +1627,30 @@ Transform:
   m_Father: {fileID: 1394512548}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &1349869535
-CapsuleCollider:
+--- !u!135 &1349869535
+SphereCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1349869533}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.079457
-  m_Height: 4.7
-  m_Direction: 1
-  m_Center: {x: -3.0296216e-10, y: 0.5999999, z: 2.5794575}
---- !u!136 &1349869536
-CapsuleCollider:
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Center: {x: 0, y: 2.85, z: 3.4}
+--- !u!135 &1349869536
+SphereCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1349869533}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.7
-  m_Height: 3.5
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0.19488926}
+  serializedVersion: 2
+  m_Radius: 0.25
+  m_Center: {x: 0, y: 2.2, z: -0.25}
 --- !u!114 &1349869537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1758,6 +1754,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   isAirDashing: 0
+  isStuckToWall: 0
   isInStance: 0
   isCrouching: 0
   dashVertForce: 5
@@ -1788,8 +1785,10 @@ MonoBehaviour:
   standingCollider: {fileID: 1394512545}
   crouchingCollider: {fileID: 1394512544}
   crossFadingAttack: 0
+  wallOnLeft: 0
   aerialVelX: 0
   miscCollidersObject: {fileID: 594410096}
+  wallHelpers: {fileID: 0}
   rb: {fileID: 1394512547}
 --- !u!54 &1394512547
 Rigidbody:
@@ -2208,8 +2207,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1590252708}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 186, y: 311.5, z: 0}
-  m_LocalScale: {x: 0.36328125, y: 0.36328125, z: 0.36328125}
+  m_LocalPosition: {x: 490.5, y: 299.5, z: 0}
+  m_LocalScale: {x: 0.9580078, y: 0.9580078, z: 0.9580078}
   m_Children:
   - {fileID: 1132000213}
   - {fileID: 1816143707}
@@ -2544,7 +2543,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1816143706}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 282, y: 807.46234, z: 0}
+  m_LocalPosition: {x: 282, y: 262.62793, z: 0}
   m_LocalScale: {x: 0.99999744, y: 0.99999744, z: 0.99999744}
   m_Children:
   - {fileID: 153639155}
@@ -2750,6 +2749,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   isAirDashing: 0
+  isStuckToWall: 0
   isInStance: 0
   isCrouching: 0
   dashVertForce: 5
@@ -2780,8 +2780,10 @@ MonoBehaviour:
   standingCollider: {fileID: 1984607877}
   crouchingCollider: {fileID: 1984607876}
   crossFadingAttack: 0
+  wallOnLeft: 0
   aerialVelX: 0
   miscCollidersObject: {fileID: 293149953}
+  wallHelpers: {fileID: 0}
   rb: {fileID: 1984607879}
 --- !u!54 &1984607879
 Rigidbody:

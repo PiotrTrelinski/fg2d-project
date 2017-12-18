@@ -33,7 +33,8 @@ public class CharacterWallDetectionScript : MonoBehaviour {
 	}
     private void OnTriggerStay(Collider other)
     {
-        if (owner.WallInteractionCondition(other) && other.gameObject.layer == 8)
+        //Debug.Log("collider:" + colliders[1].bounds.center.x + " other:" + other.bounds.max.x + " condition:" + (colliders[1].bounds.center.x + 0.01f > other.bounds.max.x));
+        if (owner.WallInteractionCondition(other, colliders) && other.gameObject.layer == 8)
         {
             owner.StartWallInteraction(other);
         }
