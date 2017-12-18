@@ -61,6 +61,7 @@ public class CharacterControler : MonoBehaviour
     public bool throwBreakable = false;
     public bool outgoingAttackLanded = false;
     public int consecutiveHits = 0;
+    private float comboDamage = 0;
     //player attributes
     private float maxHealth = 100;
     public float currentHealth;
@@ -75,6 +76,7 @@ public class CharacterControler : MonoBehaviour
     //coliders
     public Collider standingCollider;
     public Collider crouchingCollider;
+    public Collider wallInteractionCollider;
     //helpers
     private string playerNumberSufix = " P";
     public bool crossFadingAttack = false;
@@ -85,6 +87,7 @@ public class CharacterControler : MonoBehaviour
     private CharacterControler throwingChar;
 
     public Rigidbody rb;
+    
 
     //attack properties stucture
     public struct AttackPropertiesStructure
@@ -106,12 +109,12 @@ public class CharacterControler : MonoBehaviour
     void SetUpAttackProperties()
     {
         attackProperties = new Dictionary<string, AttackPropertiesStructure>();
-        attackProperties.Add("StandingLeftPunch", new AttackPropertiesStructure(10, 30, 25, 3, BlockType.Standing));
-        attackProperties.Add("StandingRightPunch", new AttackPropertiesStructure(15, 27, 24, 2, BlockType.Standing));
+        attackProperties.Add("StandingLeftPunch", new AttackPropertiesStructure(10, 25, 25, 3, BlockType.Standing));
+        attackProperties.Add("StandingRightPunch", new AttackPropertiesStructure(15, 33, 24, 2, BlockType.Standing));
         attackProperties.Add("StandingLeftKick", new AttackPropertiesStructure(14, 26, 16, 1, BlockType.Crouching));
-        attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(12, 33, 20, 1, BlockType.Standing));
+        attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(12, 35, 20, 1, BlockType.Standing));
         attackProperties.Add("CrouchingLeftPunch", new AttackPropertiesStructure(6, 18, 17, 1, BlockType.Either));
-        attackProperties.Add("CrouchingRightPunch", new AttackPropertiesStructure(18, 40, 23, 2, BlockType.Standing));
+        attackProperties.Add("CrouchingRightPunch", new AttackPropertiesStructure(18, 41, 23, 2, BlockType.Standing));
         attackProperties.Add("CrouchingLeftKick", new AttackPropertiesStructure(14, 55, 17, 0, BlockType.Crouching));
         attackProperties.Add("CrouchingRightKick", new AttackPropertiesStructure(13, 28, 28, 3, BlockType.Standing));
         attackProperties.Add("DashingLeftPunch", new AttackPropertiesStructure(10, 18, 22, 1, BlockType.Standing));
@@ -160,6 +163,7 @@ public class CharacterControler : MonoBehaviour
                     if (!isInHitStun)
                     {
                         consecutiveHits = 0;
+                        comboDamage = 0;
                         GatherCombatInputs();
                         if (!isInBlockStun)
                         {
@@ -540,16 +544,13 @@ public class CharacterControler : MonoBehaviour
             && (transform.position.x > other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) < 0)
             || (transform.position.x < other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) > 0);
     }
-    //|| (!facingLeft && checks[0].bounds.center.y <= other.bounds.max.y))
-    //    || (facingLeft && checks[0].bounds.center.y <= other.bounds.max.y))
     public void StartWallInteraction(Collider wall)
     {
-        miscColliders[3].enabled = true;
-        miscColliders[4].enabled = true;
-
+        isStuckToWall = true;
+        HandleGeneralCollider();
         animator.SetBool("canFloat", false);
         airDashExpanded = false;
-        isStuckToWall = true;
+        
         rb.useGravity = false;
         if (wall.transform.position.x < transform.position.x) wallOnLeft = true;
         else wallOnLeft = false;
@@ -690,14 +691,25 @@ public class CharacterControler : MonoBehaviour
         {
             standingCollider.enabled = false;
             crouchingCollider.enabled = false;
+            wallInteractionCollider.enabled = false;
+        }
+        else if (isStuckToWall)
+        {
+            wallInteractionCollider.enabled = true;
+            standingCollider.enabled = false;
+            crouchingCollider.enabled = false;
+            miscColliders[3].enabled = true;
+            miscColliders[4].enabled = true;
         }
         else if (isCrouching)
         {
             crouchingCollider.enabled = true;
             standingCollider.enabled = false;
+            wallInteractionCollider.enabled = false;
         }
         else
         {
+            wallInteractionCollider.enabled = false;
             crouchingCollider.enabled = false;
             standingCollider.enabled = true;
         }
@@ -856,11 +868,12 @@ public class CharacterControler : MonoBehaviour
         isInHitStun = true;
         inputPushBack = pushBack;
 
-        currentHealth -= damage;
+        currentHealth -= damage /(float)Math.Pow(2, consecutiveHits) ;
+        comboDamage += damage / (float)Math.Pow(2, consecutiveHits);
 
-        Debug.Log("hit:"+consecutiveHits);
-        animator.SetFloat("hitStun", (60/inputHitStun)+(0.7f*consecutiveHits));
-        Debug.Log("hitstun:" + ((60 / inputHitStun) + (0.7f * consecutiveHits)) + " inframes:" + (60/((60 / inputHitStun) + (0.7f * consecutiveHits))));
+        Debug.Log("hit:"+consecutiveHits + " combo damage:" + comboDamage);
+        animator.SetFloat("hitStun", (60/(inputHitStun - consecutiveHits)));
+       // Debug.Log("hitstun:" + ((60 / (inputHitStun - consecutiveHits))) + " inframes:" + (60/((60 /(inputHitStun - consecutiveHits)))));
         consecutiveHits += 1;
         animator.SetBool("canFloat", false);
         string animationToPlay = "";

@@ -81,7 +81,8 @@ public class AttackStateController : MonoBehaviour
     }
     private void TurnOffCancelability()
     {
-        controler.isCancelable = false;
+        if(!controler.isCrouching)
+            controler.isCancelable = false;
     }
     private void OnAnimatorMove()
     {
