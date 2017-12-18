@@ -534,19 +534,19 @@ public class CharacterControler : MonoBehaviour
         lastFrameStance = isInStance;
     }
 
-    public bool WallInteractionCondition(Collider other, Collider[] checks)
+    public bool WallInteractionCondition(Collider other)
     {
         return !grounded && !isAttacking && !isInBlockStun && !isInHitStun && !isInThrow && !isStuckToWall
-            && (transform.position.x > other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) < 0
-            && ((facingLeft && checks[1].bounds.center.y < other.bounds.max.y) || (!facingLeft && checks[0].bounds.center.y < other.bounds.max.y)))
-            || (transform.position.x < other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) > 0
-            && ((!facingLeft && checks[1].bounds.center.y > other.bounds.min.y) || (facingLeft && checks[0].bounds.center.y > other.bounds.min.y)));
+            && (transform.position.x > other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) < 0)
+            || (transform.position.x < other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) > 0);
     }
     //|| (!facingLeft && checks[0].bounds.center.y <= other.bounds.max.y))
     //    || (facingLeft && checks[0].bounds.center.y <= other.bounds.max.y))
     public void StartWallInteraction(Collider wall)
     {
-        
+        miscColliders[3].enabled = true;
+        miscColliders[4].enabled = true;
+
         animator.SetBool("canFloat", false);
         airDashExpanded = false;
         isStuckToWall = true;
@@ -674,17 +674,17 @@ public class CharacterControler : MonoBehaviour
     {
         if (!grounded)
         {
-            foreach (var collider in miscColliders)
-            {
-                collider.enabled = false;
-            }
+            miscColliders[0].enabled = false;
+            miscColliders[1].enabled = false;
+            miscColliders[2].enabled = false;
+            miscColliders[3].enabled = false;
+            miscColliders[4].enabled = false;
         }
         else
         {
-            foreach (var collider in gameObject.GetComponentsInChildren<SphereCollider>())
-            {
-                collider.enabled = true;
-            }
+            miscColliders[0].enabled = true;
+            miscColliders[1].enabled = true;
+            miscColliders[2].enabled = true;
         }
         if (isKOd)
         {
