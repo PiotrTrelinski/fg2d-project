@@ -875,6 +875,7 @@ public class CharacterControler : MonoBehaviour
         animator.SetFloat("hitStun", (60/(inputHitStun - consecutiveHits)));
        // Debug.Log("hitstun:" + ((60 / (inputHitStun - consecutiveHits))) + " inframes:" + (60/((60 /(inputHitStun - consecutiveHits)))));
         consecutiveHits += 1;
+        FindObjectOfType<Text>().text = "hit:" + consecutiveHits + "\n" + "combo damage:" + comboDamage;
         animator.SetBool("canFloat", false);
         string animationToPlay = "";
         if (hitZone == "Head" || hitZone == "UpperSpine" || hitZone == "Arm_R"|| hitZone == "Arm_L")
