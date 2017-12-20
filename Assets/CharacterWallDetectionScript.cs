@@ -14,7 +14,7 @@ public class CharacterWallDetectionScript : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
     {
         if (owner.isStuckToWall)
         {

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Damagable
+  - StartingPosition
   layers:
   - Default
   - TransparentFX
