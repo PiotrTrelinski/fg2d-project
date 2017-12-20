@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class MatchManagerScript : MonoBehaviour
 {
+    public GameObject playerPrefab;
+    private GameObject player1GameObject;
+    private GameObject player2GameObject;
     private CharacterControler player1;
     private CharacterControler player2;
     public Text roundsWonP1;
@@ -15,21 +18,29 @@ public class MatchManagerScript : MonoBehaviour
     public Vector3 p2StartingPosition;
     public GameObject P1HealthBar;
     public GameObject P2HealthBar;
+    public CameraScript cameraController;
     //private int winnerRounds;
     //private Text winnerRoundsText;
     private bool roundFinished = false;
 	// Use this for initialization
 	void Start ()
     {
-
-        player1 = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<CharacterControler>();
-        player2 = GameObject.FindGameObjectsWithTag("Player")[1].GetComponent<CharacterControler>();
-        roundsWonP1.text = "Rounds won: " + roundsP1;
-        roundsWonP2.text = "Rounds won: " + roundsP2;
         p1StartingPosition = GameObject.Find("P1StartingPosition").transform.position;
         p2StartingPosition = GameObject.Find("P2StartingPosition").transform.position;
+        player1GameObject = Instantiate(playerPrefab, p1StartingPosition, Quaternion.identity);
+        player2GameObject = Instantiate(playerPrefab, p2StartingPosition, Quaternion.identity);
+        player1 = player1GameObject.GetComponent<CharacterControler>(); 
+        player2 = player2GameObject.GetComponent<CharacterControler>();
         P1HealthBar.GetComponentInChildren<HealthBarScript>().character = player1;
         P2HealthBar.GetComponentInChildren<HealthBarScript>().character = player2;
+        player1.SetupControl(1, Color.black);
+        player2.SetupControl(2, Color.red);
+        cameraController.players = new GameObject[2];
+        cameraController.players[0] = player1GameObject;
+        cameraController.players[1] = player2GameObject;
+        roundsWonP1.text = "Rounds won: " + roundsP1;
+        roundsWonP2.text = "Rounds won: " + roundsP2;  
+        
     }
 	
 	// Update is called once per frame

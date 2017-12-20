@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraScript : MonoBehaviour {
-    private GameObject[] players;
+    public GameObject[] players;
     public float minZ = -15;
 	// Use this for initialization
 	void Start () {
         //PlayerPrefs.DeleteAll();
         //  QualitySettings.vSyncCount = 0;  // VSync must be disabled
-        players = GameObject.FindGameObjectsWithTag("Player");
     }
 	
 	// Update is called once per frame

@@ -12,8 +12,9 @@ public enum BlockType
 public class CharacterControler : MonoBehaviour
 {
     public Animator animator;
-    public string playerNumber = "1";
+    public int playerNumber = 1;
     public Color playerColor = Color.black;
+    public Renderer playerRenderer;
     //horizontal movement
     public float walkSpeed = 5;
     public float runSpeed = 15;
@@ -127,10 +128,11 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("JumpingRightKick", new AttackPropertiesStructure(15, 40, 19, 3, BlockType.Standing));
     }
 
-    void Start() {
+    void Start()
+    {
         speed = walkSpeed;
-        transform.Find("stickmanV2").Find("Cube").GetComponent<Renderer>().material.color = playerColor;
-        playerNumberSufix += playerNumber;
+        //transform.Find("stickmanV2").Find("Cube").GetComponent<Renderer>().material.color = playerColor;
+        //playerNumberSufix += playerNumber;
         currentHealth = maxHealth;
         SetUpAttackProperties();
         miscColliders = new Collider[miscCollidersObject.GetComponents<Collider>().Length];
@@ -142,7 +144,14 @@ public class CharacterControler : MonoBehaviour
         }
     }
 
-
+    public void SetupControl(int playerNumber, Color color)
+    {
+        this.playerNumber = playerNumber;
+        this.playerColor = color;
+        playerNumberSufix += playerNumber;
+        playerRenderer.material.color = color;
+    }
+    
     // Update is called once per frame
     void Update()
     {
