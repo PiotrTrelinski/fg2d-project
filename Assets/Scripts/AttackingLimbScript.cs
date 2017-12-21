@@ -9,7 +9,7 @@ public class AttackingLimbScript : MonoBehaviour
     public string limbLabel;
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
         owner = GetComponentInParent<CharacterControler>();
     }
@@ -63,6 +63,7 @@ public class AttackingLimbScript : MonoBehaviour
                             if(other.gameObject.name == "Head" || other.gameObject.name == "UpperSpine" || other.gameObject.name == "LowerSpine")
                                 if (!otherCharacter.isCrouching && otherCharacter.grounded)
                                 {
+                                    owner.InvocationOInvulnerability();
                                     owner.activeFrames = false;
                                     otherCharacter.StartTheThrow(owner);
                                 }

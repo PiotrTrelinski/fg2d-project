@@ -23,7 +23,7 @@ public class MatchManagerScript : MonoBehaviour
     //private Text winnerRoundsText;
     private bool roundFinished = false;
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
         p1StartingPosition = GameObject.Find("P1StartingPosition").transform.position;
         p2StartingPosition = GameObject.Find("P2StartingPosition").transform.position;
@@ -35,16 +35,17 @@ public class MatchManagerScript : MonoBehaviour
         P2HealthBar.GetComponentInChildren<HealthBarScript>().character = player2;
         player1.SetupControl(1, Color.black);
         player2.SetupControl(2, Color.red);
+        player1.facingLeft = false;
+        player2.facingLeft = true;
         cameraController.players = new GameObject[2];
         cameraController.players[0] = player1GameObject;
         cameraController.players[1] = player2GameObject;
         roundsWonP1.text = "Rounds won: " + roundsP1;
-        roundsWonP2.text = "Rounds won: " + roundsP2;  
-        
+        roundsWonP2.text = "Rounds won: " + roundsP2; 
     }
 	
 	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
     {
         if (player1.currentHealth <= 0 && player2.currentHealth > 0)
         {

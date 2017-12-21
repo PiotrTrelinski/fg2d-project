@@ -21,7 +21,7 @@ public class CameraScript : MonoBehaviour {
         //    z = -Math.Abs(players[0].transform.position.x - players[1].transform.position.x);
         //else
         //    z = -Math.Abs(players[0].transform.position.y - players[1].transform.position.y);
-        z = -((players[0].transform.position - players[1].transform.position).magnitude +10);
+        z = -((players[0].transform.position - players[1].transform.position).magnitude + 8);
         if (z > minZ) z = minZ;
         transform.position = new Vector3(x, y, z);
 	}

@@ -54,7 +54,7 @@ public class CharacterControler : MonoBehaviour
     private float inputLeniency = 0.4f;
     public bool activeFrames = false;
     public bool invulnerable = false;
-    public string activeLimb;
+    public string activeLimb = "";
     public bool hitFromFront;
     public bool isInHitStun = false;
     public bool isInBlockStun = false;
@@ -164,6 +164,7 @@ public class CharacterControler : MonoBehaviour
             }
             else
             {
+                HandleThrowKnockout();
                 GetStanceButton();
                 if (throwBreakable)
                     ListenForThrowBreak();
@@ -200,12 +201,23 @@ public class CharacterControler : MonoBehaviour
         }
     }
 
+
     private void HandleRigidBodyMass()
     {
         if (!grounded)
             rb.mass = 100;
         else
             rb.mass = 1;
+    }
+
+    private void HandleThrowKnockout()
+    {
+        if (throwingChar != null && throwingChar.currentHealth <= 0)
+        {
+            isInThrow = false;
+            throwingChar.isInThrow = false;
+            animator.Play(isInStance ? "StanceIdle" : "NeutralIdle");
+        }
     }
 
     private void HandleKO()
@@ -790,9 +802,10 @@ public class CharacterControler : MonoBehaviour
         return false;
     }
 
-    public void InvocationOfVulnerability()
+    public void InvocationOInvulnerability()
     {
-        Invoke("SwitchOffVulnerability", 0.2f);
+        invulnerable = true;
+        Invoke("SwitchOffVulnerability", 1f);
     }
     private void SwitchOffVulnerability()
     {
@@ -973,8 +986,6 @@ public class CharacterControler : MonoBehaviour
     internal void StandardIssueCombatActionConnectSwitches()
     {
         activeFrames = false;
-        invulnerable = true;
-        InvocationOfVulnerability();
         crossFadingAttack = false;
         StopWallInteraction();
     }
