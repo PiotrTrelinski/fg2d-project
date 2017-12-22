@@ -111,7 +111,7 @@ public class CharacterControler : MonoBehaviour
     {
         attackProperties = new Dictionary<string, AttackPropertiesStructure>();
         attackProperties.Add("StandingLeftPunch", new AttackPropertiesStructure(10, 26, 25, 3, BlockType.Standing));
-        attackProperties.Add("StandingRightPunch", new AttackPropertiesStructure(15, 35, 26, 2, BlockType.Standing));
+        attackProperties.Add("StandingRightPunch", new AttackPropertiesStructure(15, 31, 23, 2, BlockType.Standing));
         attackProperties.Add("StandingLeftKick", new AttackPropertiesStructure(14, 26, 18, 1, BlockType.Crouching));
         attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(12, 35.5f, 20, 1, BlockType.Standing));
         attackProperties.Add("CrouchingLeftPunch", new AttackPropertiesStructure(6, 18, 17, 1, BlockType.Either));

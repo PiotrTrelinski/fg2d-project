@@ -1224,7 +1224,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.27422035
+      - time: 0.32673675
         functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
@@ -1232,7 +1232,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.38653028
+      - time: 0.35589573
         functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
