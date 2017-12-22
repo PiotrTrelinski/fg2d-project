@@ -110,10 +110,10 @@ public class CharacterControler : MonoBehaviour
     void SetUpAttackProperties()
     {
         attackProperties = new Dictionary<string, AttackPropertiesStructure>();
-        attackProperties.Add("StandingLeftPunch", new AttackPropertiesStructure(10, 25, 25, 3, BlockType.Standing));
-        attackProperties.Add("StandingRightPunch", new AttackPropertiesStructure(15, 30, 26, 2, BlockType.Standing));
+        attackProperties.Add("StandingLeftPunch", new AttackPropertiesStructure(10, 26, 25, 3, BlockType.Standing));
+        attackProperties.Add("StandingRightPunch", new AttackPropertiesStructure(15, 35, 26, 2, BlockType.Standing));
         attackProperties.Add("StandingLeftKick", new AttackPropertiesStructure(14, 26, 18, 1, BlockType.Crouching));
-        attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(12, 34, 20, 1, BlockType.Standing));
+        attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(12, 35.5f, 20, 1, BlockType.Standing));
         attackProperties.Add("CrouchingLeftPunch", new AttackPropertiesStructure(6, 18, 17, 1, BlockType.Either));
         attackProperties.Add("CrouchingRightPunch", new AttackPropertiesStructure(18, 41, 23, 2, BlockType.Standing));
         attackProperties.Add("CrouchingLeftKick", new AttackPropertiesStructure(14, 55, 17, 0, BlockType.Crouching));
@@ -509,7 +509,7 @@ public class CharacterControler : MonoBehaviour
 
         animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix)));
 
-        if (!isAttacking)
+        if (!isAttacking && !isInThrow && !isInHitStun && !isInBlockStun)
         {
             //Neutral jump/land/crouch/neutral transfer
             if (!isInStance)

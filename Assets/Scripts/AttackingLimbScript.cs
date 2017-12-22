@@ -70,6 +70,7 @@ public class AttackingLimbScript : MonoBehaviour
                         }
                         else if(otherCharacter.CheckBlockCondition(owner.outputBlockType))
                         {
+                            owner.activeFrames = false;
                             otherCharacter.ApplyBlockStun(owner.outputBlockStun, other.transform.name, owner.outputPushBack);
                         }
                         else
