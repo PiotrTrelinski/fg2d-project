@@ -64,7 +64,7 @@ public class CharacterControler : MonoBehaviour
     public int consecutiveHits = 0;
     private float comboDamage = 0;
     //player attributes
-    private float maxHealth = 100;
+    public float maxHealth = 200;
     public float currentHealth;
     public float outputDamage;
     public float outputHitStun;
@@ -112,7 +112,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties = new Dictionary<string, AttackPropertiesStructure>();
         attackProperties.Add("StandingLeftPunch", new AttackPropertiesStructure(10, 25, 25, 3, BlockType.Standing));
         attackProperties.Add("StandingRightPunch", new AttackPropertiesStructure(15, 30, 26, 2, BlockType.Standing));
-        attackProperties.Add("StandingLeftKick", new AttackPropertiesStructure(14, 26, 16, 1, BlockType.Crouching));
+        attackProperties.Add("StandingLeftKick", new AttackPropertiesStructure(14, 26, 18, 1, BlockType.Crouching));
         attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(12, 34, 20, 1, BlockType.Standing));
         attackProperties.Add("CrouchingLeftPunch", new AttackPropertiesStructure(6, 18, 17, 1, BlockType.Either));
         attackProperties.Add("CrouchingRightPunch", new AttackPropertiesStructure(18, 41, 23, 2, BlockType.Standing));
@@ -893,8 +893,8 @@ public class CharacterControler : MonoBehaviour
         isInHitStun = true;
         inputPushBack = pushBack;
 
-        currentHealth -= damage /(float)Math.Pow(2, consecutiveHits) ;
-        comboDamage += damage / (float)Math.Pow(2, consecutiveHits);
+        currentHealth -=(int)( damage * (((1-(consecutiveHits*0.2f)) < 0.2)? (0.2f):(1 - (consecutiveHits * 0.2f))));
+        comboDamage +=(int)( damage * (((1 - (consecutiveHits * 0.2f)) < 0.2) ? (0.2f):(1 - (consecutiveHits * 0.2f))));
 
         Debug.Log("hit:"+consecutiveHits + " combo damage:" + comboDamage);
         animator.SetFloat("hitStun", (60/(inputHitStun - consecutiveHits)));
