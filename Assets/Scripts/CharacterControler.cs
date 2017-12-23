@@ -126,7 +126,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("JumpingRightPunch", new AttackPropertiesStructure(12, 22, 23, 5, BlockType.Standing));
         attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 50, 10, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightKick", new AttackPropertiesStructure(15, 40, 19, 3, BlockType.Standing));
-        attackProperties.Add("BackdashingLeftPunch", new AttackPropertiesStructure(18, 45, 28, 1, BlockType.Standing));
+        attackProperties.Add("BackdashingLeftPunch", new AttackPropertiesStructure(18, 45, 26, 1, BlockType.Standing));
         attackProperties.Add("BackdashingLeftKick", new AttackPropertiesStructure(15, 36, 21, 2, BlockType.Standing));
     }
 
@@ -534,11 +534,11 @@ public class CharacterControler : MonoBehaviour
                 if (lastFrameStance && !isDashing)
                     if (grounded)
                         if (isCrouching && lastFrameCrouching)
-                            animator.CrossFade("NeutralCrouchIdle", 0.2f);
+                            animator.CrossFade("NeutralCrouchIdle", 0.1f);
                         else
                             animator.CrossFade("NeutralIdle", 0.1f);
                 if (isCrouching && !lastFrameCrouching)
-                    animator.CrossFade("NeutralCrouchIdle", 0.2f);
+                    animator.CrossFade("NeutralCrouchIdle", 0.1f);
             }
             //Stance jump/land/crouch/stance transfer
             if (isInStance)

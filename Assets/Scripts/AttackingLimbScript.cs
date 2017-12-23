@@ -40,6 +40,7 @@ public class AttackingLimbScript : MonoBehaviour
             || ((limbLabel == "Left Punch" || limbLabel == "Right Punch")
             && owner.activeLimb == "Throw"))
         {
+            //Debug.DrawLine(other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Vector3.up, Color.black);
             //Debug.Log(owner.name);
             if (owner.activeFrames)
             {
