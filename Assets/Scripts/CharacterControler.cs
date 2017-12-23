@@ -126,6 +126,8 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("JumpingRightPunch", new AttackPropertiesStructure(12, 22, 23, 5, BlockType.Standing));
         attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 50, 10, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightKick", new AttackPropertiesStructure(15, 40, 19, 3, BlockType.Standing));
+        attackProperties.Add("BackdashingLeftPunch", new AttackPropertiesStructure(18, 45, 28, 1, BlockType.Standing));
+        attackProperties.Add("BackdashingLeftKick", new AttackPropertiesStructure(15, 36, 21, 2, BlockType.Standing));
     }
 
     void Start()
@@ -355,7 +357,6 @@ public class CharacterControler : MonoBehaviour
                             StartAttack();
                             if (isDashingForward)
                             {
-                                StartAttack();
                                 crossFadingAttack = true;
                                 if (firstInput == "Left Punch")
                                 {
@@ -377,6 +378,18 @@ public class CharacterControler : MonoBehaviour
                                     animator.CrossFade("CombatDashingRightKick", 0.3f);
                                     SetOutputAttackProperties(attackProperties["DashingRightKick"]);
                                 }
+                            }
+                            else if(isDashing && firstInput == "Left Punch")
+                            {
+                                crossFadingAttack = true;
+                                animator.CrossFade("CombatBackdashingLeftPunch", 0.01f);
+                                SetOutputAttackProperties(attackProperties["BackdashingLeftPunch"]);
+                            }
+                            else if(isDashing && firstInput == "Left Kick")
+                            {
+                                crossFadingAttack = true;
+                                animator.CrossFade("CombatBackdashingLeftKick", 0.01f);
+                                SetOutputAttackProperties(attackProperties["BackdashingLeftKick"]);
                             }
                             else if (firstInput == "Left Punch")
                             {
@@ -433,7 +446,7 @@ public class CharacterControler : MonoBehaviour
                         }
                     }
                 }
-                else if (!isDashing)
+                else if (!grounded)
                 {
                     StartAttack();
                     aerialVelX = rb.velocity.x;
@@ -944,7 +957,7 @@ public class CharacterControler : MonoBehaviour
         {
             animationToPlay = "HitReactionStandingLowR";
         }
-        animator.Play(animationToPlay);
+        animator.Play(animationToPlay, 0);
     }
 
     public void StartTheThrow(CharacterControler thrower)
