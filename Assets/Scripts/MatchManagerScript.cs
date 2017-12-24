@@ -10,8 +10,6 @@ public class MatchManagerScript : MonoBehaviour
     private GameObject player2GameObject;
     private CharacterControler player1;
     private CharacterControler player2;
-    public Text roundsWonP1;
-    public Text roundsWonP2;
     private int roundsP1 = 0;
     private int roundsP2 = 0;
     public Vector3 p1StartingPosition;
@@ -19,6 +17,8 @@ public class MatchManagerScript : MonoBehaviour
     public GameObject P1HealthBar;
     public GameObject P2HealthBar;
     public CameraScript cameraController;
+    public HitFeedScript hitFeedP1;
+    public HitFeedScript hitFeedP2;
     //private int winnerRounds;
     //private Text winnerRoundsText;
     private bool roundFinished = false;
@@ -40,8 +40,8 @@ public class MatchManagerScript : MonoBehaviour
         cameraController.players = new GameObject[2];
         cameraController.players[0] = player1GameObject;
         cameraController.players[1] = player2GameObject;
-        roundsWonP1.text = "Rounds won: " + roundsP1;
-        roundsWonP2.text = "Rounds won: " + roundsP2; 
+        hitFeedP1.character = player1;
+        hitFeedP2.character = player2;
     }
 	
 	// Update is called once per frame
@@ -54,7 +54,6 @@ public class MatchManagerScript : MonoBehaviour
                 //winnerRoundsText = roundsWonP2;
                 //winnerRounds = roundsP2;
                 roundsP2 += 1;
-                roundsWonP2.text = "Rounds won: " + roundsP2; ;
                 roundFinished = true;
                 Invoke("StartNewRound", 5);
             }
@@ -66,7 +65,6 @@ public class MatchManagerScript : MonoBehaviour
                 //winnerRoundsText = roundsWonP1;
                 //winnerRounds = roundsP1;
                 roundsP1 += 1;
-                roundsWonP1.text = "Rounds won: " + roundsP1;
                 roundFinished = true;
                 Invoke("StartNewRound", 3);
             }

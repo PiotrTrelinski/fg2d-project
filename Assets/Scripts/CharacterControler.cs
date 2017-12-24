@@ -62,7 +62,7 @@ public class CharacterControler : MonoBehaviour
     public bool throwBreakable = false;
     public bool outgoingAttackLanded = false;
     public int consecutiveHits = 0;
-    private float comboDamage = 0;
+    public float comboDamage = 0;
     //player attributes
     public float maxHealth = 200;
     public float currentHealth;
@@ -916,7 +916,7 @@ public class CharacterControler : MonoBehaviour
         currentHealth -=(int)( damage * (((1-(consecutiveHits*0.2f)) < 0.2)? (0.2f):(1 - (consecutiveHits * 0.2f))));
         comboDamage +=(int)( damage * (((1 - (consecutiveHits * 0.2f)) < 0.2) ? (0.2f):(1 - (consecutiveHits * 0.2f))));
 
-        Debug.Log("hit:"+consecutiveHits + " combo damage:" + comboDamage);
+      //  Debug.Log("hit:"+consecutiveHits + " combo damage:" + comboDamage);
         animator.SetFloat("hitStun", (60/(inputHitStun - consecutiveHits)));
        // Debug.Log("hitstun:" + ((60 / (inputHitStun - consecutiveHits))) + " inframes:" + (60/((60 /(inputHitStun - consecutiveHits)))));
         consecutiveHits += 1;

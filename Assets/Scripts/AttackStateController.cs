@@ -78,6 +78,8 @@ public class AttackStateController : MonoBehaviour
     private void ApplyDamage(float damage)
     {
         controler.currentHealth -= damage;
+        controler.consecutiveHits += 1;
+        controler.comboDamage += damage;
     }
     private void TurnOffCancelability()
     {
