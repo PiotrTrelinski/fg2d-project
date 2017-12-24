@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoundCounterScript : MonoBehaviour {
 
@@ -22,13 +23,12 @@ public class RoundCounterScript : MonoBehaviour {
     public void Initialize()
     {
         bubbles = new RoundBubbleScript[maxRounds];
+        var scaler = gameObject.GetComponentInParent<CanvasScaler>();
         for (int i = 0; i < maxRounds; i++)
         {
             bubbles[i] = Instantiate(roundBubble, transform).GetComponent<RoundBubbleScript>();
-            if(leftSide)
-                bubbles[i].transform.Translate(30 * i, 0, 0);
-            else
-                bubbles[i].transform.Translate(-30 * i, 0, 0);
+            bubbles[i].transform.Translate(((leftSide ? bubbles[i].GetComponent<RectTransform>().rect.width:-bubbles[i].GetComponent<RectTransform>().rect.width) 
+                * i * 1.5f)/ (scaler.referenceResolution.x / Screen.width), 0, 0);
         }
     }
     public void RoundWon()
