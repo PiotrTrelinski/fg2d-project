@@ -36,8 +36,8 @@ public class MatchManagerScript : MonoBehaviour
         player2 = player2GameObject.GetComponent<CharacterControler>();
         P1HealthBar.GetComponentInChildren<HealthBarScript>().character = player1;
         P2HealthBar.GetComponentInChildren<HealthBarScript>().character = player2;
-        player1.SetupControl(1, Color.black);
-        player2.SetupControl(2, Color.red);
+        player1.SetupControl(1, MatchSettings.Instance.p1Color);
+        player2.SetupControl(2, MatchSettings.Instance.p2Color);
         player1.facingLeft = false;
         player2.facingLeft = true;
         cameraController.players = new GameObject[2];
@@ -45,9 +45,9 @@ public class MatchManagerScript : MonoBehaviour
         cameraController.players[1] = player2GameObject;
         hitFeedP1.character = player1;
         hitFeedP2.character = player2;
-        roundCounterP1.maxRounds = maxRounds;
+        roundCounterP1.maxRounds = MatchSettings.Instance.maxRounds;
         roundCounterP1.Initialize();
-        roundCounterP2.maxRounds = maxRounds;
+        roundCounterP2.maxRounds = MatchSettings.Instance.maxRounds;
         roundCounterP2.Initialize();
     }
 	
