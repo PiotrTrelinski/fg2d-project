@@ -19,6 +19,9 @@ public class MatchManagerScript : MonoBehaviour
     public CameraScript cameraController;
     public HitFeedScript hitFeedP1;
     public HitFeedScript hitFeedP2;
+    public RoundCounterScript roundCounterP1;
+    public RoundCounterScript roundCounterP2;
+    public int maxRounds = 3;
     //private int winnerRounds;
     //private Text winnerRoundsText;
     private bool roundFinished = false;
@@ -42,6 +45,10 @@ public class MatchManagerScript : MonoBehaviour
         cameraController.players[1] = player2GameObject;
         hitFeedP1.character = player1;
         hitFeedP2.character = player2;
+        roundCounterP1.maxRounds = maxRounds;
+        roundCounterP1.Initialize();
+        roundCounterP2.maxRounds = maxRounds;
+        roundCounterP2.Initialize();
     }
 	
 	// Update is called once per frame
@@ -55,6 +62,7 @@ public class MatchManagerScript : MonoBehaviour
                 //winnerRounds = roundsP2;
                 roundsP2 += 1;
                 roundFinished = true;
+                roundCounterP2.RoundWon();
                 Invoke("StartNewRound", 5);
             }
         }
@@ -66,6 +74,7 @@ public class MatchManagerScript : MonoBehaviour
                 //winnerRounds = roundsP1;
                 roundsP1 += 1;
                 roundFinished = true;
+                roundCounterP1.RoundWon();
                 Invoke("StartNewRound", 3);
             }
         }else if(player1.currentHealth <= 0 && player2.currentHealth <= 0)
