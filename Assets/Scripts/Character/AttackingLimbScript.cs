@@ -7,11 +7,15 @@ public class AttackingLimbScript : MonoBehaviour
 
     private CharacterControler owner;
     public string limbLabel;
+    private GameObject hitSpark;
+    private GameObject blockSpark;
 
 	// Use this for initialization
 	void Awake ()
     {
         owner = GetComponentInParent<CharacterControler>();
+        hitSpark = (GameObject)Resources.Load("Effects/HitSparkNormalHit");
+        blockSpark = (GameObject)Resources.Load("Effects/BlockSpark");
     }
 	
 	// Update is called once per frame
@@ -72,12 +76,18 @@ public class AttackingLimbScript : MonoBehaviour
                         else if(otherCharacter.CheckBlockCondition(owner.outputBlockType))
                         {
                             owner.activeFrames = false;
+                            var blocksparkpos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                            GameObject ps = (GameObject)Instantiate(blockSpark, new Vector3(blocksparkpos.x, blocksparkpos.y, 0), Quaternion.identity);
+                            Destroy(ps, ps.GetComponent<ParticleSystem>().main.duration);
                             otherCharacter.ApplyBlockStun(owner.outputBlockStun, other.transform.name, owner.outputPushBack);
                         }
                         else
                         {
                             owner.activeFrames = false;
                             owner.outgoingAttackLanded = true;
+                            var hitsparkpos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(gameObject.GetComponent<Collider>().ClosestPointOnBounds(other.transform.position));
+                            GameObject ps =(GameObject) Instantiate(hitSpark, hitsparkpos, Quaternion.identity);
+                            Destroy(ps, ps.GetComponent<ParticleSystem>().main.duration);
                             otherCharacter.ApplyHitStun(owner.outputHitStun, other.transform.name, owner.outputPushBack, owner.outputDamage);
                         }
                        

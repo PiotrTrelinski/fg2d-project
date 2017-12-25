@@ -907,6 +907,7 @@ MonoBehaviour:
   throwBreakable: 0
   outgoingAttackLanded: 0
   consecutiveHits: 0
+  comboDamage: 0
   maxHealth: 200
   currentHealth: 0
   outputDamage: 0

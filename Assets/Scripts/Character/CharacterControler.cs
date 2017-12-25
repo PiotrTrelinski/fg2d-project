@@ -117,7 +117,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("CrouchingLeftPunch", new AttackPropertiesStructure(6, 18, 17, 1, BlockType.Either));
         attackProperties.Add("CrouchingRightPunch", new AttackPropertiesStructure(18, 42, 23, 2, BlockType.Standing));
         attackProperties.Add("CrouchingLeftKick", new AttackPropertiesStructure(14, 55, 17, 0, BlockType.Crouching));
-        attackProperties.Add("CrouchingRightKick", new AttackPropertiesStructure(13, 28, 28, 3, BlockType.Standing));
+        attackProperties.Add("CrouchingRightKick", new AttackPropertiesStructure(13, 26, 26, 3, BlockType.Standing));
         attackProperties.Add("DashingLeftPunch", new AttackPropertiesStructure(10, 18, 22, 1, BlockType.Standing));
         attackProperties.Add("DashingRightPunch", new AttackPropertiesStructure(12, 22, 17, 3, BlockType.Standing));
         attackProperties.Add("DashingLeftKick", new AttackPropertiesStructure(8, 12, 12, 0, BlockType.Crouching));
