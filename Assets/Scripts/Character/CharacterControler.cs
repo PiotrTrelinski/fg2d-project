@@ -188,12 +188,12 @@ public class CharacterControler : MonoBehaviour
                         }
                         else
                             HandlePushBack();
-
+                        HandleDoubleTapDash();
                     }
                     else
                     {
                         HandlePushBack();
-                    }
+                    } 
                 }
                 HandleAnimation();
             }
@@ -694,7 +694,7 @@ public class CharacterControler : MonoBehaviour
                 isCrouching = false;
             
         }
-        HandleDoubleTapDash();
+      //  HandleDoubleTapDash();
         LimitVelocity();
         HandleGeneralCollider();
     }
@@ -763,11 +763,11 @@ public class CharacterControler : MonoBehaviour
     {
         if (((Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0 && facingLeftDash) 
             ^ (Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0 && !facingLeftDash)) 
-            && Time.time - lastTime < 0.15f)
+            && Time.time - lastTime < 0.15f && !isStuckToWall)
         {
             if(!isInStance)
                 isRunning = true;
-            if (isInStance && grounded && !isDashing && isCancelable)
+            if (isInStance && grounded && !isDashing && isCancelable && !isInBlockStun)
             {
                 isDashing = true;
                 if((facingLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0) ||(!facingLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0))

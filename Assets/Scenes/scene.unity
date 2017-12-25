@@ -2516,3 +2516,4 @@ MonoBehaviour:
   hitFeedP2: {fileID: 348116037}
   roundCounterP1: {fileID: 619010279}
   roundCounterP2: {fileID: 367698487}
+  maxRounds: 3
