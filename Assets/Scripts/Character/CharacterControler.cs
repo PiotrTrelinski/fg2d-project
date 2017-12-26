@@ -127,7 +127,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 50, 10, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightKick", new AttackPropertiesStructure(15, 40, 19, 3, BlockType.Standing));
         attackProperties.Add("BackdashingLeftPunch", new AttackPropertiesStructure(18, 45, 26, 1, BlockType.Standing));
-        attackProperties.Add("BackdashingLeftKick", new AttackPropertiesStructure(15, 38, 21, 2, BlockType.Standing));
+        attackProperties.Add("BackdashingLeftKick", new AttackPropertiesStructure(20, 39, 13, 2, BlockType.Standing));
         attackProperties.Add("RunningRightPunch", new AttackPropertiesStructure(18, 50, 38, 1, BlockType.Standing));
     }
 
