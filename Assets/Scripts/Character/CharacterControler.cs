@@ -118,7 +118,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("CrouchingRightPunch", new AttackPropertiesStructure(18, 42, 23, 2, BlockType.Standing));
         attackProperties.Add("CrouchingLeftKick", new AttackPropertiesStructure(14, 55, 17, 0, BlockType.Crouching));
         attackProperties.Add("CrouchingRightKick", new AttackPropertiesStructure(13, 26, 26, 3, BlockType.Standing));
-        attackProperties.Add("DashingLeftPunch", new AttackPropertiesStructure(10, 18, 22, 1, BlockType.Standing));
+        attackProperties.Add("DashingLeftPunch", new AttackPropertiesStructure(10, 21, 25, 1, BlockType.Standing));
         attackProperties.Add("DashingRightPunch", new AttackPropertiesStructure(12, 22, 17, 3, BlockType.Standing));
         attackProperties.Add("DashingLeftKick", new AttackPropertiesStructure(8, 12, 12, 0, BlockType.Crouching));
         attackProperties.Add("DashingRightKick", new AttackPropertiesStructure(20, 44, 14, 1, BlockType.Standing));
@@ -127,8 +127,8 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 50, 10, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightKick", new AttackPropertiesStructure(15, 40, 19, 3, BlockType.Standing));
         attackProperties.Add("BackdashingLeftPunch", new AttackPropertiesStructure(18, 45, 26, 1, BlockType.Standing));
-        attackProperties.Add("BackdashingLeftKick", new AttackPropertiesStructure(15, 36, 21, 2, BlockType.Standing));
-        attackProperties.Add("RunningRightPunch", new AttackPropertiesStructure(16, 50, 38, 1, BlockType.Standing));
+        attackProperties.Add("BackdashingLeftKick", new AttackPropertiesStructure(15, 38, 21, 2, BlockType.Standing));
+        attackProperties.Add("RunningRightPunch", new AttackPropertiesStructure(18, 50, 38, 1, BlockType.Standing));
     }
 
     void Start()
@@ -763,11 +763,11 @@ public class CharacterControler : MonoBehaviour
     {
         if (((Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0 && facingLeftDash) 
             ^ (Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0 && !facingLeftDash)) 
-            && Time.time - lastTime < 0.15f && !isStuckToWall)
+            && Time.time - lastTime < 0.15f && !isStuckToWall && isCancelable)
         {
             if(!isInStance)
                 isRunning = true;
-            if (isInStance && grounded && !isDashing && isCancelable && !isInBlockStun && grounded)
+            if (isInStance && grounded && !isDashing && !isInBlockStun && grounded)
             {
                 isDashing = true;
                 if((facingLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0) ||(!facingLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0))
@@ -780,7 +780,7 @@ public class CharacterControler : MonoBehaviour
                     animator.CrossFade("CombatStanceDashBackward", 0.1f);
                 }
             }
-            if(!grounded && !airDashExpanded && isCancelable)
+            if(!grounded && !airDashExpanded)
             {
                 rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * dashHorForce, dashVertForce, 0));
                 airDashExpanded = true;

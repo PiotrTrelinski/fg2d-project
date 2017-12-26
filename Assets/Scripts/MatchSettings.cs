@@ -25,7 +25,7 @@ public class MatchSettings {
         maxRounds = 3;
         timeLimit = 99;
         p1Color = Color.blue;
-        p2Color = Color.green;
+        p2Color = Color.red;
     }
 
 }
