@@ -39,4 +39,9 @@ public class RoundCounterScript : MonoBehaviour {
             roundsWon++;
         }
     }
+    public void ResetRounds()
+    {
+        foreach (var bubble in bubbles)
+            bubble.Deactivate();
+    }
 }

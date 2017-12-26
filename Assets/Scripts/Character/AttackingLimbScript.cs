@@ -9,6 +9,7 @@ public class AttackingLimbScript : MonoBehaviour
     public string limbLabel;
     private GameObject hitSpark;
     private GameObject blockSpark;
+    private float sparkZOffset = -0.8f;
 
 	// Use this for initialization
 	void Awake ()
@@ -77,8 +78,8 @@ public class AttackingLimbScript : MonoBehaviour
                         {
                            
                             owner.activeFrames = false;
-                            var blocksparkpos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
-                            GameObject ps = (GameObject)Instantiate(blockSpark, new Vector3(other.transform.root.transform.position.x + (owner.facingLeft?1.2f:-1.2f), blocksparkpos.y, -0.8f), Quaternion.identity);
+                            var blockSparkPos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+                            GameObject ps = (GameObject)Instantiate(blockSpark, new Vector3(other.transform.root.transform.position.x + (owner.facingLeft?1.2f:-1.2f), blockSparkPos.y, sparkZOffset), Quaternion.identity);
                             Destroy(ps, ps.GetComponent<ParticleSystem>().main.duration);
                             otherCharacter.ApplyBlockStun(owner.outputBlockStun, other.transform.name, owner.outputPushBack);
                         }
@@ -86,8 +87,8 @@ public class AttackingLimbScript : MonoBehaviour
                         {
                             owner.activeFrames = false;
                             owner.outgoingAttackLanded = true;
-                            var hitsparkpos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(gameObject.GetComponent<Collider>().ClosestPointOnBounds(other.transform.position));
-                            GameObject ps =(GameObject) Instantiate(hitSpark, hitsparkpos, Quaternion.identity);
+                            var hitSparkPos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(gameObject.GetComponent<Collider>().ClosestPointOnBounds(other.transform.position));
+                            GameObject ps =(GameObject) Instantiate(hitSpark, new Vector3(hitSparkPos.x, hitSparkPos.y, sparkZOffset), Quaternion.identity);
                             Destroy(ps, ps.GetComponent<ParticleSystem>().main.duration);
                             otherCharacter.ApplyHitStun(owner.outputHitStun, other.transform.name, owner.outputPushBack, owner.outputDamage);
                         }
