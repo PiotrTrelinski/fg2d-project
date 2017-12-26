@@ -767,7 +767,7 @@ public class CharacterControler : MonoBehaviour
         {
             if(!isInStance)
                 isRunning = true;
-            if (isInStance && grounded && !isDashing && isCancelable && !isInBlockStun)
+            if (isInStance && grounded && !isDashing && isCancelable && !isInBlockStun && grounded)
             {
                 isDashing = true;
                 if((facingLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0) ||(!facingLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0))
@@ -780,7 +780,7 @@ public class CharacterControler : MonoBehaviour
                     animator.CrossFade("CombatStanceDashBackward", 0.1f);
                 }
             }
-            if(!grounded && !airDashExpanded)
+            if(!grounded && !airDashExpanded && isCancelable)
             {
                 rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * dashHorForce, dashVertForce, 0));
                 airDashExpanded = true;
