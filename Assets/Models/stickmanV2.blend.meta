@@ -25,6 +25,7 @@ ModelImporter:
     100034: UpperLeg_L
     100036: UpperLeg_R
     100038: UpperSpine
+    100040: Cube_001
     400000: Arm_L
     400002: Arm_R
     400004: Armature
@@ -45,7 +46,11 @@ ModelImporter:
     400034: UpperLeg_L
     400036: UpperLeg_R
     400038: UpperSpine
+    400040: Cube_001
+    2300000: Cube_001
+    3300000: Cube_001
     4300000: Cube
+    4300002: Cube_001
     7400000: Default Take
     7400002: CombatCrouchIdle
     7400004: CombatStanceIdle
@@ -129,6 +134,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Material
     second: {fileID: 2100000, guid: faa5184cb62dc7b4f92a7c3d2295a298, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_001
+    second: {fileID: 2100000, guid: 9c7263d56ac174c4287865da5c3aa4ff, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -235,7 +245,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.3547825
+      - time: 0.40376207
         functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
@@ -243,7 +253,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.58806944
+      - time: 0.54725313
         functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
@@ -259,7 +269,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.99538106
+      - time: 1
         functionName: EndAttackingState
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
@@ -415,7 +425,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.31726965
+      - time: 0.32546636
         functionName: ToggleActiveFramesOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
@@ -423,7 +433,7 @@ ModelImporter:
         floatParameter: 5
         intParameter: 0
         messageOptions: 0
-      - time: 0.44725212
+      - time: 0.37758
         functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
@@ -475,8 +485,16 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 1
-        functionName: EndAttackingState
+      - time: 0.5857143
+        functionName: ToggleActiveFramesOn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6291183
+        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -491,16 +509,8 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5
-        functionName: ToggleActiveFramesOn
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.66993463
-        functionName: ToggleActiveFramesOff
+      - time: 1
+        functionName: EndAttackingState
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}
@@ -663,6 +673,22 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.45280188
+        functionName: ToggleActiveFramesOn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.51960784
+        functionName: ToggleActiveFramesOff
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.86606234
         functionName: SetCancelability
         data: 
@@ -673,22 +699,6 @@ ModelImporter:
         messageOptions: 0
       - time: 1
         functionName: EndAttackingState
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.39542484
-        functionName: ToggleActiveFramesOn
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.51960784
-        functionName: ToggleActiveFramesOff
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,
           type: 3}

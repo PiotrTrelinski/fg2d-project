@@ -39,6 +39,7 @@ public class AttackStateController : MonoBehaviour
             controler.isAirDashing = false;
             controler.isDashingForward = false;
             controler.isDashing = false;
+            controler.animator.SetFloat("onBlockModifier", 1);
         }
         //Debug.Log("called" + Time.time);
         //forwardMomentum = 0;

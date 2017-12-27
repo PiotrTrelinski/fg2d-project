@@ -119,15 +119,15 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("CrouchingLeftKick", new AttackPropertiesStructure(14, 55, 17, 0, BlockType.Crouching));
         attackProperties.Add("CrouchingRightKick", new AttackPropertiesStructure(13, 26, 26, 3, BlockType.Standing));
         attackProperties.Add("DashingLeftPunch", new AttackPropertiesStructure(10, 21, 25, 1, BlockType.Standing));
-        attackProperties.Add("DashingRightPunch", new AttackPropertiesStructure(12, 22, 17, 3, BlockType.Standing));
-        attackProperties.Add("DashingLeftKick", new AttackPropertiesStructure(8, 12, 12, 0, BlockType.Crouching));
-        attackProperties.Add("DashingRightKick", new AttackPropertiesStructure(20, 44, 14, 1, BlockType.Standing));
-        attackProperties.Add("JumpingLeftPunch", new AttackPropertiesStructure(16, 40, 10, 3, BlockType.Standing));
+        attackProperties.Add("DashingRightPunch", new AttackPropertiesStructure(12, 21, 16, 3, BlockType.Standing));
+        attackProperties.Add("DashingLeftKick", new AttackPropertiesStructure(8, 13, 20, 0, BlockType.Crouching));
+        attackProperties.Add("DashingRightKick", new AttackPropertiesStructure(20, 44, 22, 1, BlockType.Standing));
+        attackProperties.Add("JumpingLeftPunch", new AttackPropertiesStructure(16, 40, 20, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightPunch", new AttackPropertiesStructure(12, 22, 23, 5, BlockType.Standing));
-        attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 50, 10, 3, BlockType.Standing));
+        attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 50, 20, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightKick", new AttackPropertiesStructure(15, 40, 19, 3, BlockType.Standing));
         attackProperties.Add("BackdashingLeftPunch", new AttackPropertiesStructure(18, 45, 26, 1, BlockType.Standing));
-        attackProperties.Add("BackdashingLeftKick", new AttackPropertiesStructure(20, 39, 13, 2, BlockType.Standing));
+        attackProperties.Add("BackdashingLeftKick", new AttackPropertiesStructure(20, 39, 26, 2, BlockType.Standing));
         attackProperties.Add("RunningRightPunch", new AttackPropertiesStructure(18, 50, 38, 1, BlockType.Standing));
     }
 

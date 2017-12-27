@@ -76,7 +76,7 @@ public class AttackingLimbScript : MonoBehaviour
                         }
                         else if(otherCharacter.CheckBlockCondition(owner.outputBlockType))
                         {
-                           
+                            owner.animator.SetFloat("onBlockModifier", 0.5f);
                             owner.activeFrames = false;
                             var blockSparkPos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
                             GameObject ps = (GameObject)Instantiate(blockSpark, new Vector3(other.transform.root.transform.position.x + (owner.facingLeft?1.2f:-1.2f), blockSparkPos.y, sparkZOffset), Quaternion.identity);
