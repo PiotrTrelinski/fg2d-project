@@ -525,9 +525,9 @@ public class CharacterControler : MonoBehaviour
             animator.SetBool("canFloat", true);
 
         if (!facingLeft)
-            animator.SetFloat("horSpeed", rb.velocity.x);
+            animator.SetFloat("horSpeed", Input.GetAxis("Horizontal" + playerNumberSufix));
         else
-            animator.SetFloat("horSpeed", -rb.velocity.x);
+            animator.SetFloat("horSpeed", -Input.GetAxis("Horizontal" + playerNumberSufix));
 
         animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix)));
 
@@ -537,7 +537,7 @@ public class CharacterControler : MonoBehaviour
             if (!isInStance)
             {
                 if (grounded && !lastFrameGrounded && animator.GetBool("canFloat"))
-                    animator.CrossFade("NeutralIdle", 0.1f);
+                    animator.CrossFade(!isRunning?"NeutralIdle":"NeutralRun", 0.1f);
                 if (!grounded && lastFrameGrounded && animator.GetBool("canFloat"))
                     animator.CrossFade("NeutralFloatTree", 0.1f);
                 if (lastFrameStance && !isDashing)
@@ -674,9 +674,9 @@ public class CharacterControler : MonoBehaviour
                 }
 
             }
-            if (grounded && !isCrouching && !isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxis("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
-            else if (grounded && !isCrouching && isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
-            else if (grounded && isCrouching)
+           // if (grounded && !isCrouching && !isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxis("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
+           //else if (grounded && !isCrouching && isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
+            if (grounded && isCrouching)
             {
                 isRunning = false;
                 rb.velocity = new Vector3(0, rb.velocity.y, 0);

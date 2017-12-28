@@ -89,7 +89,8 @@ public class AttackStateController : MonoBehaviour
     }
     private void OnAnimatorMove()
     {
-        if ((controler.isAttacking && !controler.isAerialAttacking) || controler.isKOd || controler.isInThrow || (controler.isDashing && controler.grounded))
+        //if ((controler.isAttacking && !controler.isAerialAttacking) || controler.isKOd || controler.isInThrow || (controler.isDashing && controler.grounded))
+        if(controler.grounded)
             parentRb.velocity = new Vector3(animator.velocity.x, parentRb.velocity.y, 0);
         //else if((controler.isAttacking && controler.isAerialAttacking) || controler.isKOd)
           //  parentRb.velocity = new Vector3(controler.aerialVelX, parentRb.velocity.y, 0);
