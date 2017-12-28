@@ -86,6 +86,7 @@ public class CharacterControler : MonoBehaviour
     public GameObject miscCollidersObject;
     private Collider[] miscColliders;
     private CharacterControler throwingChar;
+    private GameObject throwParticles;
 
     public Rigidbody rb;
     
@@ -173,6 +174,7 @@ public class CharacterControler : MonoBehaviour
                     ListenForThrowBreak();
                 if (!isInThrow)
                 {
+                    if (throwingChar != null) throwingChar = null;
                     if (!isInHitStun)
                     {
                         consecutiveHits = 0;
@@ -992,12 +994,15 @@ public class CharacterControler : MonoBehaviour
             animator.Play("ThrowReactionBack");
             thrower.animator.Play("CombatThrowBack");
         }
+        throwParticles = (GameObject)Instantiate(Resources.Load("Effects/ThrowParticles/ThrowParticles"), transform);
+        Destroy(throwParticles, 1.1f);
     }
 
     private void ListenForThrowBreak()
     {
         if(Input.GetButtonDown("Left Punch" + playerNumberSufix) || Input.GetButtonDown("Right Punch" + playerNumberSufix))
         {
+            Destroy(throwParticles);
             throwBreakable = false;
             throwingChar.animator.Play("CombatThrowBroken");
             animator.Play("ThrowReactionBreak");
