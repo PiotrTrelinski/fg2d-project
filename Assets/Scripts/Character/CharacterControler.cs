@@ -130,6 +130,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("BackdashingLeftPunch", new AttackPropertiesStructure(18, 45, 26, 1, BlockType.Standing));
         attackProperties.Add("BackdashingLeftKick", new AttackPropertiesStructure(20, 39, 26, 2, BlockType.Standing));
         attackProperties.Add("RunningRightPunch", new AttackPropertiesStructure(18, 50, 38, 1, BlockType.Standing));
+        attackProperties.Add("RunningLeftKick", new AttackPropertiesStructure(20, 50, 40, 2, BlockType.Standing));
     }
 
     void Start()
@@ -399,6 +400,12 @@ public class CharacterControler : MonoBehaviour
                                 crossFadingAttack = true;
                                 animator.CrossFade("CombatRunningRightPunch", 0.1f);
                                 SetOutputAttackProperties(attackProperties["RunningRightPunch"]);
+                            }
+                            else if (isRunning && firstInput == "Left Kick")
+                            {
+                                crossFadingAttack = true;
+                                animator.CrossFade("CombatRunningLeftKick", 0.1f);
+                                SetOutputAttackProperties(attackProperties["RunningLeftKick"]);
                             }
                             else if (firstInput == "Left Punch")
                             {
