@@ -15,15 +15,39 @@ public class MatchSettings {
         }
     }
 
-    public int maxRounds;
-    public int timeLimit;
+    private int maxRounds;
+    private int timeLimit;
+    public int MaxRounds
+    {
+        get { return maxRounds; }
+        set { maxRounds = value; PlayerPrefs.SetInt("RoundsPerMatch", value); }
+    }
+    public int TimeLimit
+    {
+        get { return timeLimit; }
+        set { timeLimit = value; PlayerPrefs.SetInt("TimeLimit", value); }
+    }
     public Color p1Color;
     public Color p2Color;
 
     private MatchSettings()
     {
-        maxRounds = 3;
-        timeLimit = 99;
+        if (PlayerPrefs.HasKey("RoundsPerMatch"))
+        {
+            maxRounds = PlayerPrefs.GetInt("RoundsPerMatch");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("RoundsPerMatch", 3);
+        }
+        if (PlayerPrefs.HasKey("TimeLimit"))
+        {
+            timeLimit = PlayerPrefs.GetInt("TimeLimit");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("TimeLimit", 99);
+        }
         p1Color = Color.blue;
         p2Color = Color.red;
     }

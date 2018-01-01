@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MatchManagerScript : MonoBehaviour
@@ -45,9 +46,10 @@ public class MatchManagerScript : MonoBehaviour
         cameraController.players[1] = player2GameObject;
         hitFeedP1.character = player1;
         hitFeedP2.character = player2;
-        roundCounterP1.maxRounds = MatchSettings.Instance.maxRounds;
+        maxRounds = MatchSettings.Instance.MaxRounds;
+        roundCounterP1.maxRounds = maxRounds;
         roundCounterP1.Initialize();
-        roundCounterP2.maxRounds = MatchSettings.Instance.maxRounds;
+        roundCounterP2.maxRounds = maxRounds;
         roundCounterP2.Initialize();
     }
 	
@@ -91,6 +93,7 @@ public class MatchManagerScript : MonoBehaviour
     {
         //winnerRounds += 1;
         //winnerRoundsText.text = "Rounds won: " + winnerRounds;
+        if (roundsP1 >= maxRounds || roundsP2 >= maxRounds) SceneManager.LoadScene("MainMenu");
         player1.RefillHealth();
         player2.RefillHealth();
         player1.ResetToNeutral();
