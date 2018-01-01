@@ -46,7 +46,7 @@ public class MatchSettings {
         }
         else
         {
-            PlayerPrefs.SetInt("TimeLimit", 99);
+            PlayerPrefs.SetInt("TimeLimit", 60);
         }
         p1Color = Color.blue;
         p2Color = Color.red;
