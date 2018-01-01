@@ -537,7 +537,6 @@ public class CharacterControler : MonoBehaviour
             animator.SetFloat("horSpeed", -Input.GetAxis("Horizontal" + playerNumberSufix));
 
         animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix)));
-
         if (!isAttacking && !isInThrow && !isInHitStun && !isInBlockStun)
         {
             //Neutral jump/land/crouch/neutral transfer

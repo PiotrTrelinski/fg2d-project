@@ -28,7 +28,7 @@ public class MatchManagerScript : MonoBehaviour
     public Text timeCounter;
     //private int winnerRounds;
     //private Text winnerRoundsText;
-    private bool roundFinished = false;
+    private bool roundInProgress = true;
 	// Use this for initialization
 	void Awake ()
     {
@@ -60,44 +60,40 @@ public class MatchManagerScript : MonoBehaviour
 
         maxTime = MatchSettings.Instance.TimeLimit;
         time = maxTime;
+
     }
 	
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        if ((player1.currentHealth <= 0 && player2.currentHealth > 0) || (player2.currentHealth > player1.currentHealth && time <= 0))
+        if (roundInProgress)
         {
-            if (!roundFinished)
+            if ((player1.currentHealth <= 0 && player2.currentHealth > 0) || (player2.currentHealth > player1.currentHealth && time <= 0))
             {
                 //winnerRoundsText = roundsWonP2;
                 //winnerRounds = roundsP2;
                 roundsP2 += 1;
-                roundFinished = true;
+                roundInProgress = false;
                 roundCounterP2.RoundWon();
-                Invoke("StartNewRound", 5);
+                Invoke("StartNewRound", 3);
             }
-        }
-        if ((player2.currentHealth <= 0 && player1.currentHealth > 0) || (player1.currentHealth > player2.currentHealth && time <= 0))
-        {
-            if (!roundFinished)
+            if ((player2.currentHealth <= 0 && player1.currentHealth > 0) || (player1.currentHealth > player2.currentHealth && time <= 0))
             {
                 //winnerRoundsText = roundsWonP1;
                 //winnerRounds = roundsP1;
                 roundsP1 += 1;
-                roundFinished = true;
+                roundInProgress = false;
                 roundCounterP1.RoundWon();
                 Invoke("StartNewRound", 3);
             }
-        }else if((player1.currentHealth <= 0 && player2.currentHealth <= 0) || (player2.currentHealth == player1.currentHealth && time <= 0))
-        {
-            if (!roundFinished)
+            else if ((player1.currentHealth <= 0 && player2.currentHealth <= 0) || (player2.currentHealth == player1.currentHealth && time <= 0))
             {
-                roundFinished = true;
+                roundInProgress = false;
                 Invoke("StartNewRound", 3);
             }
+            if (time >= 0) time -= Time.deltaTime;
+            timeCounter.text = "" + (int)time;
         }
-        if (time >= 0) time -= Time.deltaTime;
-        timeCounter.text = "" + (int)time;
     }
 
     private void StartNewRound()
@@ -113,8 +109,9 @@ public class MatchManagerScript : MonoBehaviour
         player2.transform.position = p2StartingPosition;
         player1.facingLeft = false;
         player2.facingLeft = true;
-        roundFinished = false;
+        roundInProgress = false;
         time = maxTime;
         timeCounter.text = "" + time;
+        roundInProgress = true;
     }
 }
