@@ -123,7 +123,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("DashingRightPunch", new AttackPropertiesStructure(12, 21, 16, 3, BlockType.Standing));
         attackProperties.Add("DashingLeftKick", new AttackPropertiesStructure(8, 13, 20, 0, BlockType.Crouching));
         attackProperties.Add("DashingRightKick", new AttackPropertiesStructure(20, 44, 22, 1, BlockType.Standing));
-        attackProperties.Add("JumpingLeftPunch", new AttackPropertiesStructure(16, 40, 20, 3, BlockType.Standing));
+        attackProperties.Add("JumpingLeftPunch", new AttackPropertiesStructure(16, 33, 20, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightPunch", new AttackPropertiesStructure(12, 22, 23, 5, BlockType.Standing));
         attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 50, 20, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightKick", new AttackPropertiesStructure(15, 40, 19, 3, BlockType.Standing));
@@ -532,11 +532,20 @@ public class CharacterControler : MonoBehaviour
             animator.SetBool("canFloat", true);
 
         if (!facingLeft)
-            animator.SetFloat("horSpeed", Input.GetAxis("Horizontal" + playerNumberSufix));
+            animator.SetFloat("horSpeed", rb.velocity.x);
         else
-            animator.SetFloat("horSpeed", -Input.GetAxis("Horizontal" + playerNumberSufix));
-
-        animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix)));
+            animator.SetFloat("horSpeed", -rb.velocity.x);
+        if (isInStance)
+        {
+            if (!facingLeft)
+                animator.SetFloat("speed", Input.GetAxisRaw("Horizontal" + playerNumberSufix));
+            else
+                animator.SetFloat("speed", -Input.GetAxisRaw("Horizontal" + playerNumberSufix));
+        }
+        else
+        {
+            animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix)));
+        }
         if (!isAttacking && !isInThrow && !isInHitStun && !isInBlockStun)
         {
             //Neutral jump/land/crouch/neutral transfer

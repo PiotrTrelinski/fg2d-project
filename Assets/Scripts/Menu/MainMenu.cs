@@ -10,13 +10,20 @@ public class MainMenu : MonoBehaviour
     public EventSystem eventSystem;
     public Slider roundSlider;
     public Text rounds;
+    public Slider timeLimitSlider;
+    public Text timeLimit;
     public GameObject mainMenu;
-    public GameObject matchSettings;
+    public GameObject settings;
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
-		
-	}
+        mainMenu.SetActive(true);
+        settings.SetActive(false);
+        roundSlider.value = MatchSettings.Instance.MaxRounds;
+        rounds.text = "" + roundSlider.value;
+        timeLimitSlider.value = MatchSettings.Instance.TimeLimit/20;
+        timeLimit.text = "" + timeLimitSlider.value * 20;
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -29,10 +36,10 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("scene");
     }
 
-    public void GoToMatchSettings()
+    public void GoToSettings()
     {
         mainMenu.SetActive(false);
-        matchSettings.SetActive(true);
+        settings.SetActive(true);
         eventSystem.SetSelectedGameObject(roundSlider.gameObject);
     }
 
@@ -47,10 +54,16 @@ public class MainMenu : MonoBehaviour
         MatchSettings.Instance.MaxRounds = (int)roundSlider.value;
     }
 
+    public void ChangeTimeLimitValue()
+    {
+        timeLimit.text = "" + timeLimitSlider.value * 20;
+        MatchSettings.Instance.TimeLimit = (int)timeLimitSlider.value *20;
+    }
+
     public void GoToMainMenu()
     {
         mainMenu.SetActive(true);
-        matchSettings.SetActive(false);
+        settings.SetActive(false);
         eventSystem.SetSelectedGameObject(eventSystem.firstSelectedGameObject);
     }
 }

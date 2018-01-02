@@ -6,6 +6,7 @@ using UnityEngine;
 public class CameraScript : MonoBehaviour {
     public GameObject[] players;
     public float minZ = -15;
+    public float maxZ = -55;
 	// Use this for initialization
 	void Start () {
         //PlayerPrefs.DeleteAll();
@@ -23,6 +24,7 @@ public class CameraScript : MonoBehaviour {
         //    z = -Math.Abs(players[0].transform.position.y - players[1].transform.position.y);
         z = -((players[0].transform.position - players[1].transform.position).magnitude + 8);
         if (z > minZ) z = minZ;
+        if (z < maxZ) z = maxZ;
         transform.position = new Vector3(x, y, z);
 	}
 }

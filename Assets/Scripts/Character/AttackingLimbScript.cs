@@ -79,7 +79,7 @@ public class AttackingLimbScript : MonoBehaviour
                             owner.animator.SetFloat("onBlockModifier", 0.5f);
                             owner.activeFrames = false;
                             var blockSparkPos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
-                            GameObject ps = (GameObject)Instantiate(blockSpark, new Vector3(other.transform.root.transform.position.x + (owner.facingLeft?1.2f:-1.2f), blockSparkPos.y, sparkZOffset), Quaternion.identity);
+                            GameObject ps = (GameObject)Instantiate(blockSpark, new Vector3(other.transform.root.transform.position.x + (otherCharacter.facingLeft?-1.2f:1.2f), blockSparkPos.y, sparkZOffset), Quaternion.identity);
                             Destroy(ps, ps.GetComponent<ParticleSystem>().main.duration);
                             otherCharacter.ApplyBlockStun(owner.outputBlockStun, other.transform.name, owner.outputPushBack);
                         }
