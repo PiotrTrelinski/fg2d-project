@@ -109,7 +109,6 @@ public class MatchManagerScript : MonoBehaviour
         player2.transform.position = p2StartingPosition;
         player1.facingLeft = false;
         player2.facingLeft = true;
-        roundInProgress = false;
         time = maxTime;
         timeCounter.text = "" + time;
         roundInProgress = true;

@@ -120,7 +120,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("CrouchingLeftKick", new AttackPropertiesStructure(14, 55, 17, 0, BlockType.Crouching));
         attackProperties.Add("CrouchingRightKick", new AttackPropertiesStructure(13, 26, 26, 3, BlockType.Standing));
         attackProperties.Add("DashingLeftPunch", new AttackPropertiesStructure(10, 21, 25, 1, BlockType.Standing));
-        attackProperties.Add("DashingRightPunch", new AttackPropertiesStructure(12, 21, 16, 3, BlockType.Standing));
+        attackProperties.Add("DashingRightPunch", new AttackPropertiesStructure(15, 27, 16, 3, BlockType.Standing));
         attackProperties.Add("DashingLeftKick", new AttackPropertiesStructure(8, 13, 20, 0, BlockType.Crouching));
         attackProperties.Add("DashingRightKick", new AttackPropertiesStructure(20, 44, 22, 1, BlockType.Standing));
         attackProperties.Add("JumpingLeftPunch", new AttackPropertiesStructure(16, 33, 20, 3, BlockType.Standing));
@@ -679,14 +679,7 @@ public class CharacterControler : MonoBehaviour
                 {
                     facingLeft = false;                
                 }
-                if (facingLeft)
-                {
-                    transform.eulerAngles = new Vector3(0, 180, 0);
-                }
-                else
-                {
-                    transform.eulerAngles = new Vector3(0, 0, 0);
-                }
+                HandleHorizontalOrientation();
 
             }
            // if (grounded && !isCrouching && !isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxis("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
@@ -714,6 +707,18 @@ public class CharacterControler : MonoBehaviour
       //  HandleDoubleTapDash();
         LimitVelocity();
         HandleGeneralCollider();
+    }
+
+    internal void HandleHorizontalOrientation()
+    {
+        if (facingLeft)
+        {
+            transform.eulerAngles = new Vector3(0, 180, 0);
+        }
+        else
+        {
+            transform.eulerAngles = new Vector3(0, 0, 0);
+        }
     }
 
     private void LimitVelocity()
