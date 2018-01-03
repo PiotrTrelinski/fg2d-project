@@ -13,8 +13,10 @@ public class MatchManagerScript : MonoBehaviour
     private CharacterControler player2;
     private int roundsP1 = 0;
     private int roundsP2 = 0;
-    public Vector3 p1StartingPosition;
-    public Vector3 p2StartingPosition;
+    public Transform p1StartingPositionTransform;
+    public Transform p2StartingPositionTransform;
+    private Vector3 p1StartingPosition;
+    private Vector3 p2StartingPosition;
     public GameObject P1HealthBar;
     public GameObject P2HealthBar;
     public CameraScript cameraController;
@@ -23,17 +25,19 @@ public class MatchManagerScript : MonoBehaviour
     public RoundCounterScript roundCounterP1;
     public RoundCounterScript roundCounterP2;
     private int maxRounds = 3;
+    private int currentRound = 0;
     private float maxTime;
     private float time;
     public Text timeCounter;
+    public Text roundAnnoucements;
     //private int winnerRounds;
     //private Text winnerRoundsText;
-    private bool roundInProgress = true;
+    private bool roundInProgress = false;
 	// Use this for initialization
 	void Awake ()
     {
-        p1StartingPosition = GameObject.Find("P1StartingPosition").transform.position;
-        p2StartingPosition = GameObject.Find("P2StartingPosition").transform.position;
+        p1StartingPosition = p1StartingPositionTransform.position;
+        p2StartingPosition = p2StartingPositionTransform.position;
         player1GameObject = Instantiate(playerPrefab, p1StartingPosition, Quaternion.identity);
         player2GameObject = Instantiate(playerPrefab, p2StartingPosition, Quaternion.identity);
         player1 = player1GameObject.GetComponent<CharacterControler>(); 
@@ -44,6 +48,8 @@ public class MatchManagerScript : MonoBehaviour
         player2.SetupControl(2, MatchSettings.Instance.p2Color);
         player1.facingLeft = false;
         player2.facingLeft = true;
+        player1.HandleHorizontalOrientation();
+        player2.HandleHorizontalOrientation();
 
         cameraController.players = new GameObject[2];
         cameraController.players[0] = player1GameObject;
@@ -61,6 +67,7 @@ public class MatchManagerScript : MonoBehaviour
         maxTime = MatchSettings.Instance.TimeLimit;
         time = maxTime;
 
+        Invoke("SetupNewRound",0.001f);
     }
 	
 	// Update is called once per frame
@@ -75,7 +82,9 @@ public class MatchManagerScript : MonoBehaviour
                 roundsP2 += 1;
                 roundInProgress = false;
                 roundCounterP2.RoundWon();
-                Invoke("StartNewRound", 3);
+                Invoke("SetupNewRound", 3);
+                StartCoroutine("TakePlayerControlAway");
+                roundAnnoucements.text = "Player 2 Wins";
             }
             if ((player2.currentHealth <= 0 && player1.currentHealth > 0) || (player1.currentHealth > player2.currentHealth && time <= 0))
             {
@@ -84,23 +93,28 @@ public class MatchManagerScript : MonoBehaviour
                 roundsP1 += 1;
                 roundInProgress = false;
                 roundCounterP1.RoundWon();
-                Invoke("StartNewRound", 3);
+                Invoke("SetupNewRound", 3);
+                StartCoroutine("TakePlayerControlAway");
+                roundAnnoucements.text = "Player 1 Wins";
             }
             else if ((player1.currentHealth <= 0 && player2.currentHealth <= 0) || (player2.currentHealth == player1.currentHealth && time <= 0))
             {
                 roundInProgress = false;
-                Invoke("StartNewRound", 3);
+                StartCoroutine("TakePlayerControlAway");
+                Invoke("SetupNewRound", 3);
+                roundAnnoucements.text = "Draw";
             }
             if (time >= 0) time -= Time.deltaTime;
             timeCounter.text = "" + (int)time;
         }
     }
 
-    private void StartNewRound()
+    private void SetupNewRound()
     {
         //winnerRounds += 1;
         //winnerRoundsText.text = "Rounds won: " + winnerRounds;
         if (roundsP1 >= maxRounds || roundsP2 >= maxRounds) SceneManager.LoadScene("MainMenu");
+        currentRound++;
         player1.RefillHealth();
         player2.RefillHealth();
         player1.ResetToNeutral();
@@ -109,8 +123,39 @@ public class MatchManagerScript : MonoBehaviour
         player2.transform.position = p2StartingPosition;
         player1.facingLeft = false;
         player2.facingLeft = true;
+        player1.HandleHorizontalOrientation();
+        player2.HandleHorizontalOrientation();
         time = maxTime;
         timeCounter.text = "" + time;
+        AnnounceNewRound();
+        
+    }
+    private void AnnounceNewRound()
+    {
+        roundAnnoucements.text = "Round " + currentRound;
+        StartCoroutine("StartRound");
+    }
+    private IEnumerator TakePlayerControlAway()
+    {
+        yield return new WaitForSeconds(2);
+        player1.controlable = false;
+        player2.controlable = false;
+        player1.ResetToNeutral();
+        player2.ResetToNeutral();
+    }
+    private IEnumerator StartRound()
+    {
+        yield return new WaitForSeconds(3);
         roundInProgress = true;
+        player1.controlable = true;
+        player2.controlable = true;
+        roundAnnoucements.text = "FIGHT!";
+        StartCoroutine("ClearRoundAnnoucement");
+
+    }
+    private IEnumerator ClearRoundAnnoucement()
+    {
+        yield return new WaitForSeconds(0.5f);
+        roundAnnoucements.text = "";  
     }
 }

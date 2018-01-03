@@ -83,6 +83,7 @@ public class CharacterControler : MonoBehaviour
     public bool crossFadingAttack = false;
     public bool wallOnLeft = false;
     public float aerialVelX = 0;
+    public bool controlable = false;
     public GameObject miscCollidersObject;
     private Collider[] miscColliders;
     private CharacterControler throwingChar;
@@ -160,50 +161,53 @@ public class CharacterControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleRigidBodyMass();
-        if (!isKOd)
+        if (controlable)
         {
-            if (currentHealth <= 0)
+            HandleRigidBodyMass();
+            if (!isKOd)
             {
-                HandleKO();
+                if (currentHealth <= 0)
+                {
+                    HandleKO();
+                }
+                else
+                {
+                    HandleThrowKnockout();
+                    GetStanceButton();
+                    if (throwBreakable)
+                        ListenForThrowBreak();
+                    if (!isInThrow)
+                    {
+                        if (throwingChar != null) throwingChar = null;
+                        if (!isInHitStun)
+                        {
+                            consecutiveHits = 0;
+                            comboDamage = 0;
+                            GatherCombatInputs();
+                            if (!isInBlockStun)
+                            {
+                                if (isStuckToWall)
+                                    HandleWallInteraction();
+                                else
+                                    HandleMovement();
+                                HandleCombat();
+                            }
+                            else
+                                HandlePushBack();
+                            HandleDoubleTapDash();
+                        }
+                        else
+                        {
+                            HandlePushBack();
+                        }
+                    }
+                    HandleAnimation();
+                }
             }
             else
             {
-                HandleThrowKnockout();
-                GetStanceButton();
-                if (throwBreakable)
-                    ListenForThrowBreak();
-                if (!isInThrow)
-                {
-                    if (throwingChar != null) throwingChar = null;
-                    if (!isInHitStun)
-                    {
-                        consecutiveHits = 0;
-                        comboDamage = 0;
-                        GatherCombatInputs();
-                        if (!isInBlockStun)
-                        {
-                            if (isStuckToWall)
-                                HandleWallInteraction();
-                            else
-                                HandleMovement();
-                            HandleCombat();
-                        }
-                        else
-                            HandlePushBack();
-                        HandleDoubleTapDash();
-                    }
-                    else
-                    {
-                        HandlePushBack();
-                    } 
-                }
-                HandleAnimation();
+                HandleGeneralCollider();
             }
-        }
-        else
-        {
-            HandleGeneralCollider();
         }
     }
 
@@ -857,32 +861,6 @@ public class CharacterControler : MonoBehaviour
     {
         currentHealth = maxHealth;
     }
-    internal void ResetToNeutral()
-    {
-        isInThrow = false;
-        isInHitStun = false;
-        isInBlockStun = false;
-        isInStance = false;
-        isAerialAttacking = false;
-        isCancelable = true;
-        isAttacking = false;
-        isCrouching = false;
-        isDashing = false;
-        isDashingForward = false;
-        airDashExpanded = false;
-        isRunning = false;
-        crossFadingAttack = false;
-        activeFrames = false;
-        isKOd = false;
-        outgoingAttackLanded = false;
-        throwBreakable = false;
-        isAirDashing = false;
-        StopWallInteraction();
-
-        HandleGeneralCollider();
-        animator.SetBool("canFloat", true);
-        animator.Play("NeutralIdle");
-    }
     private void SetOutputAttackProperties(AttackPropertiesStructure attackProperty)
     {
         outputDamage = attackProperty.damage;
@@ -1034,7 +1012,34 @@ public class CharacterControler : MonoBehaviour
         crossFadingAttack = false;
         StopWallInteraction();
     }
+    internal void ResetToNeutral()
+    {
+        isInThrow = false;
+        isInHitStun = false;
+        isInBlockStun = false;
+        isInStance = false;
+        isAerialAttacking = false;
+        isCancelable = true;
+        isAttacking = false;
+        isCrouching = false;
+        isDashing = false;
+        isDashingForward = false;
+        airDashExpanded = false;
+        isRunning = false;
+        crossFadingAttack = false;
+        activeFrames = false;
+        isKOd = false;
+        outgoingAttackLanded = false;
+        throwBreakable = false;
+        isAirDashing = false;
+        rb.velocity = Vector3.zero;
 
+        StopWallInteraction();
+        HandleAnimation();
+        HandleGeneralCollider();
+        animator.SetBool("canFloat", true);
+        animator.Play("NeutralIdle");
+    }
     //private void OnCollisionEnter(Collision collision)
     //{
     //    StopAerialInterference(collision);
