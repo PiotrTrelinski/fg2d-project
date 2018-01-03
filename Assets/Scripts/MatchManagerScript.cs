@@ -83,7 +83,6 @@ public class MatchManagerScript : MonoBehaviour
                 roundInProgress = false;
                 roundCounterP2.RoundWon();
                 Invoke("SetupNewRound", 3);
-                StartCoroutine("TakePlayerControlAway");
                 roundAnnoucements.text = "Player 2 Wins";
             }
             if ((player2.currentHealth <= 0 && player1.currentHealth > 0) || (player1.currentHealth > player2.currentHealth && time <= 0))
@@ -94,13 +93,11 @@ public class MatchManagerScript : MonoBehaviour
                 roundInProgress = false;
                 roundCounterP1.RoundWon();
                 Invoke("SetupNewRound", 3);
-                StartCoroutine("TakePlayerControlAway");
                 roundAnnoucements.text = "Player 1 Wins";
             }
             else if ((player1.currentHealth <= 0 && player2.currentHealth <= 0) || (player2.currentHealth == player1.currentHealth && time <= 0))
             {
                 roundInProgress = false;
-                StartCoroutine("TakePlayerControlAway");
                 Invoke("SetupNewRound", 3);
                 roundAnnoucements.text = "Draw";
             }
@@ -113,10 +110,14 @@ public class MatchManagerScript : MonoBehaviour
     {
         //winnerRounds += 1;
         //winnerRoundsText.text = "Rounds won: " + winnerRounds;
-        if (roundsP1 >= maxRounds || roundsP2 >= maxRounds) SceneManager.LoadScene("MainMenu");
+        if (roundsP1 >= maxRounds || roundsP2 >= maxRounds)
+        {
+            StartCoroutine("ReturnToMenu");
+            return;
+        }
         currentRound++;
-        player1.RefillHealth();
-        player2.RefillHealth();
+        player1.controlable = false;
+        player2.controlable = false;
         player1.ResetToNeutral();
         player2.ResetToNeutral();
         player1.transform.position = p1StartingPosition;
@@ -135,14 +136,14 @@ public class MatchManagerScript : MonoBehaviour
         roundAnnoucements.text = "Round " + currentRound;
         StartCoroutine("StartRound");
     }
-    private IEnumerator TakePlayerControlAway()
-    {
-        yield return new WaitForSeconds(2);
-        player1.controlable = false;
-        player2.controlable = false;
-        player1.ResetToNeutral();
-        player2.ResetToNeutral();
-    }
+    //private IEnumerator TakePlayerControlAway()
+    //{
+    //    yield return new WaitForSeconds(2);
+    //    player1.controlable = false;
+    //    player2.controlable = false;
+    //    player1.ResetToNeutral();
+    //    player2.ResetToNeutral();
+    //}
     private IEnumerator StartRound()
     {
         yield return new WaitForSeconds(3);
@@ -158,4 +159,11 @@ public class MatchManagerScript : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         roundAnnoucements.text = "";  
     }
+    private IEnumerator ReturnToMenu()
+    {
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("MainMenu");
+
+    }
+
 }

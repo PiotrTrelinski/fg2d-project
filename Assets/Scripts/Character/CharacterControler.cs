@@ -19,6 +19,7 @@ public class CharacterControler : MonoBehaviour
     public float walkSpeed = 5;
     public float runSpeed = 15;
     public float speed = 0;
+    public float animationMovementSpeed;
     private float lastTime = 0;
     private bool facingLeftDash = false;
     private bool isRunning = false;
@@ -539,17 +540,7 @@ public class CharacterControler : MonoBehaviour
             animator.SetFloat("horSpeed", rb.velocity.x);
         else
             animator.SetFloat("horSpeed", -rb.velocity.x);
-        if (isInStance)
-        {
-            if (!facingLeft)
-                animator.SetFloat("speed", Input.GetAxisRaw("Horizontal" + playerNumberSufix));
-            else
-                animator.SetFloat("speed", -Input.GetAxisRaw("Horizontal" + playerNumberSufix));
-        }
-        else
-        {
-            animator.SetFloat("speed", Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix)));
-        }
+        animator.SetFloat("speed", animationMovementSpeed);
         if (!isAttacking && !isInThrow && !isInHitStun && !isInBlockStun)
         {
             //Neutral jump/land/crouch/neutral transfer
@@ -686,8 +677,19 @@ public class CharacterControler : MonoBehaviour
                 HandleHorizontalOrientation();
 
             }
-           // if (grounded && !isCrouching && !isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxis("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
-           //else if (grounded && !isCrouching && isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
+            if (isInStance)
+            {
+                if (!facingLeft)
+                    animationMovementSpeed = Input.GetAxisRaw("Horizontal" + playerNumberSufix);
+                else
+                    animationMovementSpeed = -Input.GetAxisRaw("Horizontal" + playerNumberSufix);
+            }
+            else
+            {
+                animationMovementSpeed = Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix));
+            }
+            // if (grounded && !isCrouching && !isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxis("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
+            //else if (grounded && !isCrouching && isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
             if (grounded && isCrouching)
             {
                 isRunning = false;
@@ -971,6 +973,9 @@ public class CharacterControler : MonoBehaviour
     {
         
         throwingChar = thrower;
+        rb.velocity = Vector3.zero;
+        throwingChar.rb.velocity = Vector3.zero;
+
         animator.SetBool("canFloat", false);
         throwingChar.animator.SetBool("canFloat", false);
         StandardIssueCombatActionConnectSwitches();
@@ -1014,6 +1019,7 @@ public class CharacterControler : MonoBehaviour
     }
     internal void ResetToNeutral()
     {
+        currentHealth = maxHealth;
         isInThrow = false;
         isInHitStun = false;
         isInBlockStun = false;
@@ -1033,6 +1039,7 @@ public class CharacterControler : MonoBehaviour
         throwBreakable = false;
         isAirDashing = false;
         rb.velocity = Vector3.zero;
+        animationMovementSpeed = 0;
 
         StopWallInteraction();
         HandleAnimation();

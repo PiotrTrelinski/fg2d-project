@@ -28,7 +28,13 @@ public class MainMenu : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        
+        if(eventSystem.currentSelectedGameObject == null)
+        {
+            if (mainMenu.activeInHierarchy)
+                eventSystem.SetSelectedGameObject(eventSystem.firstSelectedGameObject);
+            else if (settings.activeInHierarchy)
+                eventSystem.SetSelectedGameObject(roundSlider.gameObject);
+        }
 	}
 
     public void StartMatch()
