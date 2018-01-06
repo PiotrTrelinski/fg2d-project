@@ -80,6 +80,7 @@ public class CharacterControler : MonoBehaviour
     public Collider crouchingCollider;
     public Collider wallInteractionCollider;
     //helpers
+    private int invert = 1;
     private string playerNumberSufix = " P";
     public bool crossFadingAttack = false;
     public bool wallOnLeft = false;
@@ -149,6 +150,7 @@ public class CharacterControler : MonoBehaviour
             miscColliders[i] = collider;
             i++;
         }
+        invert = PlayerPrefs.GetInt("InvertYAxisP" + playerNumber);
     }
 
     public void SetupControl(int playerNumber, Color color)
@@ -631,7 +633,7 @@ public class CharacterControler : MonoBehaviour
             else animator.CrossFade("CombatStanceAirDashBackward", 0.05f);
             StopWallInteraction();
         }
-        if(Input.GetAxisRaw("Vertical" + playerNumberSufix) > 0)
+        if(Input.GetAxisRaw("Vertical" + playerNumberSufix) * invert > 0)
         {
             rb.velocity = new Vector3(wallOnLeft ? dashVertForce : -dashVertForce, jumpForce, 0);
             isAirDashing = true;
@@ -639,7 +641,7 @@ public class CharacterControler : MonoBehaviour
             else animator.CrossFade("CombatStanceAirDashBackward", 0.05f);
             StopWallInteraction();
         }
-        if (Input.GetAxisRaw("Vertical" + playerNumberSufix) < 0)
+        if (Input.GetAxisRaw("Vertical" + playerNumberSufix) * invert < 0)
         {
             animator.SetBool("canFloat", true);
             animator.CrossFade("StanceFloatTree", 0.1f);
@@ -695,14 +697,14 @@ public class CharacterControler : MonoBehaviour
                 isRunning = false;
                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
             }
-            if (grounded && Input.GetAxis("Vertical" + playerNumberSufix) > 0 && !isDashing)
+            if (grounded && Input.GetAxis("Vertical" + playerNumberSufix) * invert > 0 && !isDashing)
             {
                 grounded = false;
                 isDashingForward = false;
                 rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * speed, isInStance? stanceJumpForce :jumpForce, 0));
             }
             
-            if (grounded && Input.GetAxisRaw("Vertical" + playerNumberSufix) < 0)
+            if (grounded && Input.GetAxisRaw("Vertical" + playerNumberSufix) * invert < 0)
             {
                 isCrouching = true;
             }
