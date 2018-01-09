@@ -290,7 +290,7 @@ public class CharacterControler : MonoBehaviour
     }
     private void GetStanceButton()
     {
-        if (Input.GetButtonDown("Stance Trigger" + playerNumberSufix) && !isInBlockStun)
+        if (stanceTrigger && !isInBlockStun)
         {
             if (isInStance)
             {
