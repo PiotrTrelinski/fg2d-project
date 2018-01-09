@@ -32,22 +32,8 @@ public class MatchSettings {
 
     private MatchSettings()
     {
-        if (PlayerPrefs.HasKey("RoundsPerMatch"))
-        {
-            maxRounds = PlayerPrefs.GetInt("RoundsPerMatch");
-        }
-        else
-        {
-            PlayerPrefs.SetInt("RoundsPerMatch", 3);
-        }
-        if (PlayerPrefs.HasKey("TimeLimit"))
-        {
-            timeLimit = PlayerPrefs.GetInt("TimeLimit");
-        }
-        else
-        {
-            PlayerPrefs.SetInt("TimeLimit", 60);
-        }
+        maxRounds = PlayerPrefs.GetInt("RoundsPerMatch", 3);
+        timeLimit = PlayerPrefs.GetInt("TimeLimit", 60);
         p1Color = Color.blue;
         p2Color = Color.red;
     }

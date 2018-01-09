@@ -79,6 +79,14 @@ public class CharacterControler : MonoBehaviour
     public Collider standingCollider;
     public Collider crouchingCollider;
     public Collider wallInteractionCollider;
+    //inputs
+    private float horizontalAxis = 0;
+    private float verticalAxis = 0;
+    private bool leftPunch = false;
+    private bool rightPunch = false;
+    private bool leftKick = false;
+    private bool rightKick = false;
+    private bool stanceTrigger = false;
     //helpers
     private int invert = 1;
     private string playerNumberSufix = " P";
@@ -164,6 +172,7 @@ public class CharacterControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GatherInput();
         if (controlable)
         {
             HandleRigidBodyMass();
@@ -214,6 +223,16 @@ public class CharacterControler : MonoBehaviour
         }
     }
 
+    private void GatherInput()
+    {
+        horizontalAxis = Input.GetAxisRaw("Horizontal" + playerNumberSufix);
+        verticalAxis = Input.GetAxisRaw("Vertical" + playerNumberSufix);
+        rightPunch = Input.GetButtonDown("Right Punch" + playerNumberSufix);
+        leftPunch = Input.GetButtonDown("Left Punch" + playerNumberSufix);
+        rightKick = Input.GetButtonDown("Right Kick" + playerNumberSufix);
+        leftKick = Input.GetButtonDown("Left Kick" + playerNumberSufix);
+        stanceTrigger = Input.GetButtonDown("Stance Trigger" + playerNumberSufix);
+    }
 
     private void HandleRigidBodyMass()
     {
@@ -289,19 +308,19 @@ public class CharacterControler : MonoBehaviour
     {
         if (firstInput == null)
         {
-            if (Input.GetButtonDown("Left Punch" + playerNumberSufix))
+            if (leftPunch)
             {
                 firstInput = "Left Punch";
             }
-            else if (Input.GetButtonDown("Right Punch" + playerNumberSufix))
+            else if (rightPunch)
             {
                 firstInput = "Right Punch";
             }
-            else if (Input.GetButtonDown("Left Kick" + playerNumberSufix))
+            else if (leftKick)
             {
                 firstInput = "Left Kick";
             }
-            else if (Input.GetButtonDown("Right Kick" + playerNumberSufix))
+            else if (rightKick)
             {
                 firstInput = "Right Kick";
             }
@@ -311,22 +330,22 @@ public class CharacterControler : MonoBehaviour
         }
         if (firstInput != null && secondInput == null && Time.time - lastCombatInputTime <= 0.05f)
         {
-            if (Input.GetButtonDown("Left Punch" + playerNumberSufix))
+            if (leftPunch)
             {
                 if (firstInput != "Left Punch")
                     secondInput = "Left Punch";
             }
-            if (Input.GetButtonDown("Right Punch" + playerNumberSufix))
+            if (rightPunch)
             {
                 if (firstInput != "Right Punch")
                     secondInput = "Right Punch";
             }
-            if (Input.GetButtonDown("Left Kick" + playerNumberSufix))
+            if (leftKick)
             {
                 if (firstInput != "Left Kick")
                     secondInput = "Left Kick";
             }
-            if (Input.GetButtonDown("Right Kick" + playerNumberSufix))
+            if (rightKick)
             {
                 if (firstInput != "Right Kick")
                     secondInput = "Right Kick";
@@ -599,8 +618,8 @@ public class CharacterControler : MonoBehaviour
     public bool WallInteractionCondition(Collider other)
     {
         return !grounded && !isAttacking && !isInBlockStun && !isInHitStun && !isInThrow && !isStuckToWall
-            && ((transform.position.x > other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) < 0)
-            || (transform.position.x < other.transform.position.x && Input.GetAxis("Horizontal" + playerNumberSufix) > 0));
+            && ((transform.position.x > other.transform.position.x && horizontalAxis < 0)
+            || (transform.position.x < other.transform.position.x && horizontalAxis > 0));
     }
     public void StartWallInteraction(Collider wall)
     {
@@ -624,8 +643,8 @@ public class CharacterControler : MonoBehaviour
     private void HandleWallInteraction()
     {
         rb.velocity = new Vector3(0, 0 , 0);
-        if ((wallOnLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0)
-            || (!wallOnLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0))
+        if ((wallOnLeft && horizontalAxis > 0)
+            || (!wallOnLeft && horizontalAxis < 0))
         {         
             rb.velocity = new Vector3(wallOnLeft?dashHorForce:-dashHorForce, dashVertForce, 0);
             isAirDashing = true;
@@ -633,7 +652,7 @@ public class CharacterControler : MonoBehaviour
             else animator.CrossFade("CombatStanceAirDashBackward", 0.05f);
             StopWallInteraction();
         }
-        if(Input.GetAxisRaw("Vertical" + playerNumberSufix) * invert > 0)
+        if(verticalAxis * invert > 0)
         {
             rb.velocity = new Vector3(wallOnLeft ? dashVertForce : -dashVertForce, jumpForce, 0);
             isAirDashing = true;
@@ -641,7 +660,7 @@ public class CharacterControler : MonoBehaviour
             else animator.CrossFade("CombatStanceAirDashBackward", 0.05f);
             StopWallInteraction();
         }
-        if (Input.GetAxisRaw("Vertical" + playerNumberSufix) * invert < 0)
+        if (verticalAxis * invert < 0)
         {
             animator.SetBool("canFloat", true);
             animator.CrossFade("StanceFloatTree", 0.1f);
@@ -667,12 +686,12 @@ public class CharacterControler : MonoBehaviour
             if (!isInStance)
             {
 
-                if ((grounded || (!isInStance && !isAirDashing)) && Input.GetAxis("Horizontal" + playerNumberSufix) < 0)
+                if ((grounded || (!isInStance && !isAirDashing)) && horizontalAxis < 0)
                 {
                     facingLeft = true;
                     
                 }
-                else if ((grounded || (!isInStance && !isAirDashing)) && Input.GetAxis("Horizontal" + playerNumberSufix) > 0)
+                else if ((grounded || (!isInStance && !isAirDashing)) && horizontalAxis > 0)
                 {
                     facingLeft = false;                
                 }
@@ -682,13 +701,13 @@ public class CharacterControler : MonoBehaviour
             if (isInStance)
             {
                 if (!facingLeft)
-                    animationMovementSpeed = Input.GetAxisRaw("Horizontal" + playerNumberSufix);
+                    animationMovementSpeed = horizontalAxis;
                 else
-                    animationMovementSpeed = -Input.GetAxisRaw("Horizontal" + playerNumberSufix);
+                    animationMovementSpeed = -horizontalAxis;
             }
             else
             {
-                animationMovementSpeed = Math.Abs(Input.GetAxis("Horizontal" + playerNumberSufix));
+                animationMovementSpeed = Math.Abs(horizontalAxis);
             }
             // if (grounded && !isCrouching && !isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxis("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
             //else if (grounded && !isCrouching && isInStance && !isDashing) rb.velocity = new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * speed, rb.velocity.y, 0);
@@ -697,14 +716,14 @@ public class CharacterControler : MonoBehaviour
                 isRunning = false;
                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
             }
-            if (grounded && Input.GetAxis("Vertical" + playerNumberSufix) * invert > 0 && !isDashing)
+            if (grounded && verticalAxis * invert > 0 && !isDashing)
             {
                 grounded = false;
                 isDashingForward = false;
-                rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * speed, isInStance? stanceJumpForce :jumpForce, 0));
+                rb.velocity = (new Vector3(horizontalAxis * speed, isInStance? stanceJumpForce :jumpForce, 0));
             }
             
-            if (grounded && Input.GetAxisRaw("Vertical" + playerNumberSufix) * invert < 0)
+            if (grounded && verticalAxis * invert < 0)
             {
                 isCrouching = true;
             }
@@ -791,8 +810,8 @@ public class CharacterControler : MonoBehaviour
 
     private void HandleDoubleTapDash()
     {
-        if (((Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0 && facingLeftDash) 
-            ^ (Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0 && !facingLeftDash)) 
+        if (((horizontalAxis < 0 && facingLeftDash) 
+            ^ (horizontalAxis > 0 && !facingLeftDash)) 
             && Time.time - lastTime < 0.15f && !isStuckToWall && isCancelable)
         {
             if(!isInStance)
@@ -800,7 +819,7 @@ public class CharacterControler : MonoBehaviour
             if (isInStance && grounded && !isDashing && !isInBlockStun && grounded)
             {
                 isDashing = true;
-                if((facingLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) < 0) ||(!facingLeft && Input.GetAxisRaw("Horizontal" + playerNumberSufix) > 0))
+                if((facingLeft && horizontalAxis < 0) ||(!facingLeft && horizontalAxis > 0))
                 {
                     isDashingForward = true;
                     animator.CrossFade("CombatStanceDashForward", 0.1f);
@@ -812,7 +831,7 @@ public class CharacterControler : MonoBehaviour
             }
             if(!grounded && !airDashExpanded)
             {
-                rb.velocity = (new Vector3(Input.GetAxisRaw("Horizontal" + playerNumberSufix) * dashHorForce, dashVertForce, 0));
+                rb.velocity = (new Vector3(horizontalAxis * dashHorForce, dashVertForce, 0));
                 airDashExpanded = true;
                 isAirDashing = true;
                 if((facingLeft && rb.velocity.x < 0) || (!facingLeft && rb.velocity.x > 0))
@@ -822,14 +841,14 @@ public class CharacterControler : MonoBehaviour
             }
         }
 
-        if (isRunning && Input.GetAxis("Horizontal" + playerNumberSufix) != 0)
+        if (isRunning && horizontalAxis != 0)
             speed = runSpeed;
         else
         {
             speed = walkSpeed;
             isRunning = false;
         }
-        if (Input.GetAxisRaw("Horizontal" + playerNumberSufix) == 0 && lastFrameHorizontalAxis != 0)
+        if (horizontalAxis == 0 && lastFrameHorizontalAxis != 0)
         {
             lastTime = Time.time;
             if (lastFrameHorizontalAxis > 0) facingLeftDash = false;
@@ -837,7 +856,7 @@ public class CharacterControler : MonoBehaviour
         }
 
         if (Input.GetAxisRaw("Horizontal" + playerNumberSufix) != 0)
-            lastFrameHorizontalAxis = Input.GetAxis("Horizontal" + playerNumberSufix);
+            lastFrameHorizontalAxis = horizontalAxis;
         else
             lastFrameHorizontalAxis = 0;
     }
@@ -880,8 +899,8 @@ public class CharacterControler : MonoBehaviour
                && ((block == BlockType.Standing && !isCrouching)
                ^ (block == BlockType.Crouching && isCrouching)
                || block == BlockType.Either)
-               && ((facingLeft && Input.GetAxis("Horizontal" + playerNumberSufix) >= 0)
-               ^ (!facingLeft && Input.GetAxis("Horizontal" + playerNumberSufix) <= 0));
+               && ((facingLeft && horizontalAxis >= 0)
+               ^ (!facingLeft && horizontalAxis <= 0));
     }
 
     internal void ApplyBlockStun(float inputBlockStun, string hitZone, float pushBack)
@@ -1005,7 +1024,7 @@ public class CharacterControler : MonoBehaviour
 
     private void ListenForThrowBreak()
     {
-        if(Input.GetButtonDown("Left Punch" + playerNumberSufix) || Input.GetButtonDown("Right Punch" + playerNumberSufix))
+        if(leftPunch || rightPunch)
         {
             Destroy(throwParticles);
             throwBreakable = false;

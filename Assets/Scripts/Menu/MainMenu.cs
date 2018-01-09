@@ -25,16 +25,8 @@ public class MainMenu : MonoBehaviour
         rounds.text = "" + roundSlider.value;
         timeLimitSlider.value = MatchSettings.Instance.TimeLimit/20;
         timeLimit.text = "" + timeLimitSlider.value * 20;
-        if (!PlayerPrefs.HasKey("InvertYAxisP1"))
-        {
-            PlayerPrefs.SetInt("InvertYAxisP1", 1);
-        }
-        invertYAxisP1.isOn = (PlayerPrefs.GetInt("InvertYAxisP1") == -1);
-        if (!PlayerPrefs.HasKey("InvertYAxisP2"))
-        {
-            PlayerPrefs.SetInt("InvertYAxisP2", 1);
-        }
-        invertYAxisP2.isOn = (PlayerPrefs.GetInt("InvertYAxisP2") == -1);
+        invertYAxisP1.isOn = (PlayerPrefs.GetInt("InvertYAxisP1", 1) == -1);
+        invertYAxisP2.isOn = (PlayerPrefs.GetInt("InvertYAxisP2", 1) == -1);
     }
 	
 	// Update is called once per frame
