@@ -7,7 +7,7 @@ public class AttackingLimbScript : MonoBehaviour
 
     private CharacterControler owner;
     public string limbLabel;
-    private GameObject hitSpark;
+    private GameObject hitSparkNormal, hitSparkMedium, hitSparkHeavy;
     private GameObject blockSpark;
     private float sparkZOffset = -0.8f;
 
@@ -15,7 +15,9 @@ public class AttackingLimbScript : MonoBehaviour
 	void Awake ()
     {
         owner = GetComponentInParent<CharacterControler>();
-        hitSpark = (GameObject)Resources.Load("Effects/HitSparkNormalHit");
+        hitSparkNormal = (GameObject)Resources.Load("Effects/HitSparkNormalHit");
+        hitSparkMedium = (GameObject)Resources.Load("Effects/HitSparkMediumHit");
+        hitSparkHeavy = (GameObject)Resources.Load("Effects/HitSparkHeavyHit");
         blockSpark = (GameObject)Resources.Load("Effects/BlockSpark");
     }
 	
@@ -88,6 +90,8 @@ public class AttackingLimbScript : MonoBehaviour
                             owner.activeFrames = false;
                             owner.outgoingAttackLanded = true;
                             var hitSparkPos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(gameObject.GetComponent<Collider>().ClosestPointOnBounds(other.transform.position));
+                            GameObject hitSpark;
+                            if (owner.outputDamage > 18) hitSpark = hitSparkHeavy; else if (owner.outputDamage > 14) hitSpark = hitSparkMedium; else hitSpark = hitSparkNormal;
                             GameObject ps =(GameObject) Instantiate(hitSpark, new Vector3(hitSparkPos.x, hitSparkPos.y, sparkZOffset), Quaternion.identity);
                             Destroy(ps, ps.GetComponent<ParticleSystem>().main.duration);
                             otherCharacter.ApplyHitStun(owner.outputHitStun, other.transform.name, owner.outputPushBack, owner.outputDamage);
