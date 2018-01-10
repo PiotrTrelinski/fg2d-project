@@ -128,7 +128,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("StandingRightKick", new AttackPropertiesStructure(16, 35, 20, 1, BlockType.Standing));
         attackProperties.Add("CrouchingLeftPunch", new AttackPropertiesStructure(6, 18, 17, 1, BlockType.Either));
         attackProperties.Add("CrouchingRightPunch", new AttackPropertiesStructure(18, 42, 23, 2, BlockType.Standing));
-        attackProperties.Add("CrouchingLeftKick", new AttackPropertiesStructure(14, 55, 17, 0, BlockType.Crouching));
+        attackProperties.Add("CrouchingLeftKick", new AttackPropertiesStructure(14, 55, 52, 0, BlockType.Crouching));
         attackProperties.Add("CrouchingRightKick", new AttackPropertiesStructure(13, 26, 26, 3, BlockType.Standing));
         attackProperties.Add("DashingLeftPunch", new AttackPropertiesStructure(10, 21, 25, 1, BlockType.Standing));
         attackProperties.Add("DashingRightPunch", new AttackPropertiesStructure(15, 27, 16, 3, BlockType.Standing));
@@ -139,10 +139,10 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 50, 20, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightKick", new AttackPropertiesStructure(15, 40, 19, 3, BlockType.Standing));
         attackProperties.Add("BackdashingLeftPunch", new AttackPropertiesStructure(18, 45, 26, 1, BlockType.Standing));
-        attackProperties.Add("BackdashingLeftKick", new AttackPropertiesStructure(20, 39, 26, 2, BlockType.Standing));
+        attackProperties.Add("BackdashingLeftKick", new AttackPropertiesStructure(20, 39, 22, 2, BlockType.Standing));
         attackProperties.Add("RunningRightPunch", new AttackPropertiesStructure(18, 50, 38, 1, BlockType.Standing));
         attackProperties.Add("RunningLeftKick", new AttackPropertiesStructure(20, 50, 40, 2, BlockType.Standing));
-        attackProperties.Add("RunningRightKick", new AttackPropertiesStructure(30, 51, 40, 0, BlockType.Standing));
+        attackProperties.Add("RunningRightKick", new AttackPropertiesStructure(30, 51, 52, 0, BlockType.Standing));
     }
 
     void Start()
@@ -175,6 +175,8 @@ public class CharacterControler : MonoBehaviour
     {
         if (controlable)
             GatherInput();
+        else
+            ClearInput();
         HandleRigidBodyMass();
         if (!isKOd)
         {
@@ -233,6 +235,16 @@ public class CharacterControler : MonoBehaviour
         stanceTrigger = Input.GetButtonDown("Stance Trigger" + playerNumberSufix);
     }
 
+    private void ClearInput()
+    {
+        horizontalAxis = 0;
+        verticalAxis = 0;
+        rightPunch = false;
+        leftPunch = false;
+        rightKick = false;
+        leftKick = false;
+        stanceTrigger = false;
+    }
     private void HandleRigidBodyMass()
     {
         if (!grounded)

@@ -3001,7 +3001,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 1
+      - time: 0.97938144
         functionName: EndAttackingState
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 9d1d1f8a81b7e2f499becd25b3a026d4,

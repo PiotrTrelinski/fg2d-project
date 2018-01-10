@@ -615,9 +615,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.25000012
   m_TransitionOffset: 0
-  m_ExitTime: 0.72727275
+  m_ExitTime: 1.0006734
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -933,9 +933,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.25000006
   m_TransitionOffset: 0
-  m_ExitTime: 0.6666667
+  m_ExitTime: 1.0010973
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -3197,13 +3197,13 @@ AnimatorState:
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
   m_Mirror: 0
-  m_SpeedParameterActive: 0
+  m_SpeedParameterActive: 1
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400152, guid: 5ab9263622b86bb40a809a929c0f196d, type: 3}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: onBlockModifier
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
