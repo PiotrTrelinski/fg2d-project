@@ -100,7 +100,7 @@ public class CharacterControler : MonoBehaviour
     private GameObject throwParticles;
 
     public Rigidbody rb;
-    
+
 
     //attack properties stucture
     public struct AttackPropertiesStructure
@@ -142,6 +142,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("BackdashingLeftKick", new AttackPropertiesStructure(20, 39, 26, 2, BlockType.Standing));
         attackProperties.Add("RunningRightPunch", new AttackPropertiesStructure(18, 50, 38, 1, BlockType.Standing));
         attackProperties.Add("RunningLeftKick", new AttackPropertiesStructure(20, 50, 40, 2, BlockType.Standing));
+        attackProperties.Add("RunningRightKick", new AttackPropertiesStructure(30, 51, 40, 0, BlockType.Standing));
     }
 
     void Start()
@@ -168,58 +169,56 @@ public class CharacterControler : MonoBehaviour
         playerNumberSufix += playerNumber;
         playerRenderer.material.color = color;
     }
-    
+
     // Update is called once per frame
     void Update()
     {
-        GatherInput();
         if (controlable)
+            GatherInput();
+        HandleRigidBodyMass();
+        if (!isKOd)
         {
-            HandleRigidBodyMass();
-            if (!isKOd)
+            if (currentHealth <= 0)
             {
-                if (currentHealth <= 0)
-                {
-                    HandleKO();
-                }
-                else
-                {
-                    HandleThrowKnockout();
-                    GetStanceButton();
-                    if (throwBreakable)
-                        ListenForThrowBreak();
-                    if (!isInThrow)
-                    {
-                        if (throwingChar != null) throwingChar = null;
-                        if (!isInHitStun)
-                        {
-                            consecutiveHits = 0;
-                            comboDamage = 0;
-                            GatherCombatInputs();
-                            if (!isInBlockStun)
-                            {
-                                if (isStuckToWall)
-                                    HandleWallInteraction();
-                                else
-                                    HandleMovement();
-                                HandleCombat();
-                            }
-                            else
-                                HandlePushBack();
-                            HandleDoubleTapDash();
-                        }
-                        else
-                        {
-                            HandlePushBack();
-                        }
-                    }
-                    HandleAnimation();
-                }
+                HandleKO();
             }
             else
             {
-                HandleGeneralCollider();
+                HandleThrowKnockout();
+                GetStanceButton();
+                if (throwBreakable)
+                    ListenForThrowBreak();
+                if (!isInThrow)
+                {
+                    if (throwingChar != null) throwingChar = null;
+                    if (!isInHitStun)
+                    {
+                        consecutiveHits = 0;
+                        comboDamage = 0;
+                        GatherCombatInputs();
+                        if (!isInBlockStun)
+                        {
+                            if (isStuckToWall)
+                                HandleWallInteraction();
+                            else
+                                HandleMovement();
+                            HandleCombat();
+                        }
+                        else
+                            HandlePushBack();
+                        HandleDoubleTapDash();
+                    }
+                    else
+                    {
+                        HandlePushBack();
+                    }
+                }
+                HandleAnimation();
             }
+        }
+        else
+        {
+            HandleGeneralCollider();
         }
     }
 
@@ -409,13 +408,13 @@ public class CharacterControler : MonoBehaviour
                                     SetOutputAttackProperties(attackProperties["DashingRightKick"]);
                                 }
                             }
-                            else if(isDashing && firstInput == "Left Punch")
+                            else if (isDashing && firstInput == "Left Punch")
                             {
                                 crossFadingAttack = true;
                                 animator.CrossFade("CombatBackdashingLeftPunch", 0.01f);
                                 SetOutputAttackProperties(attackProperties["BackdashingLeftPunch"]);
                             }
-                            else if(isDashing && firstInput == "Left Kick")
+                            else if (isDashing && firstInput == "Left Kick")
                             {
                                 crossFadingAttack = true;
                                 animator.CrossFade("CombatBackdashingLeftKick", 0.01f);
@@ -432,6 +431,12 @@ public class CharacterControler : MonoBehaviour
                                 crossFadingAttack = true;
                                 animator.CrossFade("CombatRunningLeftKick", 0.1f);
                                 SetOutputAttackProperties(attackProperties["RunningLeftKick"]);
+                            }
+                            else if (isRunning && firstInput == "Right Kick")
+                            {
+                                crossFadingAttack = true;
+                                animator.CrossFade("CombatRunningRightKick", 0.1f);
+                                SetOutputAttackProperties(attackProperties["RunningRightKick"]);
                             }
                             else if (firstInput == "Left Punch")
                             {
@@ -568,7 +573,7 @@ public class CharacterControler : MonoBehaviour
             if (!isInStance)
             {
                 if (grounded && !lastFrameGrounded && animator.GetBool("canFloat"))
-                    animator.CrossFade(!isRunning?"NeutralIdle":"NeutralRun", 0.1f);
+                    animator.CrossFade(!isRunning ? "NeutralIdle" : "NeutralRun", 0.1f);
                 if (!grounded && lastFrameGrounded && animator.GetBool("canFloat"))
                     animator.CrossFade("NeutralFloatTree", 0.1f);
                 if (lastFrameStance && !isDashing)
@@ -627,7 +632,7 @@ public class CharacterControler : MonoBehaviour
         HandleGeneralCollider();
         animator.SetBool("canFloat", false);
         airDashExpanded = false;
-        
+
         rb.useGravity = false;
         if (wall.transform.position.x < transform.position.x) wallOnLeft = true;
         else wallOnLeft = false;
@@ -642,17 +647,17 @@ public class CharacterControler : MonoBehaviour
 
     private void HandleWallInteraction()
     {
-        rb.velocity = new Vector3(0, 0 , 0);
+        rb.velocity = new Vector3(0, 0, 0);
         if ((wallOnLeft && horizontalAxis > 0)
             || (!wallOnLeft && horizontalAxis < 0))
-        {         
-            rb.velocity = new Vector3(wallOnLeft?dashHorForce:-dashHorForce, dashVertForce, 0);
+        {
+            rb.velocity = new Vector3(wallOnLeft ? dashHorForce : -dashHorForce, dashVertForce, 0);
             isAirDashing = true;
-            if((facingLeft && !wallOnLeft) || (!facingLeft && wallOnLeft)) animator.CrossFade("CombatStanceAirDashForward", 0.05f);
+            if ((facingLeft && !wallOnLeft) || (!facingLeft && wallOnLeft)) animator.CrossFade("CombatStanceAirDashForward", 0.05f);
             else animator.CrossFade("CombatStanceAirDashBackward", 0.05f);
             StopWallInteraction();
         }
-        if(verticalAxis * invert > 0)
+        if (verticalAxis * invert > 0)
         {
             rb.velocity = new Vector3(wallOnLeft ? dashVertForce : -dashVertForce, jumpForce, 0);
             isAirDashing = true;
@@ -689,11 +694,11 @@ public class CharacterControler : MonoBehaviour
                 if ((grounded || (!isInStance && !isAirDashing)) && horizontalAxis < 0)
                 {
                     facingLeft = true;
-                    
+
                 }
                 else if ((grounded || (!isInStance && !isAirDashing)) && horizontalAxis > 0)
                 {
-                    facingLeft = false;                
+                    facingLeft = false;
                 }
                 HandleHorizontalOrientation();
 
@@ -720,18 +725,18 @@ public class CharacterControler : MonoBehaviour
             {
                 grounded = false;
                 isDashingForward = false;
-                rb.velocity = (new Vector3(horizontalAxis * speed, isInStance? stanceJumpForce :jumpForce, 0));
+                rb.velocity = (new Vector3(horizontalAxis * speed, isInStance ? stanceJumpForce : jumpForce, 0));
             }
-            
+
             if (grounded && verticalAxis * invert < 0)
             {
                 isCrouching = true;
             }
             else
                 isCrouching = false;
-            
+
         }
-      //  HandleDoubleTapDash();
+        //  HandleDoubleTapDash();
         LimitVelocity();
         HandleGeneralCollider();
     }
@@ -810,16 +815,16 @@ public class CharacterControler : MonoBehaviour
 
     private void HandleDoubleTapDash()
     {
-        if (((horizontalAxis < 0 && facingLeftDash) 
-            ^ (horizontalAxis > 0 && !facingLeftDash)) 
+        if (((horizontalAxis < 0 && facingLeftDash)
+            ^ (horizontalAxis > 0 && !facingLeftDash))
             && Time.time - lastTime < 0.15f && !isStuckToWall && isCancelable)
         {
-            if(!isInStance)
+            if (!isInStance)
                 isRunning = true;
             if (isInStance && grounded && !isDashing && !isInBlockStun && grounded)
             {
                 isDashing = true;
-                if((facingLeft && horizontalAxis < 0) ||(!facingLeft && horizontalAxis > 0))
+                if ((facingLeft && horizontalAxis < 0) || (!facingLeft && horizontalAxis > 0))
                 {
                     isDashingForward = true;
                     animator.CrossFade("CombatStanceDashForward", 0.1f);
@@ -829,12 +834,12 @@ public class CharacterControler : MonoBehaviour
                     animator.CrossFade("CombatStanceDashBackward", 0.1f);
                 }
             }
-            if(!grounded && !airDashExpanded)
+            if (!grounded && !airDashExpanded)
             {
                 rb.velocity = (new Vector3(horizontalAxis * dashHorForce, dashVertForce, 0));
                 airDashExpanded = true;
                 isAirDashing = true;
-                if((facingLeft && rb.velocity.x < 0) || (!facingLeft && rb.velocity.x > 0))
+                if ((facingLeft && rb.velocity.x < 0) || (!facingLeft && rb.velocity.x > 0))
                     animator.CrossFade("CombatStanceAirDashForward", 0.05f);
                 else
                     animator.CrossFade("CombatStanceAirDashBackward", 0.05f);
@@ -855,7 +860,7 @@ public class CharacterControler : MonoBehaviour
             else if (lastFrameHorizontalAxis < 0) facingLeftDash = true;
         }
 
-        if (Input.GetAxisRaw("Horizontal" + playerNumberSufix) != 0)
+        if (horizontalAxis != 0)
             lastFrameHorizontalAxis = horizontalAxis;
         else
             lastFrameHorizontalAxis = 0;
@@ -910,7 +915,7 @@ public class CharacterControler : MonoBehaviour
         inputPushBack = pushBack;
 
         animator.SetFloat("blockStun", (60 / inputBlockStun));
-//        Debug.Log("blockstun:" + ((60 / inputBlockStun) + " inframes:" + (60 / ((60 / inputBlockStun)))));
+        //        Debug.Log("blockstun:" + ((60 / inputBlockStun) + " inframes:" + (60 / ((60 / inputBlockStun)))));
         animator.SetBool("canFloat", false);
         string animationToPlay = "";
         if (hitZone == "Head" || hitZone == "UpperSpine" || hitZone == "Arm_R" || hitZone == "Arm_L")
@@ -932,20 +937,21 @@ public class CharacterControler : MonoBehaviour
 
     internal void ApplyHitStun(float inputHitStun, string hitZone, float pushBack, float damage)
     {
+        HandleHorizontalOrientation();
         StandardIssueCombatActionConnectSwitches();
         isInHitStun = true;
         inputPushBack = pushBack;
 
-        currentHealth -=(int)( damage * (((1-(consecutiveHits*0.2f)) < 0.2)? (0.2f):(1 - (consecutiveHits * 0.2f))));
-        comboDamage +=(int)( damage * (((1 - (consecutiveHits * 0.2f)) < 0.2) ? (0.2f):(1 - (consecutiveHits * 0.2f))));
+        currentHealth -= (int)(damage * (((1 - (consecutiveHits * 0.2f)) < 0.2) ? (0.2f) : (1 - (consecutiveHits * 0.2f))));
+        comboDamage += (int)(damage * (((1 - (consecutiveHits * 0.2f)) < 0.2) ? (0.2f) : (1 - (consecutiveHits * 0.2f))));
 
-      //  Debug.Log("hit:"+consecutiveHits + " combo damage:" + comboDamage);
-        animator.SetFloat("hitStun", (60/(inputHitStun - consecutiveHits)));
-       // Debug.Log("hitstun:" + ((60 / (inputHitStun - consecutiveHits))) + " inframes:" + (60/((60 /(inputHitStun - consecutiveHits)))));
+        //  Debug.Log("hit:"+consecutiveHits + " combo damage:" + comboDamage);
+        animator.SetFloat("hitStun", (60 / (inputHitStun - consecutiveHits)));
+        // Debug.Log("hitstun:" + ((60 / (inputHitStun - consecutiveHits))) + " inframes:" + (60/((60 /(inputHitStun - consecutiveHits)))));
         consecutiveHits += 1;
         animator.SetBool("canFloat", false);
         string animationToPlay = "";
-        if (hitZone == "Head" || hitZone == "UpperSpine" || hitZone == "Arm_R"|| hitZone == "Arm_L")
+        if (hitZone == "Head" || hitZone == "UpperSpine" || hitZone == "Arm_R" || hitZone == "Arm_L")
         {
             if (hitFromFront)
             {
@@ -962,7 +968,7 @@ public class CharacterControler : MonoBehaviour
                     animationToPlay = "HitReactionCrouchingHighBack";
             }
         }
-        else if(hitZone == "LowerSpine" || hitZone == "UpperLeg_L" || hitZone == "UpperLeg_R")
+        else if (hitZone == "LowerSpine" || hitZone == "UpperLeg_L" || hitZone == "UpperLeg_R")
         {
             if (hitFromFront)
             {
@@ -979,7 +985,7 @@ public class CharacterControler : MonoBehaviour
                     animationToPlay = "HitReactionCrouchingMidBack";
             }
         }
-        else if(hitZone == "LowerLeg_L")
+        else if (hitZone == "LowerLeg_L")
         {
             animationToPlay = "HitReactionStandingLowL";
         }
@@ -992,7 +998,7 @@ public class CharacterControler : MonoBehaviour
 
     public void StartTheThrow(CharacterControler thrower)
     {
-        
+
         throwingChar = thrower;
         rb.velocity = Vector3.zero;
         throwingChar.rb.velocity = Vector3.zero;
@@ -1024,7 +1030,7 @@ public class CharacterControler : MonoBehaviour
 
     private void ListenForThrowBreak()
     {
-        if(leftPunch || rightPunch)
+        if (leftPunch || rightPunch)
         {
             Destroy(throwParticles);
             throwBreakable = false;

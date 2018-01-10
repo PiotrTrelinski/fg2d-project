@@ -87,11 +87,18 @@ public class AttackStateController : MonoBehaviour
         if(!controler.isCrouching)
             controler.isCancelable = false;
     }
+    private void TurnAround()
+    {
+       controler.facingLeft = !controler.facingLeft;
+    }
     private void OnAnimatorMove()
     {
         //if ((controler.isAttacking && !controler.isAerialAttacking) || controler.isKOd || controler.isInThrow || (controler.isDashing && controler.grounded))
-        if(controler.grounded && !controler.isInHitStun && !controler.isInBlockStun)
+        if (controler.grounded && !controler.isInHitStun && !controler.isInBlockStun)
+        {
             parentRb.velocity = new Vector3(animator.velocity.x, parentRb.velocity.y, 0);
+            if(controler.isAttacking)transform.parent.rotation *= animator.deltaRotation;
+        }
         //else if((controler.isAttacking && controler.isAerialAttacking) || controler.isKOd)
           //  parentRb.velocity = new Vector3(controler.aerialVelX, parentRb.velocity.y, 0);
         //     else
