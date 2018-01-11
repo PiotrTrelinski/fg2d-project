@@ -84,8 +84,10 @@ public class AttackStateController : MonoBehaviour
     }
     private void TurnOffCancelability()
     {
-        if(!controler.isCrouching)
+        if (!controler.isCrouching)
             controler.isCancelable = false;
+        else
+            controler.isCancelable = true;
     }
     private void TurnAround()
     {
