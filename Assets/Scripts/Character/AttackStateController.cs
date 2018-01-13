@@ -6,7 +6,7 @@ using UnityEngine;
 public class AttackStateController : MonoBehaviour
 {
     private Animator animator;
-    private CharacterControler controler;
+    private CharacterControler controller;
     private Rigidbody parentRb;
     private float forwardMomentum;
 	// Use this for initialization
@@ -14,7 +14,7 @@ public class AttackStateController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         parentRb = transform.parent.GetComponent<Rigidbody>();
-        controler = transform.parent.GetComponent<CharacterControler>();
+        controller = transform.parent.GetComponent<CharacterControler>();
     }
 	
 	// Update is called once per frame
@@ -26,20 +26,21 @@ public class AttackStateController : MonoBehaviour
 
     private void EndAttackingState()
     {
-        if (!controler.crossFadingAttack)
+        if (!controller.crossFadingAttack)
         {
-            controler.isAttacking = false;
-            controler.isCancelable = true;
-            controler.isAerialAttacking = false;
-            controler.isInHitStun = false;
-            controler.activeFrames = false;
-            controler.outgoingAttackLanded = false;
-            controler.isInThrow = false;
-            controler.throwBreakable = false;
-            controler.isAirDashing = false;
-            controler.isDashingForward = false;
-            controler.isDashing = false;
-            controler.animator.SetFloat("onBlockModifier", 1);
+            controller.countered = false;
+            controller.isAttacking = false;
+            controller.isCancelable = true;
+            controller.isAerialAttacking = false;
+            controller.isInHitStun = false;
+            controller.activeFrames = false;
+            controller.outgoingAttackLanded = false;
+            controller.isInThrow = false;
+            controller.throwBreakable = false;
+            controller.isAirDashing = false;
+            controller.isDashingForward = false;
+            controller.isDashing = false;
+            controller.animator.SetFloat("onBlockModifier", 1);
         }
         //Debug.Log("called" + Time.time);
         //forwardMomentum = 0;
@@ -47,59 +48,59 @@ public class AttackStateController : MonoBehaviour
 
     private void EndBlockingState()
     {
-        controler.isInBlockStun = false;
+        controller.isInBlockStun = false;
         EndAttackingState();
     }
 
     private void ToggleCrouch()
     {
-        controler.isCrouching = ! controler.isCrouching;
-        controler.HandleGeneralCollider();
+        controller.isCrouching = ! controller.isCrouching;
+        controller.HandleGeneralCollider();
     }
     private void ToggleActiveFramesOn()
     {
-        controler.activeFrames = true;
+        controller.activeFrames = true;
     }
     private void ToggleActiveFramesOff()
     {
-        controler.activeFrames = false;
-        controler.isDashing = false;
-        controler.isDashingForward = false;
-        controler.crossFadingAttack = false;
+        controller.activeFrames = false;
+        controller.isDashing = false;
+        controller.isDashingForward = false;
+        controller.crossFadingAttack = false;
     }
     private void ToggleThrowUnbreakable()
     {
-        controler.throwBreakable = false;
+        controller.throwBreakable = false;
     }
     private void SetCancelability()
     {
-        if(controler.outgoingAttackLanded)
-            controler.isCancelable = true;
+        if(controller.outgoingAttackLanded)
+            controller.isCancelable = true;
     }
     private void ApplyDamage(float damage)
     {
-        controler.currentHealth -= damage;
-        controler.consecutiveHits += 1;
-        controler.comboDamage += damage;
+        controller.currentHealth -= damage;
+        controller.consecutiveHits += 1;
+        controller.comboDamage += damage;
     }
     private void TurnOffCancelability()
     {
-        if (!controler.isCrouching)
-            controler.isCancelable = false;
+        if (!controller.isCrouching)
+            controller.isCancelable = false;
         else
-            controler.isCancelable = true;
+            controller.isCancelable = true;
     }
     private void TurnAround()
     {
-       controler.facingLeft = !controler.facingLeft;
+       controller.facingLeft = !controller.facingLeft;
     }
     private void OnAnimatorMove()
     {
         //if ((controler.isAttacking && !controler.isAerialAttacking) || controler.isKOd || controler.isInThrow || (controler.isDashing && controler.grounded))
-        if (controler.grounded && !controler.isInHitStun && !controler.isInBlockStun)
+        if (controller.grounded && !controller.isInHitStun && !controller.isInBlockStun)
         {
             parentRb.velocity = new Vector3(animator.velocity.x, parentRb.velocity.y, 0);
-            if(controler.isAttacking)transform.parent.rotation *= animator.deltaRotation;
+            if(controller.isAttacking)transform.parent.rotation *= animator.deltaRotation;
         }
         //else if((controler.isAttacking && controler.isAerialAttacking) || controler.isKOd)
           //  parentRb.velocity = new Vector3(controler.aerialVelX, parentRb.velocity.y, 0);

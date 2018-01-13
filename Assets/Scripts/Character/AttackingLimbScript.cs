@@ -7,7 +7,7 @@ public class AttackingLimbScript : MonoBehaviour
 
     private CharacterControler owner;
     public string limbLabel;
-    private GameObject hitSparkNormal, hitSparkMedium, hitSparkHeavy;
+    private GameObject hitSparkNormal, hitSparkMedium, hitSparkHeavy, counterSpark;
     private GameObject blockSpark;
     private float sparkZOffset = -0.8f;
 
@@ -18,6 +18,7 @@ public class AttackingLimbScript : MonoBehaviour
         hitSparkNormal = (GameObject)Resources.Load("Effects/HitSparkNormalHit");
         hitSparkMedium = (GameObject)Resources.Load("Effects/HitSparkMediumHit");
         hitSparkHeavy = (GameObject)Resources.Load("Effects/HitSparkHeavyHit");
+        counterSpark = (GameObject)Resources.Load("Effects/CounterSpark");
         blockSpark = (GameObject)Resources.Load("Effects/BlockSpark");
     }
 	
@@ -91,7 +92,15 @@ public class AttackingLimbScript : MonoBehaviour
                             owner.outgoingAttackLanded = true;
                             var hitSparkPos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(gameObject.GetComponent<Collider>().ClosestPointOnBounds(other.transform.position));
                             GameObject hitSpark;
-                            if (owner.outputDamage > 18) hitSpark = hitSparkHeavy; else if (owner.outputDamage > 14) hitSpark = hitSparkMedium; else hitSpark = hitSparkNormal;
+                            if (otherCharacter.isAttacking)
+                            {
+                                otherCharacter.countered = true;
+                                var cs = Instantiate(counterSpark, new Vector3(hitSparkPos.x, hitSparkPos.y, sparkZOffset), Quaternion.identity);
+                                Destroy(cs, cs.GetComponent<ParticleSystem>().main.duration);
+                            }
+                            else otherCharacter.countered = false;
+                            var damage = (int)((owner.countered ? 1.2f : 1) * owner.outputDamage);
+                            if (damage > 18) hitSpark = hitSparkHeavy; else if (damage > 14) hitSpark = hitSparkMedium; else hitSpark = hitSparkNormal;
                             GameObject ps =(GameObject) Instantiate(hitSpark, new Vector3(hitSparkPos.x, hitSparkPos.y, sparkZOffset), Quaternion.identity);
                             Destroy(ps, ps.GetComponent<ParticleSystem>().main.duration);
                             otherCharacter.ApplyHitStun(owner.outputHitStun, other.transform.name, owner.outputPushBack, owner.outputDamage);

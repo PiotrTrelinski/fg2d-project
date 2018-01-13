@@ -94,6 +94,7 @@ public class CharacterControler : MonoBehaviour
     public bool wallOnLeft = false;
     public float aerialVelX = 0;
     public bool controlable = false;
+    public bool countered = false;
     public GameObject miscCollidersObject;
     private Collider[] miscColliders;
     private CharacterControler throwingChar;
@@ -267,6 +268,7 @@ public class CharacterControler : MonoBehaviour
     {
         if (!isInThrow)
         {
+            rb.velocity = Vector3.zero;
             isKOd = true;
             if (hitFromFront)
                 animator.CrossFade("KnockOutFront", 0.3f);
@@ -950,12 +952,15 @@ public class CharacterControler : MonoBehaviour
     internal void ApplyHitStun(float inputHitStun, string hitZone, float pushBack, float damage)
     {
         HandleHorizontalOrientation();
+
         StandardIssueCombatActionConnectSwitches();
         isInHitStun = true;
         inputPushBack = pushBack;
 
-        currentHealth -= (int)(damage * (((1 - (consecutiveHits * 0.2f)) < 0.2) ? (0.2f) : (1 - (consecutiveHits * 0.2f))));
-        comboDamage += (int)(damage * (((1 - (consecutiveHits * 0.2f)) < 0.2) ? (0.2f) : (1 - (consecutiveHits * 0.2f))));
+        var dmg = (int)((countered?1.2f:1)*(damage * (((1 - (consecutiveHits * 0.2f)) < 0.2) ? (0.2f) : (1 - (consecutiveHits * 0.2f)))));
+
+        currentHealth -= dmg;
+        comboDamage += dmg;
 
         //  Debug.Log("hit:"+consecutiveHits + " combo damage:" + comboDamage);
         animator.SetFloat("hitStun", (60 / (inputHitStun - consecutiveHits)));
@@ -1042,6 +1047,7 @@ public class CharacterControler : MonoBehaviour
 
     private void ListenForThrowBreak()
     {
+        rb.velocity = Vector3.zero;
         if (leftPunch || rightPunch)
         {
             Destroy(throwParticles);
