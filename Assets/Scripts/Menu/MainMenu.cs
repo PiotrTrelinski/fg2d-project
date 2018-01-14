@@ -43,7 +43,7 @@ public class MainMenu : MonoBehaviour
 
     public void StartMatch()
     {
-        SceneManager.LoadScene("scene");
+        SceneManager.LoadScene("CharacterSelect");
     }
 
     public void GoToSettings()
