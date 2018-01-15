@@ -103,7 +103,7 @@ public class CharacterSelect : MonoBehaviour
 
     private IEnumerator StartGame()
     {
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(2);
         SceneManager.LoadScene("scene");
     }
     private IEnumerator SwitchCooldownP1()
