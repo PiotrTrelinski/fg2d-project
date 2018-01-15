@@ -21,6 +21,15 @@ public class CharacterSelect : MonoBehaviour
     private bool p1Switchable = true;
     private bool p2Switchable = true;
 
+    private enum CharacterSelectStage
+    {
+        SideChosing,
+        CharacterPicking,
+        StagePicking
+    }
+
+    private CharacterSelectStage stage;
+
 	// Use this for initialization
 	void Awake ()
     {
@@ -28,10 +37,19 @@ public class CharacterSelect : MonoBehaviour
         //cursorP2.transform.position = new Vector3(colors[p2CursorPosition].transform.position.x + 15 / (scaler.referenceResolution.x / Screen.width), cursorP2.transform.position.y, cursorP2.transform.position.z);
         p1Renderer.material.color = colors[p1CursorPosition].GetComponent<Image>().color;
         p2Renderer.material.color = colors[p2CursorPosition].GetComponent<Image>().color;
+        stage = CharacterSelectStage.CharacterPicking;
     }
 	
 	// Update is called once per frame
 	void Update ()
+    {
+        if(stage == CharacterSelectStage.CharacterPicking)
+        {
+            CharacterPicking();
+        }
+    }
+
+    private void CharacterPicking()
     {
         if (Input.GetButtonDown("Left Kick P1") && !p1Selected)
         {
@@ -39,10 +57,15 @@ public class CharacterSelect : MonoBehaviour
             var color = colors[p1CursorPosition].GetComponent<Image>().color;
             MatchSettings.Instance.p1Color = color;
             var colorOffset = (p1CursorPosition == 0) ? (-50 / 255f) : (50 / 255f);
+            color.r = color.r - colorOffset;
+            color.g = color.g - colorOffset;
+            color.b = color.b - colorOffset;
             if (!p2Selected)
-                colors[p1CursorPosition].GetComponent<Image>().color = new Color(color.r - colorOffset, color.g - colorOffset, color.b - colorOffset);
+                colors[p1CursorPosition].GetComponent<Image>().color = color;
             else
                 StartCoroutine("StartGame");
+            IEnumerator coroutine = SelectionEffect(cursorP1.GetComponentInChildren<Text>());
+            StartCoroutine(coroutine);
         }
         if (Input.GetButtonDown("Left Kick P2") && !p2Selected)
         {
@@ -50,10 +73,15 @@ public class CharacterSelect : MonoBehaviour
             var color = colors[p2CursorPosition].GetComponent<Image>().color;
             MatchSettings.Instance.p2Color = color;
             var colorOffset = (p2CursorPosition == 0) ? (-50 / 255f) : (50 / 255f);
+            color.r = color.r - colorOffset;
+            color.g = color.g - colorOffset;
+            color.b = color.b - colorOffset;
             if (!p1Selected)
-                colors[p2CursorPosition].GetComponent<Image>().color = new Color(color.r - colorOffset, color.g - colorOffset, color.b - colorOffset);
+                colors[p2CursorPosition].GetComponent<Image>().color = color;
             else
                 StartCoroutine("StartGame");
+            IEnumerator coroutine = SelectionEffect(cursorP2.GetComponentInChildren<Text>());
+            StartCoroutine(coroutine);
         }
         if (Input.GetAxisRaw("Horizontal P1") != 0 && p1Switchable && !p1Selected)
         {
@@ -70,11 +98,12 @@ public class CharacterSelect : MonoBehaviour
             cursorP2.transform.position = new Vector3(colors[p2CursorPosition].transform.position.x + 15 / (scaler.referenceResolution.x / Screen.width), cursorP2.transform.position.y, cursorP2.transform.position.z);
             p2Renderer.material.color = colors[p2CursorPosition].GetComponent<Image>().color;
             StartCoroutine("SwitchCooldownP2");
-        }            
+        }
     }
+
     private IEnumerator StartGame()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(4);
         SceneManager.LoadScene("scene");
     }
     private IEnumerator SwitchCooldownP1()
@@ -88,5 +117,16 @@ public class CharacterSelect : MonoBehaviour
         p2Switchable = false;
         yield return new WaitForSeconds(0.2f);
         p2Switchable = true;
+    }
+    private IEnumerator SelectionEffect(Text text)
+    {
+        text.fontSize = 40;
+        while (text.fontSize > 30)
+        {
+            var f = text.fontSize;
+            text.fontSize = f - 1;
+            yield return new WaitForFixedUpdate();
+        }
+        
     }
 }
