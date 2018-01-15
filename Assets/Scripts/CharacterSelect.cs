@@ -13,6 +13,8 @@ public class CharacterSelect : MonoBehaviour
     public GameObject cursorP2;
     public Renderer p1Renderer;
     public Renderer p2Renderer;
+    public Text annoucementText;
+
 
     private int p1CursorPosition = 0;
     private int p2CursorPosition = 7;
@@ -63,7 +65,10 @@ public class CharacterSelect : MonoBehaviour
             if (!p2Selected)
                 colors[p1CursorPosition].GetComponent<Image>().color = color;
             else
+            {
                 StartCoroutine("StartGame");
+                StartCoroutine("GameStartCountdown");
+            }
             IEnumerator coroutine = SelectionEffect(cursorP1.GetComponentInChildren<Text>());
             StartCoroutine(coroutine);
         }
@@ -79,7 +84,10 @@ public class CharacterSelect : MonoBehaviour
             if (!p1Selected)
                 colors[p2CursorPosition].GetComponent<Image>().color = color;
             else
+            {
                 StartCoroutine("StartGame");
+                StartCoroutine("GameStartCountdown");
+            }
             IEnumerator coroutine = SelectionEffect(cursorP2.GetComponentInChildren<Text>());
             StartCoroutine(coroutine);
         }
@@ -103,9 +111,20 @@ public class CharacterSelect : MonoBehaviour
 
     private IEnumerator StartGame()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
         SceneManager.LoadScene("scene");
     }
+    private IEnumerator GameStartCountdown()
+    {
+        annoucementText.text = "GAME STARTING IN \n3";
+        yield return new WaitForSeconds(1);
+        annoucementText.text = "GAME STARTING IN \n2";
+        yield return new WaitForSeconds(1);
+        annoucementText.text = "GAME STARTING IN \n1";
+        yield return new WaitForSeconds(1);
+        annoucementText.text = "GAME STARTING IN \n0";
+    }
+
     private IEnumerator SwitchCooldownP1()
     {
         p1Switchable = false;
