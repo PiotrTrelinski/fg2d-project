@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -14,7 +15,14 @@ public class CharacterSelect : MonoBehaviour
     public Renderer p1Renderer;
     public Renderer p2Renderer;
     public Text annoucementText;
+    public GameObject stageSelectPanel;
+    public GameObject characterSelectPanel;
+    public EventSystem eventSystem;
+    public GameObject firstStage;
 
+    public RawImage stagePicture;
+    public Texture[] stageImages;
+    
 
     private int p1CursorPosition = 0;
     private int p2CursorPosition = 7;
@@ -22,6 +30,7 @@ public class CharacterSelect : MonoBehaviour
     private bool p2Selected = false;
     private bool p1Switchable = true;
     private bool p2Switchable = true;
+    private string selectedStage = "";
 
     private enum CharacterSelectStage
     {
@@ -40,14 +49,23 @@ public class CharacterSelect : MonoBehaviour
         p1Renderer.material.color = colors[p1CursorPosition].GetComponent<Image>().color;
         p2Renderer.material.color = colors[p2CursorPosition].GetComponent<Image>().color;
         stage = CharacterSelectStage.CharacterPicking;
+        stageSelectPanel.SetActive(false);
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if(stage == CharacterSelectStage.CharacterPicking)
-        {
+        if (stage == CharacterSelectStage.CharacterPicking)
+        { 
             CharacterPicking();
+        }
+        if(stage == CharacterSelectStage.StagePicking)
+        {
+            if (eventSystem.enabled && eventSystem.currentSelectedGameObject == null)
+            {
+                if (stageSelectPanel.activeInHierarchy)
+                    eventSystem.SetSelectedGameObject(firstStage);
+            }
         }
     }
 
@@ -58,7 +76,7 @@ public class CharacterSelect : MonoBehaviour
             p1Selected = true;
             var color = colors[p1CursorPosition].GetComponent<Image>().color;
             MatchSettings.Instance.p1Color = color;
-            var colorOffset = (p1CursorPosition == 0) ? (-50 / 255f) : (50 / 255f);
+            var colorOffset = (p1CursorPosition == 0) ? (-100 / 255f) : (100 / 255f);
             color.r = color.r - colorOffset;
             color.g = color.g - colorOffset;
             color.b = color.b - colorOffset;
@@ -66,8 +84,7 @@ public class CharacterSelect : MonoBehaviour
                 colors[p1CursorPosition].GetComponent<Image>().color = color;
             else
             {
-                StartCoroutine("StartGame");
-                StartCoroutine("GameStartCountdown");
+                SwitchToStageSelect();
             }
             IEnumerator coroutine = SelectionEffect(cursorP1.GetComponentInChildren<Text>());
             StartCoroutine(coroutine);
@@ -77,7 +94,7 @@ public class CharacterSelect : MonoBehaviour
             p2Selected = true;
             var color = colors[p2CursorPosition].GetComponent<Image>().color;
             MatchSettings.Instance.p2Color = color;
-            var colorOffset = (p2CursorPosition == 0) ? (-50 / 255f) : (50 / 255f);
+            var colorOffset = (p2CursorPosition == 0) ? (-100 / 255f) : (100 / 255f);
             color.r = color.r - colorOffset;
             color.g = color.g - colorOffset;
             color.b = color.b - colorOffset;
@@ -85,8 +102,7 @@ public class CharacterSelect : MonoBehaviour
                 colors[p2CursorPosition].GetComponent<Image>().color = color;
             else
             {
-                StartCoroutine("StartGame");
-                StartCoroutine("GameStartCountdown");
+                SwitchToStageSelect();
             }
             IEnumerator coroutine = SelectionEffect(cursorP2.GetComponentInChildren<Text>());
             StartCoroutine(coroutine);
@@ -109,10 +125,25 @@ public class CharacterSelect : MonoBehaviour
         }
     }
 
+    private void SwitchToStageSelect()
+    {
+        stage = CharacterSelectStage.StagePicking;
+        annoucementText.text = "CHOSE THE STAGE";
+        characterSelectPanel.SetActive(false);
+        stageSelectPanel.SetActive(true);
+        eventSystem.SetSelectedGameObject(firstStage);
+    }
+
+    private void StartMatch()
+    {
+        StartCoroutine("StartGame");
+        StartCoroutine("GameStartCountdown");
+    }
+
     private IEnumerator StartGame()
     {
         yield return new WaitForSeconds(4);
-        SceneManager.LoadScene("scene");
+        SceneManager.LoadScene(selectedStage);
     }
     private IEnumerator GameStartCountdown()
     {
@@ -147,5 +178,16 @@ public class CharacterSelect : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         
+    }
+
+    public void OnStageSelect(int stageNumber)
+    {
+        selectedStage = "Stage" + stageNumber;
+        eventSystem.enabled = false;
+        StartMatch();
+    }
+    public void OnStageHighlight(int stageNumber)
+    {
+        stagePicture.texture = stageImages[stageNumber - 1];
     }
 }
