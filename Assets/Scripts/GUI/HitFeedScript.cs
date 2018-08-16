@@ -19,7 +19,7 @@ public class HitFeedScript : MonoBehaviour {
     {
         if (character.isInHitStun || (character.isInThrow && character.consecutiveHits >= 1))
         {
-            text.text = character.consecutiveHits + " HIT!\n" + character.comboDamage + "\n" + (character.countered ? "COUNTER!": "");
+            text.text = character.consecutiveHits + " HIT!\n" + character.comboDamage + "\n" /*+ (character.countered ? "COUNTER!": "")*/;
         }
         else
         {

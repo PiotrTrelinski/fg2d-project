@@ -10,6 +10,8 @@ public class AttackingLimbScript : MonoBehaviour
     private GameObject hitSparkNormal, hitSparkMedium, hitSparkHeavy, counterSpark;
     private GameObject blockSpark;
     private float sparkZOffset = -0.8f;
+    private AudioSource audioSource;
+    private AudioClip[] audioClips;
 
 	// Use this for initialization
 	void Awake ()
@@ -20,6 +22,14 @@ public class AttackingLimbScript : MonoBehaviour
         hitSparkHeavy = (GameObject)Resources.Load("Effects/HitSparkHeavyHit");
         counterSpark = (GameObject)Resources.Load("Effects/CounterSpark");
         blockSpark = (GameObject)Resources.Load("Effects/BlockSpark");
+        audioSource = transform.root.GetComponents<AudioSource>()[0];
+        audioClips = new AudioClip[6];
+        audioClips[0] = (AudioClip)Resources.Load("SFX/Impacts_Processed-051");
+        audioClips[1] = (AudioClip)Resources.Load("SFX/Impacts_Processed-053");
+        audioClips[2] = (AudioClip)Resources.Load("SFX/Impacts_Processed-054");
+        audioClips[3] = (AudioClip)Resources.Load("SFX/Impacts_Processed-055");
+        audioClips[4] = (AudioClip)Resources.Load("SFX/Impacts_Processed-083");
+        audioClips[5] = (AudioClip)Resources.Load("SFX/Impacts_Processed-071");
     }
 	
 	// Update is called once per frame
@@ -79,6 +89,8 @@ public class AttackingLimbScript : MonoBehaviour
                         }
                         else if(otherCharacter.CheckBlockCondition(owner.outputBlockType))
                         {
+                            audioSource.clip = audioClips[4];
+                            audioSource.Play();
                             owner.animator.SetFloat("onBlockModifier", 0.5f);
                             owner.activeFrames = false;
                             var blockSparkPos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
@@ -88,12 +100,16 @@ public class AttackingLimbScript : MonoBehaviour
                         }
                         else
                         {
+                            audioSource.clip = audioClips[Random.Range(0,3)];
+                            audioSource.Play();
                             owner.activeFrames = false;
                             owner.outgoingAttackLanded = true;
                             var hitSparkPos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(gameObject.GetComponent<Collider>().ClosestPointOnBounds(other.transform.position));
                             GameObject hitSpark;
                             if (otherCharacter.isAttacking)
                             {
+                                audioSource.clip = audioClips[5];
+                                audioSource.Play();
                                 otherCharacter.countered = true;
                                 var cs = Instantiate(counterSpark, new Vector3(hitSparkPos.x, hitSparkPos.y, sparkZOffset), Quaternion.identity);
                                 Destroy(cs, cs.GetComponent<ParticleSystem>().main.duration);

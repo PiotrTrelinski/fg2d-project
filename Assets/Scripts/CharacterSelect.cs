@@ -14,6 +14,10 @@ public class CharacterSelect : MonoBehaviour
     public GameObject cursorP2;
     public Renderer p1Renderer;
     public Renderer p2Renderer;
+    public AudioSource p1AudioSource;
+    public AudioSource p2AudioSource;
+    public AudioClip moveClip;
+    public AudioClip selectClip;
     public Text annoucementText;
     public GameObject stageSelectPanel;
     public GameObject characterSelectPanel;
@@ -73,6 +77,7 @@ public class CharacterSelect : MonoBehaviour
     {
         if (Input.GetButtonDown("Left Kick P1") && !p1Selected)
         {
+            P1SoundSelect();   
             p1Selected = true;
             var color = colors[p1CursorPosition].GetComponent<Image>().color;
             MatchSettings.Instance.p1Color = color;
@@ -91,6 +96,7 @@ public class CharacterSelect : MonoBehaviour
         }
         if (Input.GetButtonDown("Left Kick P2") && !p2Selected)
         {
+            P2SoundSelect();
             p2Selected = true;
             var color = colors[p2CursorPosition].GetComponent<Image>().color;
             MatchSettings.Instance.p2Color = color;
@@ -109,6 +115,7 @@ public class CharacterSelect : MonoBehaviour
         }
         if (Input.GetAxisRaw("Horizontal P1") != 0 && p1Switchable && !p1Selected)
         {
+            P1SoundCursor();
             p1CursorPosition += Input.GetAxisRaw("Horizontal P1") > 0 ? 1 : -1;
             p1CursorPosition = p1CursorPosition > 7 ? 0 : (p1CursorPosition < 0 ? 7 : p1CursorPosition);
             cursorP1.transform.position = new Vector3(colors[p1CursorPosition].transform.position.x - 15 / (scaler.referenceResolution.x / Screen.width), cursorP1.transform.position.y, cursorP1.transform.position.z);
@@ -117,6 +124,7 @@ public class CharacterSelect : MonoBehaviour
         }
         if (Input.GetAxisRaw("Horizontal P2") != 0 && p2Switchable && !p2Selected)
         {
+            P2SoundCursor();
             p2CursorPosition += Input.GetAxisRaw("Horizontal P2") > 0 ? 1 : -1;
             p2CursorPosition = p2CursorPosition > 7 ? 0 : (p2CursorPosition < 0 ? 7 : p2CursorPosition);
             cursorP2.transform.position = new Vector3(colors[p2CursorPosition].transform.position.x + 15 / (scaler.referenceResolution.x / Screen.width), cursorP2.transform.position.y, cursorP2.transform.position.z);
@@ -128,10 +136,37 @@ public class CharacterSelect : MonoBehaviour
     private void SwitchToStageSelect()
     {
         stage = CharacterSelectStage.StagePicking;
+        StartCoroutine("SwitchToStageSelectCoroutine");   
+    }
+    private IEnumerator SwitchToStageSelectCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
         annoucementText.text = "CHOSE THE STAGE";
         characterSelectPanel.SetActive(false);
         stageSelectPanel.SetActive(true);
         eventSystem.SetSelectedGameObject(firstStage);
+    }
+
+
+    private void P1SoundCursor()
+    {
+        p1AudioSource.clip = moveClip;
+        p1AudioSource.Play();
+    }
+    private void P1SoundSelect()
+    {
+        p1AudioSource.clip = selectClip;
+        p1AudioSource.Play();
+    }
+    private void P2SoundCursor()
+    {
+        p2AudioSource.clip = moveClip;
+        p2AudioSource.Play();
+    }
+    private void P2SoundSelect()
+    {
+        p2AudioSource.clip = selectClip;
+        p2AudioSource.Play();
     }
 
     private void StartMatch()
@@ -182,12 +217,14 @@ public class CharacterSelect : MonoBehaviour
 
     public void OnStageSelect(int stageNumber)
     {
+        P1SoundSelect();
         selectedStage = "Stage" + stageNumber;
         eventSystem.enabled = false;
         StartMatch();
     }
     public void OnStageHighlight(int stageNumber)
     {
+        P1SoundCursor();
         stagePicture.texture = stageImages[stageNumber - 1];
     }
 }

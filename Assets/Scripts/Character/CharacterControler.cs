@@ -135,7 +135,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("DashingRightPunch", new AttackPropertiesStructure(15, 27, 16, 3, BlockType.Standing));
         attackProperties.Add("DashingLeftKick", new AttackPropertiesStructure(8, 14, 22, 0, BlockType.Crouching));
         attackProperties.Add("DashingRightKick", new AttackPropertiesStructure(20, 44, 22, 1, BlockType.Standing));
-        attackProperties.Add("JumpingLeftPunch", new AttackPropertiesStructure(16, 33, 20, 3, BlockType.Standing));
+        attackProperties.Add("JumpingLeftPunch", new AttackPropertiesStructure(22, 33, 20, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightPunch", new AttackPropertiesStructure(12, 22, 23, 5, BlockType.Standing));
         attackProperties.Add("JumpingLeftKick", new AttackPropertiesStructure(25, 50, 20, 3, BlockType.Standing));
         attackProperties.Add("JumpingRightKick", new AttackPropertiesStructure(15, 40, 19, 3, BlockType.Standing));
@@ -146,7 +146,7 @@ public class CharacterControler : MonoBehaviour
         attackProperties.Add("RunningRightKick", new AttackPropertiesStructure(30, 51, 52, 0, BlockType.Standing));
     }
 
-    void Start()
+    void Awake()
     {
         speed = walkSpeed;
         //transform.Find("stickmanV2").Find("Cube").GetComponent<Renderer>().material.color = playerColor;
@@ -160,7 +160,6 @@ public class CharacterControler : MonoBehaviour
             miscColliders[i] = collider;
             i++;
         }
-        invert = PlayerPrefs.GetInt("InvertYAxisP" + playerNumber);
     }
 
     public void SetupControl(int playerNumber, Color color)
@@ -169,6 +168,9 @@ public class CharacterControler : MonoBehaviour
         this.playerColor = color;
         playerNumberSufix += playerNumber;
         playerRenderer.material.color = color;
+        Debug.Log("InvertYAxisP" + playerNumber);
+        invert = PlayerPrefs.GetInt("InvertYAxisP" + playerNumber);
+        Debug.Log(playerNumber + " " + invert);
     }
 
     // Update is called once per frame
@@ -1042,7 +1044,7 @@ public class CharacterControler : MonoBehaviour
             thrower.animator.Play("CombatThrowBack");
         }
         throwParticles = (GameObject)Instantiate(Resources.Load("Effects/ThrowParticles/ThrowParticles"), transform);
-        Destroy(throwParticles, 1.1f);
+        Destroy(throwParticles, 1.5f);
     }
 
     private void ListenForThrowBreak()

@@ -16,6 +16,11 @@ public class MainMenu : MonoBehaviour
     public Toggle invertYAxisP2;
     public GameObject mainMenu;
     public GameObject settings;
+
+    public AudioSource menuSound;
+    public AudioClip cursorClip;
+    public AudioClip buttonClip;
+
 	// Use this for initialization
 	void Awake ()
     {
@@ -43,6 +48,13 @@ public class MainMenu : MonoBehaviour
 
     public void StartMatch()
     {
+        eventSystem.transform.GetComponent<CustomStandaloneInputModule>().enabled = false;
+        StartCoroutine("StartMatchCoroutine");
+    }
+
+    private IEnumerator StartMatchCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene("CharacterSelect");
     }
 
@@ -57,6 +69,7 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+
 
     public void ChangeRoundsValue()
     {
@@ -86,5 +99,15 @@ public class MainMenu : MonoBehaviour
         mainMenu.SetActive(true);
         settings.SetActive(false);
         eventSystem.SetSelectedGameObject(eventSystem.firstSelectedGameObject);
+    }
+    public void CursorEnter()
+    {
+        menuSound.clip = cursorClip;
+        menuSound.Play();
+    }
+    public void CursorClick()
+    {
+        menuSound.clip = buttonClip;
+        menuSound.Play();
     }
 }

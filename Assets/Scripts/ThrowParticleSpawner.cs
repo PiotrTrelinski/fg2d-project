@@ -6,6 +6,7 @@ public class ThrowParticleSpawner : MonoBehaviour
 {
     private int i = 0;
     private GameObject[] hitSpark;
+    private GameObject counterSpark;
     private Animator animator;
     private CharacterControler owner;
 	// Use this for initialization
@@ -16,6 +17,7 @@ public class ThrowParticleSpawner : MonoBehaviour
         hitSpark[0] = (GameObject)Resources.Load("Effects/HitSparkNormalHit");
         hitSpark[1] = (GameObject)Resources.Load("Effects/HitSparkMediumHit");
         hitSpark[2] = (GameObject)Resources.Load("Effects/HitSparkHeavyHit");
+        counterSpark = (GameObject)Resources.Load("Effects/CounterSpark");
         animator = GetComponent<Animator>();
         animator.Play(owner.hitFromFront?"ThrowFrontParticlesAnimation":"ThrowBackParticlesAnimation");
 	}
@@ -24,6 +26,9 @@ public class ThrowParticleSpawner : MonoBehaviour
     {
         var spark = Instantiate(hitSpark[i++], new Vector3(transform.position.x, transform.position.y, -0.8f), Quaternion.identity);
         Destroy(spark, spark.GetComponent<ParticleSystem>().main.duration);
+        var cs = Instantiate(counterSpark, new Vector3(transform.position.x, transform.position.y, -0.8f), Quaternion.identity);
+        Destroy(cs, cs.GetComponent<ParticleSystem>().main.duration);
+        GetComponent<AudioSource>().Play();
     }
 
 }
