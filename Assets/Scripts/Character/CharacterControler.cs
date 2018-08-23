@@ -99,6 +99,7 @@ public class CharacterControler : MonoBehaviour
     private Collider[] miscColliders;
     private CharacterControler throwingChar;
     private GameObject throwParticles;
+    private AudioSource whooshSound;
 
     public Rigidbody rb;
 
@@ -148,6 +149,9 @@ public class CharacterControler : MonoBehaviour
 
     void Awake()
     {
+        whooshSound = GetComponents < AudioSource >()[1];
+        whooshSound.time = 0.2f;
+
         speed = walkSpeed;
         //transform.Find("stickmanV2").Find("Cube").GetComponent<Renderer>().material.color = playerColor;
         //playerNumberSufix += playerNumber;
@@ -1093,6 +1097,11 @@ public class CharacterControler : MonoBehaviour
         HandleGeneralCollider();
         animator.SetBool("canFloat", true);
         animator.Play("NeutralIdle");
+    }
+
+    public void PlayWhoosh()
+    {
+        whooshSound.Play();
     }
     //private void OnCollisionEnter(Collision collision)
     //{

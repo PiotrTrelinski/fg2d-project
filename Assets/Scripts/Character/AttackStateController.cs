@@ -60,6 +60,7 @@ public class AttackStateController : MonoBehaviour
     private void ToggleActiveFramesOn()
     {
         controller.activeFrames = true;
+        controller.PlayWhoosh();
     }
     private void ToggleActiveFramesOff()
     {
