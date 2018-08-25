@@ -18,7 +18,7 @@ public class FootStep : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.layer == 8 && !character.isInHitStun)
+        if(other.gameObject.layer == 8 && !character.isInHitStun && character.controlable)
             audioSource.Play();
     }
 }
