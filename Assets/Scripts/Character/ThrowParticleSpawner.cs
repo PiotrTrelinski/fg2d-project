@@ -29,6 +29,7 @@ public class ThrowParticleSpawner : MonoBehaviour
         var cs = Instantiate(counterSpark, new Vector3(transform.position.x, transform.position.y, -0.8f), Quaternion.identity);
         Destroy(cs, cs.GetComponent<ParticleSystem>().main.duration);
         GetComponent<AudioSource>().Play();
+        owner.PlayWhoosh();
     }
 
 }

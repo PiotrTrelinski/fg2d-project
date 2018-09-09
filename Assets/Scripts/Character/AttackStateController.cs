@@ -28,6 +28,7 @@ public class AttackStateController : MonoBehaviour
     {
         if (!controller.crossFadingAttack)
         {
+            if (controller.isInHitStun) controller.FaceTheEnemy();
             controller.countered = false;
             controller.isAttacking = false;
             controller.isCancelable = true;

@@ -92,7 +92,7 @@ public class CharacterControler : MonoBehaviour
     public bool countered = false;
     public GameObject miscCollidersObject;
     private Collider[] miscColliders;
-    private CharacterControler throwingChar;
+    private CharacterControler otherChar;
     private GameObject throwParticles;
     private AudioSource whooshSound;
 
@@ -155,7 +155,7 @@ public class CharacterControler : MonoBehaviour
                     ListenForThrowBreak();
                 if (!isInThrow)
                 {
-                    if (throwingChar != null) throwingChar = null;
+                    if (otherChar != null) otherChar = null;
                     if (!isInHitStun)
                     {
                         consecutiveHits = 0;
@@ -218,10 +218,10 @@ public class CharacterControler : MonoBehaviour
 
     private void HandleThrowKnockout()
     {
-        if (isInThrow && throwingChar != null && throwingChar.currentHealth <= 0)
+        if (isInThrow && otherChar != null && otherChar.currentHealth <= 0)
         {
             isInThrow = false;
-            throwingChar.isInThrow = false;
+            otherChar.isInThrow = false;
             animator.Play(isInStance ? "StanceIdle" : "NeutralIdle");
         }
     }
@@ -276,8 +276,27 @@ public class CharacterControler : MonoBehaviour
             {
                 isRunning = false;
                 isInStance = true;
+                if(!isAttacking)
+                    FaceTheEnemy();
             }
         }
+    }
+    public void FaceTheEnemy()
+    {
+        if (otherChar == null)
+            FindOtherChar();
+        if ((facingLeft && otherChar.transform.position.x > transform.position.x)
+                            || (!facingLeft && otherChar.transform.position.x < transform.position.x))
+        {
+            facingLeft = !facingLeft;
+            HandleHorizontalOrientation();
+        }
+    }
+    private void FindOtherChar()
+    {
+        CharacterControler[] characters = FindObjectsOfType<CharacterControler>();
+        if (characters[0] != this) otherChar = characters[0];
+        else otherChar = characters[1];
     }
     private void GatherCombatInputs()
     {
@@ -524,6 +543,7 @@ public class CharacterControler : MonoBehaviour
         isCancelable = false;
         isAttacking = true;
         outgoingAttackLanded = false;
+        if(isInStance)FaceTheEnemy();
     }
 
     private void HandleAnimation()
@@ -978,18 +998,18 @@ public class CharacterControler : MonoBehaviour
     public void StartTheThrow(CharacterControler thrower)
     {
 
-        throwingChar = thrower;
+        otherChar = thrower;
         rb.velocity = Vector3.zero;
-        throwingChar.rb.velocity = Vector3.zero;
+        otherChar.rb.velocity = Vector3.zero;
 
         animator.SetBool("canFloat", false);
-        throwingChar.animator.SetBool("canFloat", false);
+        otherChar.animator.SetBool("canFloat", false);
         StandardIssueCombatActionConnectSwitches();
-        throwingChar.StandardIssueCombatActionConnectSwitches();
+        otherChar.StandardIssueCombatActionConnectSwitches();
         isInThrow = true;
         isCrouching = false;
         HandleGeneralCollider();
-        throwingChar.isInThrow = true;
+        otherChar.isInThrow = true;
         throwBreakable = true;
         //float positionOffset;
         if (hitFromFront)
@@ -1014,7 +1034,7 @@ public class CharacterControler : MonoBehaviour
         {
             Destroy(throwParticles);
             throwBreakable = false;
-            throwingChar.animator.Play("CombatThrowBroken");
+            otherChar.animator.Play("CombatThrowBroken");
             animator.Play("ThrowReactionBreak");
         }
     }
@@ -1058,6 +1078,19 @@ public class CharacterControler : MonoBehaviour
     public void PlayWhoosh()
     {
         whooshSound.Play();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(isStuckToWall && collision.gameObject.tag == "Player" 
+            && collision.gameObject != this.gameObject 
+            && (collision.transform.position.y) > transform.position.y)
+        {
+            animator.SetBool("canFloat", true);
+            animator.CrossFade("StanceFloatTree", 0.1f);
+            rb.velocity = new Vector3(0, -5, 0);
+            StopWallInteraction();
+        }
     }
     //private void OnCollisionEnter(Collision collision)
     //{
