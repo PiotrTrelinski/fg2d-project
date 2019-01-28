@@ -112,7 +112,7 @@ public class CharacterControler : MonoBehaviour
         //transform.Find("stickmanV2").Find("Cube").GetComponent<Renderer>().material.color = playerColor;
         //playerNumberSufix += playerNumber;
         currentHealth = maxHealth;
-        attackProperties = AttackData.Instance.AttackProperties;
+        attackProperties = AttackData.AttackProperties;
         miscColliders = new Collider[miscCollidersObject.GetComponents<Collider>().Length];
         int i = 0;
         foreach (var collider in miscCollidersObject.GetComponents<Collider>())
@@ -304,19 +304,19 @@ public class CharacterControler : MonoBehaviour
         {
             if (leftPunch)
             {
-                firstInput = "Left Punch";
+                firstInput = "LeftPunch";
             }
             else if (rightPunch)
             {
-                firstInput = "Right Punch";
+                firstInput = "RightPunch";
             }
             else if (leftKick)
             {
-                firstInput = "Left Kick";
+                firstInput = "LeftKick";
             }
             else if (rightKick)
             {
-                firstInput = "Right Kick";
+                firstInput = "RightKick";
             }
             if (firstInput != null)
                 lastCombatInputTime = Time.time;
@@ -326,23 +326,23 @@ public class CharacterControler : MonoBehaviour
         {
             if (leftPunch)
             {
-                if (firstInput != "Left Punch")
-                    secondInput = "Left Punch";
+                if (firstInput != "LeftPunch")
+                    secondInput = "LeftPunch";
             }
             if (rightPunch)
             {
-                if (firstInput != "Right Punch")
-                    secondInput = "Right Punch";
+                if (firstInput != "RightPunch")
+                    secondInput = "RightPunch";
             }
             if (leftKick)
             {
-                if (firstInput != "Left Kick")
-                    secondInput = "Left Kick";
+                if (firstInput != "LeftKick")
+                    secondInput = "LeftKick";
             }
             if (rightKick)
             {
-                if (firstInput != "Right Kick")
-                    secondInput = "Right Kick";
+                if (firstInput != "RightKick")
+                    secondInput = "RightKick";
             }
             //Debug.Log("secondInput:" + secondInput);
         }
@@ -355,167 +355,53 @@ public class CharacterControler : MonoBehaviour
 
     private void HandleCombat()
     {
-        //GatherCombatInputs();
         if (isCancelable)
         {
             if (firstInput != null && Time.time - lastCombatInputTime >= 0.05f)
             {
                 activeLimb = firstInput;
-
+                string state = "";
+                string outgoingAttack = "";
                 if (grounded)
                 {
-
-                    if ((firstInput == "Left Punch" && secondInput == "Left Kick") || (firstInput == "Left Kick" && secondInput == "Left Punch")
-                        || (firstInput == "Right Punch" && secondInput == "Right Kick") || (firstInput == "Right Kick" && secondInput == "Right Punch"))
+                    if ((firstInput == "LeftPunch" && secondInput == "LeftKick") || (firstInput == "LeftKick" && secondInput == "LeftPunch")
+                        || (firstInput == "RightPunch" && secondInput == "RightKick") || (firstInput == "RightKick" && secondInput == "RightPunch"))
                     {
-                        StartAttack();
                         activeLimb = "Throw";
                         isCrouching = false;
                         rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                        animator.CrossFade("CombatThrowStart", 0.1f);
+                        outgoingAttack = "CombatThrowStart";
                     }
                     else
                     {
-                        if (!isCrouching)
-                        {
-                            StartAttack();
-                            if (isDashingForward)
-                            {
-                                crossFadingAttack = true;
-                                if (firstInput == "Left Punch")
-                                {
-                                    animator.CrossFade("CombatDashingLeftPunch", 0.01f);
-                                    SetOutputAttackProperties(attackProperties["DashingLeftPunch"]);
-                                }
-                                else if (firstInput == "Right Punch")
-                                {
-                                    animator.CrossFade("CombatDashingRightPunch", 0.01f);
-                                    SetOutputAttackProperties(attackProperties["DashingRightPunch"]);
-                                }
-                                else if (firstInput == "Left Kick")
-                                {
-                                    animator.CrossFade("CombatDashingLeftKick", 0.01f);
-                                    SetOutputAttackProperties(attackProperties["DashingLeftKick"]);
-                                }
-                                else if (firstInput == "Right Kick")
-                                {
-                                    animator.CrossFade("CombatDashingRightKick", 0.3f);
-                                    SetOutputAttackProperties(attackProperties["DashingRightKick"]);
-                                }
-                            }
-                            else if (isDashing && firstInput == "Left Punch")
-                            {
-                                crossFadingAttack = true;
-                                animator.CrossFade("CombatBackdashingLeftPunch", 0.01f);
-                                SetOutputAttackProperties(attackProperties["BackdashingLeftPunch"]);
-                            }
-                            else if (isDashing && firstInput == "Left Kick")
-                            {
-                                crossFadingAttack = true;
-                                animator.CrossFade("CombatBackdashingLeftKick", 0.01f);
-                                SetOutputAttackProperties(attackProperties["BackdashingLeftKick"]);
-                            }
-                            else if (isRunning && firstInput == "Right Punch")
-                            {
-                                crossFadingAttack = true;
-                                animator.CrossFade("CombatRunningRightPunch", 0.1f);
-                                SetOutputAttackProperties(attackProperties["RunningRightPunch"]);
-                            }
-                            else if (isRunning && firstInput == "Left Kick")
-                            {
-                                crossFadingAttack = true;
-                                animator.CrossFade("CombatRunningLeftKick", 0.1f);
-                                SetOutputAttackProperties(attackProperties["RunningLeftKick"]);
-                            }
-                            else if (isRunning && firstInput == "Right Kick")
-                            {
-                                crossFadingAttack = true;
-                                animator.CrossFade("CombatRunningRightKick", 0.1f);
-                                SetOutputAttackProperties(attackProperties["RunningRightKick"]);
-                            }
-                            else if (firstInput == "Left Punch")
-                            {
-                                animator.Play("CombatStandingLeftPunch");
-                                rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                                SetOutputAttackProperties(attackProperties["StandingLeftPunch"]);
-                            }
-                            else if (firstInput == "Right Punch")
-                            {
-                                animator.Play("CombatStandingRightPunch");
-                                rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                                SetOutputAttackProperties(attackProperties["StandingRightPunch"]);
-                            }
-                            else if (firstInput == "Left Kick")
-                            {
-                                animator.Play("CombatStandingLeftKick");
-                                rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                                SetOutputAttackProperties(attackProperties["StandingLeftKick"]);
-                            }
-                            else if (firstInput == "Right Kick")
-                            {
-                                animator.Play("CombatStandingRightKick");
-                                rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                                SetOutputAttackProperties(attackProperties["StandingRightKick"]);
-                            }
-                        }
-                        else
-                        {
-                            StartAttack();
-                            if (firstInput == "Left Punch")
-                            {
-                                animator.Play("CombatCrouchingLeftPunch");
-                                SetOutputAttackProperties(attackProperties["CrouchingLeftPunch"]);
-                            }
-                            else if (firstInput == "Right Punch")
-                            {
-                                crossFadingAttack = true;
-                                isCrouching = false;
-                                animator.CrossFade("CombatCrouchingRightPunch", 0.3f);
-                                SetOutputAttackProperties(attackProperties["CrouchingRightPunch"]);
-                            }
-                            else if (firstInput == "Left Kick")
-                            {
-                                animator.Play("CombatCrouchingLeftKick");
-                                SetOutputAttackProperties(attackProperties["CrouchingLeftKick"]);
-                            }
-                            else if (firstInput == "Right Kick")
-                            {
-                                crossFadingAttack = true;
-                                isCrouching = false;
-                                animator.CrossFade("CombatCrouchingRightKick", 0.3f);
-                                SetOutputAttackProperties(attackProperties["CrouchingRightKick"]);
-                            }
-                        }
+                        if (!isCrouching && isDashingForward) state = "Dashing";
+                        else if (!isCrouching && isDashing) state = "Backdashing";
+                        else if (!isCrouching && isRunning) state = "Running";
+                        else if (!isCrouching) state = "Standing";
+                        else state = "Crouching";
                     }
                 }
                 else if (!grounded)
                 {
                     StartAttack();
                     aerialVelX = rb.velocity.x;
-                    if (firstInput == "Left Punch")
-                    {
-                        isAerialAttacking = true;
-                        animator.Play("CombatJumpingLeftPunch");
-                        SetOutputAttackProperties(attackProperties["JumpingLeftPunch"]);
-                    }
-                    else if (firstInput == "Right Punch")
-                    {
-                        isAerialAttacking = true;
-                        animator.Play("CombatJumpingRightPunch");
-                        SetOutputAttackProperties(attackProperties["JumpingRightPunch"]);
-                    }
-                    else if (firstInput == "Left Kick")
-                    {
-                        isAerialAttacking = true;
-                        animator.Play("CombatJumpingLeftKick");
-                        SetOutputAttackProperties(attackProperties["JumpingLeftKick"]);
-                    }
-                    else if (firstInput == "Right Kick")
-                    {
-                        isAerialAttacking = true;
-                        animator.Play("CombatJumpingRightKick");
-                        SetOutputAttackProperties(attackProperties["JumpingRightKick"]);
-                    }
+                    state = "Jumping";
+                    isAerialAttacking = true;
+                }
+                if (outgoingAttack == "")
+                {
+                    if ((state == "Backdashing" && (firstInput == "RightKick" || firstInput == "RightPunch"))
+                        || (state == "Running" && firstInput == "LeftPunch"))
+                        state = "Standing";
+                    outgoingAttack = state + firstInput;
+                    SetOutputAttackProperties(attackProperties[outgoingAttack]);
+                }
+                StartAttack();
+                if (attackProperties[outgoingAttack].crossFade == 0) animator.Play("Combat" + outgoingAttack);
+                else
+                {
+                    crossFadingAttack = true;
+                    animator.CrossFade("Combat"+outgoingAttack, attackProperties[outgoingAttack].crossFade);
                 }
                 firstInput = null;
                 secondInput = null;
@@ -944,6 +830,7 @@ public class CharacterControler : MonoBehaviour
         currentHealth -= dmg;
         comboDamage += dmg;
 
+        countered = false;
         //  Debug.Log("hit:"+consecutiveHits + " combo damage:" + comboDamage);
         animator.SetFloat("hitStun", (60 / (inputHitStun - consecutiveHits)));
         // Debug.Log("hitstun:" + ((60 / (inputHitStun - consecutiveHits))) + " inframes:" + (60/((60 /(inputHitStun - consecutiveHits)))));
@@ -1092,33 +979,4 @@ public class CharacterControler : MonoBehaviour
             StopWallInteraction();
         }
     }
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    StopAerialInterference(collision);
-    //}
-    //private void OnCollisionStay(Collision collision)
-    //{
-    //    StopAerialInterference(collision);
-    //}
-    //private void StopAerialInterference(Collision collision)
-    //{
-    //    if(collision.gameObject.tag == "Player" && collision.gameObject != this.gameObject)
-    //    {
-    //        CharacterControler otherChar = collision.gameObject.GetComponent<CharacterControler>();
-    //        if (!grounded && !isdashing)
-    //        {
-    //            if (otherchar.isattacking && ((!facingleft && otherchar.facingleft && rb.velocity.x < 0) || (facingleft && !otherchar.facingleft && rb.velocity.x > 0)))
-    //            {
-    //                rb.velocity = new vector3(0, rb.velocity.y, rb.velocity.z);
-    //            }
-    //        }
-    //        if (isattacking && isaerialattacking)
-    //        {
-    //            if (aerialvelx > 0 && otherchar.rb.velocity.x < 0 || aerialvelx < 0 && otherchar.rb.velocity.x > 0)
-    //            {
-    //                aerialvelx = 0;
-    //            }
-    //        }
-    //    }
-    //}
 }

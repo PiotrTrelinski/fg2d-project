@@ -55,7 +55,7 @@ public class AttackStateController : MonoBehaviour
 
     private void ToggleCrouch()
     {
-        controller.isCrouching = ! controller.isCrouching;
+        controller.isCrouching = !controller.isCrouching;
         controller.HandleGeneralCollider();
     }
     private void ToggleActiveFramesOn()

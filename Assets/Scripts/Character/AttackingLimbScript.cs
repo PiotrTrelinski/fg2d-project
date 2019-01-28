@@ -51,15 +51,37 @@ public class AttackingLimbScript : MonoBehaviour
     {
         CheckHit(other);
     }
+    void PlayCounterHitEffect(Vector3 hitSparkPos)
+    {
+        audioSource.clip = audioClips[5];
+        audioSource.Play();
+        var cs = Instantiate(counterSpark, new Vector3(hitSparkPos.x, hitSparkPos.y, sparkZOffset), Quaternion.identity);
+        Destroy(cs, cs.GetComponent<ParticleSystem>().main.duration);
+    }
+    void PlayHitEffect(Vector3 hitSparkPos, int damage)
+    {
+        audioSource.clip = audioClips[Random.Range(0, 3)];
+        audioSource.Play();
+        GameObject hitSpark;
+        if (damage > 18) hitSpark = hitSparkHeavy; else if (damage > 14) hitSpark = hitSparkMedium; else hitSpark = hitSparkNormal;
+        GameObject ps = (GameObject)Instantiate(hitSpark, new Vector3(hitSparkPos.x, hitSparkPos.y, sparkZOffset), Quaternion.identity);
+        Destroy(ps, ps.GetComponent<ParticleSystem>().main.duration);
+        
+    }
+    void PlayBlockEffect(Vector3 blockSparkPos)
+    {
+        audioSource.clip = audioClips[4];
+        audioSource.Play();
+        GameObject ps = (GameObject)Instantiate(blockSpark, blockSparkPos, Quaternion.identity);
+        Destroy(ps, ps.GetComponent<ParticleSystem>().main.duration);
+    }
     private void CheckHit(Collider other)
     {
         
         if ((limbLabel == owner.activeLimb) 
-            || ((limbLabel == "Left Punch" || limbLabel == "Right Punch")
+            || ((limbLabel == "LeftPunch" || limbLabel == "RightPunch")
             && owner.activeLimb == "Throw"))
         {
-            //Debug.DrawLine(other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Vector3.up, Color.black);
-            //Debug.Log(owner.name);
             if (owner.activeFrames)
             {
                 if (other.gameObject.tag == "Damagable")
@@ -67,7 +89,6 @@ public class AttackingLimbScript : MonoBehaviour
                     CharacterControler otherCharacter = other.gameObject.GetComponentInParent<CharacterControler>();
                     if (otherCharacter != null && otherCharacter != owner && !otherCharacter.invulnerable && !otherCharacter.isKOd)
                     {
-                       // Debug.Log(owner.playerNumber + " hit " + otherCharacter.playerNumber);
                         if((otherCharacter.facingLeft && otherCharacter.transform.position.x > owner.transform.position.x) 
                             || (!otherCharacter.facingLeft && otherCharacter.transform.position.x < owner.transform.position.x))
                         {
@@ -89,39 +110,29 @@ public class AttackingLimbScript : MonoBehaviour
                         }
                         else if(otherCharacter.CheckBlockCondition(owner.outputBlockType))
                         {
-                            audioSource.clip = audioClips[4];
-                            audioSource.Play();
+                            
                             owner.animator.SetFloat("onBlockModifier", 0.5f);
                             owner.activeFrames = false;
                             var blockSparkPos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
-                            GameObject ps = (GameObject)Instantiate(blockSpark, new Vector3(other.transform.root.transform.position.x + (otherCharacter.facingLeft?-1.2f:1.2f), blockSparkPos.y, sparkZOffset), Quaternion.identity);
-                            Destroy(ps, ps.GetComponent<ParticleSystem>().main.duration);
+                            blockSparkPos = new Vector3(other.transform.root.transform.position.x + (otherCharacter.facingLeft ? -1.2f : 1.2f), blockSparkPos.y, sparkZOffset);
+                            PlayBlockEffect(blockSparkPos);
                             otherCharacter.ApplyBlockStun(owner.outputBlockStun, other.transform.name, owner.outputPushBack);
                         }
                         else
                         {
-                            audioSource.clip = audioClips[Random.Range(0,3)];
-                            audioSource.Play();
                             owner.activeFrames = false;
                             owner.outgoingAttackLanded = true;
                             var hitSparkPos = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(gameObject.GetComponent<Collider>().ClosestPointOnBounds(other.transform.position));
-                            GameObject hitSpark;
                             if (otherCharacter.isAttacking)
                             {
-                                audioSource.clip = audioClips[5];
-                                audioSource.Play();
+                                otherCharacter.isAttacking = false;
                                 otherCharacter.countered = true;
-                                var cs = Instantiate(counterSpark, new Vector3(hitSparkPos.x, hitSparkPos.y, sparkZOffset), Quaternion.identity);
-                                Destroy(cs, cs.GetComponent<ParticleSystem>().main.duration);
+                                PlayCounterHitEffect(hitSparkPos);
                             }
                             else otherCharacter.countered = false;
-                            var damage = (int)((owner.countered ? 1.2f : 1) * owner.outputDamage);
-                            if (damage > 18) hitSpark = hitSparkHeavy; else if (damage > 14) hitSpark = hitSparkMedium; else hitSpark = hitSparkNormal;
-                            GameObject ps =(GameObject) Instantiate(hitSpark, new Vector3(hitSparkPos.x, hitSparkPos.y, sparkZOffset), Quaternion.identity);
-                            Destroy(ps, ps.GetComponent<ParticleSystem>().main.duration);
+                            PlayHitEffect(hitSparkPos, (int)((owner.countered ? 1.2f : 1) * owner.outputDamage));
                             otherCharacter.ApplyHitStun(owner.outputHitStun, other.transform.name, owner.outputPushBack, owner.outputDamage);
                         }
-                       
                     }
                 }
             }

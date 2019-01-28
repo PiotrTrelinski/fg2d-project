@@ -91,7 +91,7 @@ public class MainMenu : MonoBehaviour
 
     public void SwitchYAxisInversionP2()
     {
-        int inversion = invertYAxisP1.isOn ? -1 : 1;
+        int inversion = invertYAxisP2.isOn ? -1 : 1;
         PlayerPrefs.SetInt("InvertYAxisP2", inversion);
     }
     public void GoToMainMenu()
