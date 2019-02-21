@@ -69,7 +69,7 @@ public class CharacterControler : MonoBehaviour
     public BlockType outputBlockType;
     private float inputPushBack;
     public bool isKOd = false;
-    private Dictionary<string, AttackPropertiesStructure> attackProperties;
+    private Dictionary<string, AttackProperties> attackProperties;
     //coliders
     public Collider standingCollider;
     public Collider crouchingCollider;
@@ -160,14 +160,15 @@ public class CharacterControler : MonoBehaviour
                     {
                         consecutiveHits = 0;
                         comboDamage = 0;
-                        GatherCombatInputs();
+                        GatherCombatInput();
                         if (!isInBlockStun)
                         {
                             if (isStuckToWall)
                                 HandleWallInteraction();
                             else
                                 HandleMovement();
-                            HandleCombat();
+                            HandleAttack();
+                            HandleAerialAttackPrematureLanding();
                         }
                         else
                             HandlePushBack();
@@ -298,7 +299,7 @@ public class CharacterControler : MonoBehaviour
         if (characters[0] != this) otherChar = characters[0];
         else otherChar = characters[1];
     }
-    private void GatherCombatInputs()
+    private void GatherCombatInput()
     {
         if (firstInput == null)
         {
@@ -320,7 +321,6 @@ public class CharacterControler : MonoBehaviour
             }
             if (firstInput != null)
                 lastCombatInputTime = Time.time;
-            //if(firstInput!=null) Debug.Log("firstInput:" + firstInput);
         }
         if (firstInput != null && secondInput == null && Time.time - lastCombatInputTime <= 0.05f)
         {
@@ -344,7 +344,6 @@ public class CharacterControler : MonoBehaviour
                 if (firstInput != "RightKick")
                     secondInput = "RightKick";
             }
-            //Debug.Log("secondInput:" + secondInput);
         }
         if (firstInput != null && Time.time - lastCombatInputTime >= inputLeniency)
         {
@@ -353,7 +352,7 @@ public class CharacterControler : MonoBehaviour
         }
     }
 
-    private void HandleCombat()
+    private void HandleAttack()
     {
         if (isCancelable)
         {
@@ -383,21 +382,20 @@ public class CharacterControler : MonoBehaviour
                 }
                 else if (!grounded)
                 {
-                    StartAttack();
                     aerialVelX = rb.velocity.x;
                     state = "Jumping";
                     isAerialAttacking = true;
                 }
                 if (outgoingAttack == "")
                 {
-                    if ((state == "Backdashing" && (firstInput == "RightKick" || firstInput == "RightPunch"))
-                        || (state == "Running" && firstInput == "LeftPunch"))
+                    if (!attackProperties.ContainsKey(state+firstInput))
                         state = "Standing";
                     outgoingAttack = state + firstInput;
                     SetOutputAttackProperties(attackProperties[outgoingAttack]);
                 }
                 StartAttack();
-                if (attackProperties[outgoingAttack].crossFade == 0) animator.Play("Combat" + outgoingAttack);
+                if (attackProperties[outgoingAttack].crossFade == 0)
+                    animator.Play("Combat" + outgoingAttack);
                 else
                 {
                     crossFadingAttack = true;
@@ -406,7 +404,11 @@ public class CharacterControler : MonoBehaviour
                 firstInput = null;
                 secondInput = null;
             }
-        }
+        }   
+    }
+
+    private void HandleAerialAttackPrematureLanding()
+    {
         if (isAerialAttacking && grounded && !isCancelable)
         {
             rb.velocity = Vector3.zero;
@@ -417,10 +419,6 @@ public class CharacterControler : MonoBehaviour
             isAirDashing = false;
             animator.Play("CombatBadLanding");
             activeFrames = false;
-        }
-        if (grounded && !lastFrameGrounded && isDashingForward && isAttacking)
-        {
-            rb.velocity = Vector3.zero;
         }
     }
 
@@ -474,10 +472,6 @@ public class CharacterControler : MonoBehaviour
                     animator.CrossFade("StanceFloatTree", 0.1f);
                 if (grounded && !lastFrameGrounded && animator.GetBool("canFloat"))
                     animator.CrossFade("StanceIdle", 0.1f);
-                //if (!facingLeft)
-                //    animator.SetFloat("horSpeed", rb.velocity.x);
-                //else
-                //    animator.SetFloat("horSpeed", -rb.velocity.x);
                 if (!lastFrameStance && !isDashing)
                     if (grounded)
                         if (isCrouching && lastFrameCrouching)
@@ -771,7 +765,7 @@ public class CharacterControler : MonoBehaviour
     {
         currentHealth = maxHealth;
     }
-    private void SetOutputAttackProperties(AttackPropertiesStructure attackProperty)
+    private void SetOutputAttackProperties(AttackProperties attackProperty)
     {
         outputDamage = attackProperty.damage;
         outputHitStun = attackProperty.hitStun;
@@ -797,7 +791,6 @@ public class CharacterControler : MonoBehaviour
         inputPushBack = pushBack;
 
         animator.SetFloat("blockStun", (60 / inputBlockStun));
-        //        Debug.Log("blockstun:" + ((60 / inputBlockStun) + " inframes:" + (60 / ((60 / inputBlockStun)))));
         animator.SetBool("canFloat", false);
         string animationToPlay = "";
         if (hitZone == "Head" || hitZone == "UpperSpine" || hitZone == "Arm_R" || hitZone == "Arm_L")
@@ -831,11 +824,13 @@ public class CharacterControler : MonoBehaviour
         comboDamage += dmg;
 
         countered = false;
-        //  Debug.Log("hit:"+consecutiveHits + " combo damage:" + comboDamage);
         animator.SetFloat("hitStun", (60 / (inputHitStun - consecutiveHits)));
-        // Debug.Log("hitstun:" + ((60 / (inputHitStun - consecutiveHits))) + " inframes:" + (60/((60 /(inputHitStun - consecutiveHits)))));
         consecutiveHits += 1;
         animator.SetBool("canFloat", false);
+        ResolveHitReactionAnimation(hitZone);
+    }
+    private void ResolveHitReactionAnimation(string hitZone)
+    {
         string animationToPlay = "";
         if (hitZone == "Head" || hitZone == "UpperSpine" || hitZone == "Arm_R" || hitZone == "Arm_L")
         {
